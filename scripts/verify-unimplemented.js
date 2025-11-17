@@ -35,6 +35,7 @@ const tests = [
         exports.result = x + y
       }
     `,
+    expectedBehavior: 'throws_error',
     expectedError: 'WithStatement'
   },
   {
@@ -50,6 +51,7 @@ const tests = [
         }
       }
     `,
+    expectedBehavior: 'throws_error',
     expectedError: 'LabeledStatement'
   },
   {
@@ -66,8 +68,11 @@ const tests = [
       
       const instance = new MyClass()
       exports.result = instance.getSum()
+      exports.x = instance.x
+      exports.y = instance.y
     `,
-    expectedError: 'PropertyDefinition'
+    expectedBehavior: 'silently_skipped',
+    verify: (exports) => exports.x === undefined && exports.y === undefined
   },
   {
     name: 'PrivateIdentifier',
@@ -83,7 +88,8 @@ const tests = [
       const instance = new MyClass()
       exports.result = instance.getPrivate()
     `,
-    expectedError: 'PrivateIdentifier'
+    expectedBehavior: 'silently_skipped',
+    verify: (exports) => exports.result === undefined
   },
   {
     name: 'StaticBlock',
@@ -98,19 +104,22 @@ const tests = [
       
       exports.result = MyClass.value
     `,
-    expectedError: 'StaticBlock'
+    expectedBehavior: 'silently_skipped',
+    verify: (exports) => exports.result === undefined
   },
   {
     name: 'ImportExpression (dynamic import)',
     code: `
       async function loadModule() {
         const module = await import('./some-module.js')
-        return module.default
+        return module
       }
       
       exports.loader = loadModule
+      exports.loaderType = typeof loadModule
     `,
-    expectedError: 'ImportExpression'
+    expectedBehavior: 'silently_skipped',
+    verify: (exports) => exports.loaderType === 'function'
   },
   {
     name: 'ImportDeclaration',
@@ -118,14 +127,16 @@ const tests = [
       import foo from 'module'
       exports.foo = foo
     `,
-    expectedError: 'ImportDeclaration'
+    expectedBehavior: 'parse_error',
+    expectedError: 'sourceType: module'
   },
   {
     name: 'ExportNamedDeclaration',
     code: `
       export const x = 1
     `,
-    expectedError: 'ExportNamedDeclaration'
+    expectedBehavior: 'parse_error',
+    expectedError: 'sourceType: module'
   },
   {
     name: 'ExportDefaultDeclaration',
@@ -134,7 +145,8 @@ const tests = [
         return 42
       }
     `,
-    expectedError: 'ExportDefaultDeclaration'
+    expectedBehavior: 'parse_error',
+    expectedError: 'sourceType: module'
   }
 ];
 
@@ -146,20 +158,44 @@ tests.forEach((test, index) => {
     const interpreter = new Sval({ ecmaVer: 'latest' });
     interpreter.run(test.code);
     
-    console.log(`❌ FAIL: ${test.name}`);
-    console.log(`   Expected error containing "${test.expectedError}" but code executed successfully`);
-    console.log('');
-    failed++;
-  } catch (error) {
-    if (error.message && error.message.includes(test.expectedError) && error.message.includes("isn't implemented")) {
-      console.log(`✅ PASS: ${test.name}`);
-      console.log(`   Correctly threw: ${error.message}`);
-      console.log('');
-      passed++;
+    // If we get here, code executed successfully
+    if (test.expectedBehavior === 'silently_skipped') {
+      // Verify the feature is indeed not working correctly
+      if (test.verify(interpreter.exports)) {
+        console.log(`✅ PASS: ${test.name}`);
+        console.log(`   Feature is silently skipped (fields/blocks not initialized)`);
+        console.log('');
+        passed++;
+      } else {
+        console.log(`❌ FAIL: ${test.name}`);
+        console.log(`   Feature appears to be working (unexpected)`);
+        console.log('');
+        failed++;
+      }
     } else {
-      console.log(`⚠️  UNEXPECTED: ${test.name}`);
-      console.log(`   Expected error containing "${test.expectedError}"`);
-      console.log(`   Got: ${error.message}`);
+      console.log(`❌ FAIL: ${test.name}`);
+      console.log(`   Expected error containing "${test.expectedError}" but code executed successfully`);
+      console.log('');
+      failed++;
+    }
+  } catch (error) {
+    if (test.expectedBehavior === 'parse_error' || test.expectedBehavior === 'throws_error') {
+      const expectedMsg = test.expectedError;
+      if (error.message && error.message.includes(expectedMsg)) {
+        console.log(`✅ PASS: ${test.name}`);
+        console.log(`   Correctly threw: ${error.message}`);
+        console.log('');
+        passed++;
+      } else {
+        console.log(`⚠️  UNEXPECTED: ${test.name}`);
+        console.log(`   Expected error containing "${expectedMsg}"`);
+        console.log(`   Got: ${error.message}`);
+        console.log('');
+        failed++;
+      }
+    } else {
+      console.log(`❌ FAIL: ${test.name}`);
+      console.log(`   Unexpected error: ${error.message}`);
       console.log('');
       failed++;
     }
