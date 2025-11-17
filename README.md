@@ -6,7 +6,7 @@
 
 A JavaScript interpreter writen in JavaScript, based on parser [Acorn](https://github.com/acornjs/acorn).
 
-- **Running on ES5, supporting ES5~10 full features**
+- **Running on ES5, supporting ES5~latest (ES2025) full features**
 - **Both invasived and sandbox modes available**
 
 It's useful to evaluate the code of higher ECMAScript editions, or for the environment with disabled `eval`, `setTimeout` and `new Function`.
@@ -38,8 +38,8 @@ import Sval from 'sval'
 
 // Sval options
 const options = {
-  // ECMA Version of the code (5 | 6 | 7 | 8 | 9 | 10 | 2015 | 2016 | 2017 | 2018 | 2019)
-  ecmaVer: 9,
+  // ECMA Version of the code (5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 'latest')
+  ecmaVer: 'latest',
   // Whether the code runs in a sandbox
   sandBox: true,
 }
@@ -68,7 +68,7 @@ console.log(interpreter.exports.mod) // Get 'AllKindsOfStuffs'
 
 Sval constructor has options with two fields, **ecmaVer** and **sandBox**.
 
-- **ecmaVer** is the ECMAScript edition of the code. Currently, 5, 6(2015), 7(2016), 8(2017), 9(2018) and 10(2019) are supported, and the default edition is 9.
+- **ecmaVer** is the ECMAScript edition of the code. Currently, 5, 6(2015), 7(2016), 8(2017), 9(2018), 10(2019), 11(2020), 12(2021), 13(2022), 14(2023), 15(2024), 16(2025) and 'latest' are supported. The default edition is 'latest', which supports the latest ECMAScript features that Acorn can parse.
 
 - **sandBox** is true for sandbox mode or false for invasived mode. Sandbox mode will run code in an isolated sandbox and won't pollute your global scope. Invasived mode allows you run code in the same global scope of your current environment. The default setting is true.
 
