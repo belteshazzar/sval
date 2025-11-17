@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sval REPL - Modern JavaScript Interpreter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #ecf0f1;
+            font-size: 14px;
+        }
+        
+        .version-selector {
+            background: #34495e;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .version-selector label {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .version-selector select {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .feature-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .feature-tag {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .editor-section {
+            padding: 30px;
+        }
+        
+        .editor-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .code-input {
+            min-height: 150px;
+        }
+        
+        .output {
+            min-height: 100px;
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .run-btn {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+        
+        .run-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .clear-btn {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .clear-btn:hover {
+            background: #7f8c8d;
+        }
+        
+        .examples {
+            background: #ecf0f1;
+            padding: 20px 30px;
+            border-top: 1px solid #bdc3c7;
+        }
+        
+        .examples h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .example-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .example-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .status {
+            padding: 15px 30px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Sval REPL - Modern JavaScript Interpreter</h1>
+            <p>Execute JavaScript code with ES2020-ES2025 features in a safe sandbox environment</p>
+        </div>
+        
+        <div class="version-selector">
+            <label for="ecmaVersion">ECMAScript Version:</label>
+            <select id="ecmaVersion">
+                <option value="latest">Latest (ES2025)</option>
+                <option value="2025">ES2025</option>
+                <option value="2024">ES2024</option>
+                <option value="2023">ES2023</option>
+                <option value="2022">ES2022</option>
+                <option value="2021">ES2021</option>
+                <option value="2020">ES2020</option>
+                <option value="2019">ES2019</option>
+                <option value="2018">ES2018</option>
+                <option value="2017">ES2017</option>
+                <option value="2016">ES2016</option>
+                <option value="2015">ES2015</option>
+            </select>
+            <div class="feature-tags">
+                <span class="feature-tag">Nullish Coalescing</span>
+                <span class="feature-tag">Optional Chaining</span>
+                <span class="feature-tag">BigInt</span>
+                <span class="feature-tag">Logical Assignment</span>
+            </div>
+        </div>
+        
+        <div class="editor-section">
+            <div class="editor-label">JavaScript Code</div>
+            <textarea class="code-input" id="codeInput" placeholder="Enter your JavaScript code here...">// Try modern JavaScript features!
+const user = {
+  name: 'Alice',
+  profile: {
+    age: null
+  }
+}
+
+// Optional chaining & nullish coalescing
+const displayAge = user?.profile?.age ?? 'Unknown'
+const displayName = user?.name ?? 'Anonymous'
+
+// Logical assignment operators
+let score = null
+score ??= 100
+
+// Numeric separators
+const million = 1_000_000
+
+// Export results
+exports.displayAge = displayAge
+exports.displayName = displayName
+exports.score = score
+exports.million = million</textarea>
+            
+            <div class="button-group">
+                <button class="run-btn" onclick="runCode()">▶ Run Code</button>
+                <button class="clear-btn" onclick="clearCode()">Clear</button>
+            </div>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="editor-section">
+            <div class="editor-label">Output</div>
+            <textarea class="output" id="output" readonly placeholder="Results will appear here..."></textarea>
+        </div>
+        
+        <div class="examples">
+            <h3>📚 Example Code Snippets</h3>
+            <div class="example-buttons">
+                <button class="example-btn" onclick="loadExample('nullish')">Nullish Coalescing</button>
+                <button class="example-btn" onclick="loadExample('optional')">Optional Chaining</button>
+                <button class="example-btn" onclick="loadExample('logical')">Logical Assignment</button>
+                <button class="example-btn" onclick="loadExample('bigint')">BigInt</button>
+                <button class="example-btn" onclick="loadExample('complex')">Complex Example</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Sval from the built file -->
+    <script src="dist/sval.min.js"></script>
+    
+    <script>
+        const examples = {
+            nullish: `// Nullish Coalescing (??)
+const a = null ?? 'default'
+const b = undefined ?? 'fallback'
+const c = 0 ?? 'not zero'  // c will be 0
+const d = '' ?? 'not empty'  // d will be ''
+
+exports.a = a
+exports.b = b
+exports.c = c
+exports.d = d`,
+            
+            optional: `// Optional Chaining (?.)
+const user = {
+  address: {
+    street: '123 Main St'
+  }
+}
+
+const street = user?.address?.street
+const city = user?.address?.city  // undefined, no error
+const missing = user?.profile?.name  // undefined, no error
+
+// With function calls
+const result = user?.getName?.()  // undefined, no error
+
+exports.street = street
+exports.city = city
+exports.missing = missing`,
+            
+            logical: `// Logical Assignment Operators
+let a = 0
+a ||= 10  // a becomes 10 (0 is falsy)
+
+let b = 'hello'
+b &&= 'world'  // b becomes 'world' (hello is truthy)
+
+let c = null
+c ??= 'default'  // c becomes 'default' (null is nullish)
+
+let d = 5
+d ??= 100  // d stays 5 (5 is not nullish)
+
+exports.a = a
+exports.b = b
+exports.c = c
+exports.d = d`,
+            
+            bigint: `// BigInt for large numbers
+const big1 = 9007199254740991n
+const big2 = BigInt('9007199254740992')
+const sum = big1 + 1n
+
+exports.big1 = big1
+exports.big2 = big2
+exports.sum = sum
+exports.type = typeof big1`,
+            
+            complex: `// Complex real-world example
+const apiResponse = {
+  data: {
+    users: [
+      { name: 'Alice', age: 30 },
+      { name: 'Bob', age: null }
+    ]
+  }
+}
+
+// Process data with modern features
+const users = apiResponse?.data?.users ?? []
+const processedUsers = users.map(user => ({
+  name: user?.name ?? 'Unknown',
+  age: user?.age ?? 0,
+  ageGroup: (user?.age ?? 0) >= 18 ? 'Adult' : 'Minor'
+}))
+
+// Configuration with logical assignment
+let config = null
+config ??= { theme: 'dark', fontSize: 14 }
+
+// Numeric separators for readability
+const largeNumber = 1_234_567_890
+
+exports.processedUsers = processedUsers
+exports.config = config
+exports.largeNumber = largeNumber`
+        }
+        
+        function loadExample(exampleName) {
+            const codeInput = document.getElementById('codeInput')
+            codeInput.value = examples[exampleName]
+        }
+        
+        function runCode() {
+            const code = document.getElementById('codeInput').value
+            const output = document.getElementById('output')
+            const status = document.getElementById('status')
+            const ecmaVersion = document.getElementById('ecmaVersion').value
+            
+            try {
+                // Create Sval interpreter with selected version
+                const interpreter = new Sval({
+                    ecmaVer: ecmaVersion === 'latest' ? 'latest' : parseInt(ecmaVersion),
+                    sandBox: true
+                })
+                
+                // Run the code
+                interpreter.run(code)
+                
+                // Display exports
+                output.value = JSON.stringify(interpreter.exports, null, 2)
+                
+                // Show success status
+                status.className = 'status success'
+                status.textContent = '✓ Code executed successfully!'
+                
+                // Hide status after 3 seconds
+                setTimeout(() => {
+                    status.className = 'status'
+                }, 3000)
+                
+            } catch (error) {
+                output.value = `Error: ${error.message}\n\nStack:\n${error.stack}`
+                
+                // Show error status
+                status.className = 'status error'
+                status.textContent = `✗ Error: ${error.message}`
+            }
+        }
+        
+        function clearCode() {
+            document.getElementById('codeInput').value = ''
+            document.getElementById('output').value = ''
+            document.getElementById('status').className = 'status'
+        }
+        
+        // Allow Ctrl+Enter to run code
+        document.getElementById('codeInput').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault()
+                runCode()
+            }
+        })
+    </script>
+</body>
+</html>
