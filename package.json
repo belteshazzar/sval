@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm test && rollup -c && npm run post",
     "start": "node scripts && rollup -c && npm run post",
-    "post": "mv types/src/index.d.ts types && rm -rf types/src",
+    "post": "tsc --emitDeclarationOnly",
     "test": "node scripts && umi-test --coverage",
     "cov": "cat ./coverage/lcov.info | coveralls"
   },
@@ -31,18 +31,19 @@
   },
   "homepage": "https://github.com/Siubaak/sval#readme",
   "dependencies": {
-    "acorn": "^6.4.1"
+    "acorn": "^8.15.0",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@types/acorn": "^4.0.5",
-    "@types/estree": "0.0.39",
-    "@types/jest": "^24.9.1",
-    "rollup": "^1.32.1",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^4.2.4",
-    "rollup-plugin-typescript2": "^0.21.2",
-    "rollup-plugin-uglify": "^6.0.4",
-    "typescript": "^3.8.3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/acorn": "^4.0.6",
+    "@types/estree": "^1.0.6",
+    "@types/jest": "^29.5.14",
+    "rollup": "^4.28.1",
+    "typescript": "^5.7.2",
     "umi-test": "^1.9.6"
   }
 }

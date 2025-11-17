@@ -37,7 +37,7 @@ export function* ObjectExpression(node: estree.ObjectExpression, scope: Scope) {
     const property = node.properties[i]
     if (property.type as any === 'SpreadElement') {
       assign(object, yield* SpreadElement(property as any, scope))
-    } else {
+    } else if (property.type === 'Property') {
       let key: string
       const propKey = property.key
       if (property.computed) {
@@ -209,6 +209,30 @@ export function* AssignmentExpression(node: estree.AssignmentExpression, scope: 
     case '|=': variable.set(variable.get() | value); return variable.get()
     case '^=': variable.set(variable.get() ^ value); return variable.get()
     case '&=': variable.set(variable.get() & value); return variable.get()
+    case '||=': {
+      // Logical OR assignment (ES2021)
+      const currentValue = variable.get()
+      if (!currentValue) {
+        variable.set(value)
+      }
+      return variable.get()
+    }
+    case '&&=': {
+      // Logical AND assignment (ES2021)
+      const currentValue = variable.get()
+      if (currentValue) {
+        variable.set(value)
+      }
+      return variable.get()
+    }
+    case '??=': {
+      // Nullish coalescing assignment (ES2021)
+      const currentValue = variable.get()
+      if (currentValue === null || currentValue === undefined) {
+        variable.set(value)
+      }
+      return variable.get()
+    }
     /* istanbul ignore next */
     default: throw new SyntaxError(`Unexpected token ${node.operator}`)
   }
@@ -220,6 +244,11 @@ export function* LogicalExpression(node: estree.LogicalExpression, scope: Scope)
       return (yield* evaluate(node.left, scope)) || (yield* evaluate(node.right, scope))
     case '&&':
       return (yield* evaluate(node.left, scope)) && (yield* evaluate(node.right, scope))
+    case '??': {
+      // Nullish coalescing operator (ES2020)
+      const leftValue = yield* evaluate(node.left, scope)
+      return (leftValue !== null && leftValue !== undefined) ? leftValue : (yield* evaluate(node.right, scope))
+    }
     default:
       /* istanbul ignore next */
       throw new SyntaxError(`Unexpected token ${node.operator}`)
@@ -243,6 +272,11 @@ export function* MemberExpression(
     object = yield* Super(node.object, scope, { getProto: true })
   } else {
     object = yield* evaluate(node.object, scope)
+  }
+
+  // Handle optional chaining (ES2020)
+  if ((node as any).optional && (object === null || object === undefined)) {
+    return undefined
   }
 
   if (getObj) return object
@@ -291,6 +325,11 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
   if (node.callee.type === 'MemberExpression') {
     object = yield* MemberExpression(node.callee, scope, { getObj: true })
   
+    // Handle optional chaining (ES2020)
+    if ((node as any).optional && (object === null || object === undefined)) {
+      return undefined
+    }
+
     // get key
     let key: string
     if (node.callee.computed) {
@@ -315,6 +354,12 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
   } else {
     object = scope.find('this').get()
     func = yield* evaluate(node.callee, scope)
+    
+    // Handle optional chaining (ES2020)
+    if ((node as any).optional && (func === null || func === undefined)) {
+      return undefined
+    }
+    
     if (typeof func !== 'function' || node.callee.type !== 'Super' && func[CLSCTOR]) {
       let name: string
       if (node.callee.type === 'Identifier') {
@@ -484,6 +529,12 @@ export function* Super(
 
 export function* SpreadElement(node: estree.SpreadElement, scope: Scope) {
   return yield* evaluate(node.argument, scope)
+}
+
+export function* ChainExpression(node: any, scope: Scope) {
+  // Optional chaining support (ES2020)
+  // ChainExpression wraps the actual expression
+  return yield* evaluate(node.expression, scope)
 }
 
 /*<remove>*/

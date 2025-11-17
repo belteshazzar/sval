@@ -25,7 +25,9 @@ export function* VariableDeclaration(
   options: VariableDeclarationOptions = {},
 ) {
   for (let i = 0; i < node.declarations.length; i++) {
-    yield* VariableDeclarator(node.declarations[i], scope, assign({ kind: node.kind }, options))
+    // Cast 'using' and 'await using' to 'const' for now (ES2025 feature not fully implemented)
+    const kind = (node.kind === 'using' || node.kind === 'await using') ? 'const' : node.kind
+    yield* VariableDeclarator(node.declarations[i], scope, assign({ kind }, options))
   }
 }
 
@@ -90,7 +92,16 @@ export function* ClassBody(node: estree.ClassBody, scope: Scope, options: ClassO
   const { klass, superClass } = options
 
   for (let i = 0; i < node.body.length; i++) {
-    yield* MethodDefinition(node.body[i], scope, { klass, superClass })
+    const member = node.body[i]
+    // Handle MethodDefinition, PropertyDefinition, and StaticBlock
+    if (member.type === 'MethodDefinition') {
+      yield* MethodDefinition(member, scope, { klass, superClass })
+    } else if (member.type === 'PropertyDefinition') {
+      // ES2022 Class fields - skip for now as they need special handling
+      // They should be handled in the class constructor
+    } else if (member.type === 'StaticBlock') {
+      // ES2022 Static initialization blocks - skip for now
+    }
   }
 }
 
