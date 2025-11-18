@@ -44,6 +44,11 @@ const options = {
   sandBox: true,
   // Source type of the code ('script' | 'module')
   sourceType: 'script',
+  // Custom fetch function for loading modules (optional, for module imports)
+  fetch: async (url) => {
+    // Return module source code as string
+    // Default uses global fetch if available
+  }
 }
 
 // Create a interpreter
@@ -74,7 +79,9 @@ Sval constructor has options with three fields, **ecmaVer**, **sandBox**, and **
 
 - **sandBox** is true for sandbox mode or false for invasived mode. Sandbox mode will run code in an isolated sandbox and won't pollute your global scope. Invasived mode allows you run code in the same global scope of your current environment. The default setting is true.
 
-- **sourceType** is 'script' or 'module'. This determines how the code is parsed. Use 'module' to parse ES6 module syntax (import/export statements) or top-level await. The default is 'script'. Note: While 'module' allows parsing module syntax, execution of import/export statements is not yet implemented.
+- **sourceType** is 'script' or 'module'. This determines how the code is parsed and executed. Use 'module' to enable ES6 module syntax (import/export statements) and top-level await. The default is 'script'.
+
+- **fetch** is an optional custom function for loading modules when using import statements. It receives a URL string and should return a Promise that resolves to the module source code as a string. If not provided, Sval will use the global `fetch` function (available in browsers and modern Node.js). This is only used when `sourceType` is 'module'.
 
 Sval instance has three methods, **import**, **parse** and **run**.
 
@@ -82,9 +89,92 @@ Sval instance has three methods, **import**, **parse** and **run**.
 
 - **parse** is to parse the code with internal [Acorn](https://github.com/acornjs/acorn) or custom parser, to get the corresponding AST, like `parse(code: string)` or `parse(code: string, parser: (code: string, options: SvalOptions) => estree.Node`
 
-- **run** is to evaluate the code inputed, expecting a string as argument like `run(code: string)`, or an AST followed ESTree Spec as argument like `run(ast: estree.Node)`. If you want to export something, there is a internal global `exports` object for mounting what you want to export.
+- **run** is to evaluate the code inputed, expecting a string as argument like `run(code: string)`, or an AST followed ESTree Spec as argument like `run(ast: estree.Node)`. If you want to export something, there is a internal global `exports` object for mounting what you want to export. For synchronous execution.
+
+- **runAsync** is the async version of **run**, used when code contains await expressions or import statements. Returns a Promise that resolves when execution completes.
 
 Sval instance also has a field, **exports**, to get what you exported from runs, merged if several runs have exports.
+
+## ES6 Modules
+
+Sval supports ES6 module syntax when `sourceType: 'module'` is set. This includes:
+
+### Import Statements
+
+```js
+import Sval from 'sval'
+
+const interpreter = new Sval({ sourceType: 'module' })
+
+await interpreter.runAsync(`
+  // Import from CDN
+  import isEven from 'https://cdn.jsdelivr.net/npm/is-even@1.0.0/+esm'
+  
+  // Named imports
+  import { x, y } from 'module-url'
+  
+  // Namespace imports
+  import * as mod from 'module-url'
+  
+  // Mixed imports
+  import defaultExport, { named1, named2 } from 'module-url'
+  
+  // Dynamic imports
+  const module = await import('module-url')
+  
+  exports.result = isEven(2) // true
+`)
+```
+
+### Export Statements
+
+```js
+// Named exports
+export const x = 10
+export function foo() {}
+export class Bar {}
+
+// Default export
+export default function() {}
+export default 42
+
+// Re-exports
+export { x } from 'module-url'
+export * from 'module-url'
+export * as namespace from 'module-url'
+```
+
+### Custom Module Loading
+
+You can provide a custom fetch function to control how modules are loaded:
+
+```js
+const interpreter = new Sval({
+  sourceType: 'module',
+  fetch: async (url) => {
+    if (url.startsWith('custom://')) {
+      // Load from custom source
+      return await loadFromCustomSource(url)
+    }
+    // Fall back to standard fetch
+    return await fetch(url).then(r => r.text())
+  }
+})
+```
+
+### Module Caching
+
+Modules are automatically cached - each unique URL is only fetched and evaluated once per Sval instance.
+
+### Nested Imports
+
+Modules can import other modules, and relative paths are resolved correctly:
+
+```js
+// CDN modules can import dependencies with relative or absolute paths
+// is-even imports is-odd internally, which imports is-number, etc.
+import isEven from 'https://cdn.jsdelivr.net/npm/is-even@1.0.0/+esm'
+```
 
 ## Note
 
