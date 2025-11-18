@@ -42,6 +42,8 @@ const options = {
   ecmaVer: 'latest',
   // Whether the code runs in a sandbox
   sandBox: true,
+  // Source type of the code ('script' | 'module')
+  sourceType: 'script',
 }
 
 // Create a interpreter
@@ -66,11 +68,13 @@ console.log(interpreter.exports.msg) // Get 'Hello World'
 console.log(interpreter.exports.mod) // Get 'AllKindsOfStuffs'
 ```
 
-Sval constructor has options with two fields, **ecmaVer** and **sandBox**.
+Sval constructor has options with three fields, **ecmaVer**, **sandBox**, and **sourceType**.
 
 - **ecmaVer** is the ECMAScript edition of the code. Currently, 5, 6(2015), 7(2016), 8(2017), 9(2018), 10(2019), 11(2020), 12(2021), 13(2022), 14(2023), 15(2024), 16(2025) and 'latest' are supported. The default edition is 'latest', which supports the latest ECMAScript features that Acorn can parse.
 
 - **sandBox** is true for sandbox mode or false for invasived mode. Sandbox mode will run code in an isolated sandbox and won't pollute your global scope. Invasived mode allows you run code in the same global scope of your current environment. The default setting is true.
+
+- **sourceType** is 'script' or 'module'. This determines how the code is parsed. Use 'module' to parse ES6 module syntax (import/export statements) or top-level await. The default is 'script'. Note: While 'module' allows parsing module syntax, execution of import/export statements is not yet implemented.
 
 Sval instance has three methods, **import**, **parse** and **run**.
 

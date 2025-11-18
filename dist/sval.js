@@ -2783,12 +2783,12 @@ function Ze(e, t, r) {
 const be = class be {
   constructor(t = {}) {
     this.options = {}, this.scope = new S(null, !0), this.exports = {};
-    let { ecmaVer: r = "latest", sandBox: n = !0 } = t;
+    let { ecmaVer: r = "latest", sandBox: n = !0, sourceType: i = "script" } = t;
     if (r !== "latest" && (r = r - (r < 2015 ? 0 : 2009), [3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].indexOf(r) === -1))
       throw new Error("unsupported ecmaVer");
-    if (this.options.ecmaVersion = r, n) {
-      const i = lt();
-      this.scope.let("window", i), this.scope.let("this", i);
+    if (this.options.ecmaVersion = r, this.options.sourceType = i, n) {
+      const a = lt();
+      this.scope.let("window", a), this.scope.let("this", a);
     } else
       this.scope.let("window", h), this.scope.let("this", h);
     this.scope.const("exports", this.exports = {});
