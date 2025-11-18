@@ -100,7 +100,7 @@ export function* ClassBody(node: estree.ClassBody, scope: Scope, options: ClassO
       // ES2022 Class fields - handled in createClass, skip here
       continue
     } else if (member.type === 'StaticBlock') {
-      // ES2022 Static initialization blocks - not yet implemented
+      // ES2022 Static initialization blocks - handled in createClass, skip here
       continue
     }
   }

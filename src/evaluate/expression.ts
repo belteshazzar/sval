@@ -1,7 +1,7 @@
 import { define, freeze, getGetter, getSetter, createSymbol, assign, getDptor, WINDOW } from '../share/util'
 import { SUPER, NOCTOR, AWAIT, CLSCTOR, NEWTARGET, SUPERCALL } from '../share/const'
 import { pattern, createFunc, createClass } from './helper'
-import { Variable, Prop } from '../scope/variable'
+import { Variable, Prop, MapEntry } from '../scope/variable'
 import { Identifier } from './identifier'
 import { Literal } from './literal'
 import * as estree from 'estree'
@@ -301,8 +301,8 @@ export function* MemberExpression(
       }
       
       if (getVar) {
-        // Return a special Prop that accesses private static field via Map
-        return new Prop(privateStaticFields, key)
+        // Return a MapEntry that accesses private static field via Map.get/set
+        return new MapEntry(privateStaticFields, key)
       } else {
         return privateStaticFields.get(key)
       }

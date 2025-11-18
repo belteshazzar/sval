@@ -105,8 +105,8 @@ const tests = [
       
       exports.result = MyClass.value
     `,
-    expectedBehavior: 'silently_skipped',
-    verify: (exports) => exports.result === undefined
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 42
   },
   {
     name: 'ImportExpression (dynamic import)',

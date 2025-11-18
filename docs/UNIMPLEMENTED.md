@@ -10,7 +10,7 @@ This document provides a quick overview of unimplemented JavaScript language fea
 | LabeledStatement | ❌ Not Implemented | Throws error | MEDIUM | ES3 |
 | PropertyDefinition | ✅ Implemented | Fields initialized | - | ES2022 |
 | PrivateIdentifier | ✅ Implemented | Private fields/methods work | - | ES2022 |
-| StaticBlock | ⚠️ Silently Skipped | Not executed | MEDIUM | ES2022 |
+| StaticBlock | ✅ Implemented | Static blocks executed | - | ES2022 |
 | ImportExpression | ⚠️ Silently Skipped | Returns undefined | MEDIUM | ES2020 |
 | ES6 Modules (import/export) | ❌ Parse Error | Requires sourceType | LOW | ES2015 |
 
@@ -60,18 +60,19 @@ console.log(obj.getPrivate())  // 42
 // obj.#private  // Error: Cannot read private member
 ```
 
-### ⚠️ Silently Skipped
-These features parse successfully but are not executed, leading to unexpected behavior:
-
-**StaticBlock**
+**StaticBlock (Static Initialization Blocks)**
 ```javascript
 class MyClass {
+  static value
   static {
-    this.value = 42  // Not executed
+    this.value = 42  // Executed during class creation
   }
 }
-console.log(MyClass.value)  // undefined (should be 42)
+console.log(MyClass.value)  // 42
 ```
+
+### ⚠️ Silently Skipped
+These features parse successfully but are not executed, leading to unexpected behavior:
 
 **ImportExpression**
 ```javascript
@@ -109,7 +110,7 @@ Expected output:
 1. **Phase 1: ES2022 Class Features** (HIGH priority)
    - ✅ ~~PropertyDefinition~~ (COMPLETED)
    - ✅ ~~PrivateIdentifier~~ (COMPLETED)
-   - StaticBlock
+   - ✅ ~~StaticBlock~~ (COMPLETED)
 
 2. **Phase 2: Control Flow** (MEDIUM priority)
    - LabeledStatement

@@ -246,8 +246,11 @@ export function* createClass(
   const privateInstanceFields = new WeakMap()
   const privateStaticFields = new Map()
 
-  // First, find constructor and collect field definitions
+  // Collect static blocks (just scan the body, don't execute yet)
   const methodBody = node.body.body
+  const staticBlocks: Array<any> = []
+  
+  // Find constructor and collect field definitions
   let originalCtor: any = null
   const instanceFieldDefs: Array<{key: any, valueNode: any, isPrivate: boolean}> = []
   const staticFields: Array<{key: any, value: any, isPrivate: boolean}> = []
@@ -277,6 +280,9 @@ export function* createClass(
         // Instance fields: store the expression node to evaluate per-instance
         instanceFieldDefs.push({ key, valueNode: method.value, isPrivate })
       }
+    } else if (method.type === 'StaticBlock') {
+      // Collect static blocks for later execution
+      staticBlocks.push(method)
     }
   }
 
@@ -400,6 +406,17 @@ export function* createClass(
     } else {
       // Public static field stored directly on class
       klass[field.key] = field.value
+    }
+  }
+
+  // Execute static initialization blocks
+  for (let i = 0; i < staticBlocks.length; i++) {
+    const block = staticBlocks[i]
+    const staticScope = new Scope(scope, true)
+    staticScope.const('this', klass)
+    // Static blocks have access to private static fields
+    for (let j = 0; j < block.body.length; j++) {
+      yield* evaluate(block.body[j], staticScope)
     }
   }
 

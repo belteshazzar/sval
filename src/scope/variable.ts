@@ -49,3 +49,26 @@ export class Prop implements Variable {
     return delete this.object[this.property]
   }
 }
+
+export class MapEntry implements Variable {
+  private readonly map: Map<any, any>
+  private readonly key: any
+
+  constructor(map: Map<any, any>, key: any) {
+    this.map = map
+    this.key = key
+  }
+
+  get() {
+    return this.map.get(this.key)
+  }
+
+  set(value: any) {
+    this.map.set(this.key, value)
+    return true
+  }
+
+  del() {
+    return this.map.delete(this.key)
+  }
+}
