@@ -290,8 +290,11 @@ exports.million = million</textarea>
         </div>
     </div>
     
-    <!-- Load Sval from the built file -->
-    <script src="dist/sval.min.js"></script>
+    <!-- Load Sval from source during development, built file in production -->
+    <script type="module">
+        import Sval from './src/index.ts'
+        window.Sval = Sval
+    </script>
     
     <script>
         const examples = {

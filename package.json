@@ -4,13 +4,20 @@
   "description": "A javascript interpreter written in javascript",
   "main": "dist/sval.js",
   "module": "dist/sval.js",
-  "unpkg": "dist/sval.min.js",
   "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/sval.js"
+    }
+  },
   "scripts": {
-    "build": "npm test && rollup -c && npm run post",
-    "start": "node scripts && rollup -c && npm run post",
-    "post": "tsc --emitDeclarationOnly",
-    "test": "vitest",
+    "dev": "vite",
+    "build": "node scripts && vite build",
+    "start": "node scripts && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "cov": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -35,15 +42,13 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@types/acorn": "^4.0.6",
     "@types/estree": "^1.0.6",
-    "@types/jest": "^29.5.14",
-    "rollup": "^4.28.1",
+    "@types/node": "^22.10.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "typescript": "^5.7.2",
-    "umi-test": "^1.9.6"
+    "vite": "^6.0.1",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4"
   }
 }

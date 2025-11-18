@@ -2,13 +2,17 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "es2021"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "declarationDir": "types",
-    "emitDeclarationOnly": false
+    "emitDeclarationOnly": false,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": [
     "src/**/*"
