@@ -32,3 +32,9 @@ export function* Identifier(node: estree.Identifier, scope: Scope, options: Iden
   }
 }
 
+export function* PrivateIdentifier(node: any, scope: Scope) {
+  // PrivateIdentifier nodes represent private field names like #fieldName
+  // Return a unique symbol to identify this private field
+  return Symbol.for(`private:${node.name}`)
+}
+

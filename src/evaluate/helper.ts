@@ -242,28 +242,40 @@ export function* createClass(
 ) {
   const superClass = yield* evaluate(node.superClass, scope)
 
+  // WeakMaps for private fields (proper encapsulation)
+  const privateInstanceFields = new WeakMap()
+  const privateStaticFields = new Map()
+
   // First, find constructor and collect field definitions
   const methodBody = node.body.body
   let originalCtor: any = null
-  const instanceFieldDefs: Array<{key: any, valueNode: any}> = []
-  const staticFields: Array<{key: any, value: any}> = []
+  const instanceFieldDefs: Array<{key: any, valueNode: any, isPrivate: boolean}> = []
+  const staticFields: Array<{key: any, value: any, isPrivate: boolean}> = []
   
   for (let i = 0; i < methodBody.length; i++) {
     const method = methodBody[i]
     if (method.type === 'MethodDefinition' && method.kind === 'constructor') {
       originalCtor = yield* createFunc(method.value, scope, { superClass, isCtor: true })
     } else if (method.type === 'PropertyDefinition') {
-      const key = method.computed 
-        ? yield* evaluate(method.key, scope)
-        : method.key.type === 'Identifier' ? method.key.name : yield* evaluate(method.key, scope)
+      const isPrivate = method.key.type === 'PrivateIdentifier'
+      let key: any
+      
+      if (isPrivate) {
+        // Private field: use symbol as key
+        key = Symbol.for(`private:${method.key.name}`)
+      } else if (method.computed) {
+        key = yield* evaluate(method.key, scope)
+      } else {
+        key = method.key.type === 'Identifier' ? method.key.name : yield* evaluate(method.key, scope)
+      }
       
       if (method.static) {
         // Static fields are evaluated once during class creation
         const value = method.value ? yield* evaluate(method.value, scope) : undefined
-        staticFields.push({ key, value })
+        staticFields.push({ key, value, isPrivate })
       } else {
         // Instance fields: store the expression node to evaluate per-instance
-        instanceFieldDefs.push({ key, valueNode: method.value })
+        instanceFieldDefs.push({ key, valueNode: method.value, isPrivate })
       }
     }
   }
@@ -274,13 +286,45 @@ export function* createClass(
   if (originalCtor) {
     // Wrap constructor to initialize fields first
     klass = function (this: any, ...args: any[]) {
+      // Create private data storage immediately so constructor can access private members
+      const privateData: any = {}
+      
+      // Add private instance methods to private data
+      const privateMethods = klass.__privateInstanceMethods
+      if (privateMethods) {
+        privateMethods.forEach((method: any, key: symbol) => {
+          privateData[key] = method
+        })
+      }
+      
+      // Initialize private field slots (set to undefined initially)
+      for (let i = 0; i < instanceFieldDefs.length; i++) {
+        const field = instanceFieldDefs[i]
+        if (field.isPrivate) {
+          privateData[field.key] = undefined
+        }
+      }
+      
+      // Store private data in WeakMap BEFORE running initializers or constructor
+      if (Object.keys(privateData).length > 0 || Object.getOwnPropertySymbols(privateData).length > 0) {
+        privateInstanceFields.set(this, privateData)
+      }
+      
       // Initialize instance fields before constructor body
       // Field initializers are evaluated in the context of each new instance
       for (let i = 0; i < instanceFieldDefs.length; i++) {
         const field = instanceFieldDefs[i]
         const subScope = new Scope(scope, false)
         subScope.const('this', this)
-        this[field.key] = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        const value = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        
+        if (field.isPrivate) {
+          // Update private field in WeakMap
+          privateData[field.key] = value
+        } else {
+          // Public field stored directly on instance
+          this[field.key] = value
+        }
       }
       
       // Call original constructor
@@ -289,12 +333,44 @@ export function* createClass(
   } else {
     // No constructor - create default one
     klass = function (this: any) {
+      // Create private data storage immediately
+      const privateData: any = {}
+      
+      // Add private instance methods to private data
+      const privateMethods = klass.__privateInstanceMethods
+      if (privateMethods) {
+        privateMethods.forEach((method: any, key: symbol) => {
+          privateData[key] = method
+        })
+      }
+      
+      // Initialize private field slots
+      for (let i = 0; i < instanceFieldDefs.length; i++) {
+        const field = instanceFieldDefs[i]
+        if (field.isPrivate) {
+          privateData[field.key] = undefined
+        }
+      }
+      
+      // Store private data in WeakMap BEFORE running initializers
+      if (Object.keys(privateData).length > 0 || Object.getOwnPropertySymbols(privateData).length > 0) {
+        privateInstanceFields.set(this, privateData)
+      }
+      
       // Initialize instance fields
       for (let i = 0; i < instanceFieldDefs.length; i++) {
         const field = instanceFieldDefs[i]
         const subScope = new Scope(scope, false)
         subScope.const('this', this)
-        this[field.key] = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        const value = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        
+        if (field.isPrivate) {
+          // Update private field in WeakMap
+          privateData[field.key] = value
+        } else {
+          // Public field stored directly on instance
+          this[field.key] = value
+        }
       }
       
       // Call super if exists
@@ -308,13 +384,23 @@ export function* createClass(
     inherits(klass, superClass)
   }
 
+  // Store private field maps on the class for access during member expressions
+  define(klass, '__privateInstanceFields', { value: privateInstanceFields })
+  define(klass, '__privateStaticFields', { value: privateStaticFields })
+
   // Add methods to prototype (ClassBody will skip PropertyDefinition nodes when klass is present)
   yield* ClassBody(node.body, scope, { klass, superClass })
 
   // Initialize static fields on the class
   for (let i = 0; i < staticFields.length; i++) {
     const field = staticFields[i]
-    klass[field.key] = field.value
+    if (field.isPrivate) {
+      // Store static private field in Map
+      privateStaticFields.set(field.key, field.value)
+    } else {
+      // Public static field stored directly on class
+      klass[field.key] = field.value
+    }
   }
 
   define(klass, CLSCTOR, { value: true })

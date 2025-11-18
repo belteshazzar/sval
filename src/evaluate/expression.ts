@@ -281,8 +281,53 @@ export function* MemberExpression(
 
   if (getObj) return object
 
-  let key: string
-  if (node.computed) {
+  // Handle private fields (PrivateIdentifier)
+  const isPrivate = node.property.type === 'PrivateIdentifier'
+  let key: any
+  
+  if (isPrivate) {
+    // Private field access: use symbol key
+    key = Symbol.for(`private:${(node.property as any).name}`)
+    
+    // Determine if accessing instance or static private field
+    const isStaticAccess = typeof object === 'function'
+    
+    if (isStaticAccess) {
+      // Static private field access
+      const privateStaticFields = object.__privateStaticFields
+      
+      if (!privateStaticFields || !privateStaticFields.has(key)) {
+        throw new TypeError(`Cannot read private member #${(node.property as any).name} from an object whose class did not declare it`)
+      }
+      
+      if (getVar) {
+        // Return a special Prop that accesses private static field via Map
+        return new Prop(privateStaticFields, key)
+      } else {
+        return privateStaticFields.get(key)
+      }
+    } else {
+      // Instance private field access
+      const constructor = object.constructor
+      const privateFields = constructor && constructor.__privateInstanceFields
+      
+      if (!privateFields) {
+        throw new TypeError(`Cannot read private member from an object whose class did not declare it`)
+      }
+      
+      const privateData = privateFields.get(object)
+      if (!privateData || !(key in privateData)) {
+        throw new TypeError(`Cannot read private member #${(node.property as any).name} from an object whose class did not declare it`)
+      }
+      
+      if (getVar) {
+        // Return a special Prop that accesses private field via WeakMap
+        return new Prop(privateData, key)
+      } else {
+        return privateData[key]
+      }
+    }
+  } else if (node.computed) {
     key = yield* evaluate(node.property, scope)
   } else {
     key = (node.property as estree.Identifier).name
@@ -331,19 +376,45 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
     }
 
     // get key
-    let key: string
-    if (node.callee.computed) {
+    let key: any
+    const isPrivate = node.callee.property.type === 'PrivateIdentifier'
+    
+    if (isPrivate) {
+      // Private member - use symbol key and access from WeakMap
+      key = Symbol.for(`private:${(node.callee.property as any).name}`)
+      
+      // Determine if accessing instance or static private method
+      const isStaticAccess = typeof object === 'function'
+      
+      if (isStaticAccess) {
+        // Static private method
+        const privateStaticFields = object.__privateStaticFields
+        func = privateStaticFields ? privateStaticFields.get(key) : undefined
+      } else {
+        // Instance private method
+        const constructor = object.constructor
+        const privateFields = constructor && constructor.__privateInstanceFields
+        const privateData = privateFields ? privateFields.get(object) : null
+        func = privateData ? privateData[key] : undefined
+      }
+    } else if (node.callee.computed) {
       key = yield* evaluate(node.callee.property, scope)
+      // right value
+      if (node.callee.object.type === 'Super') {
+        const thisObject = scope.find('this').get()
+        func = object[key].bind(thisObject)
+      } else {
+        func = object[key]
+      }
     } else {
       key = (node.callee.property as estree.Identifier).name
-    }
-
-    // right value
-    if (node.callee.object.type === 'Super') {
-      const thisObject = scope.find('this').get()
-      func = object[key].bind(thisObject)
-    } else {
-      func = object[key]
+      // right value
+      if (node.callee.object.type === 'Super') {
+        const thisObject = scope.find('this').get()
+        func = object[key].bind(thisObject)
+      } else {
+        func = object[key]
+      }
     }
 
     if (typeof func !== 'function') {

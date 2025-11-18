@@ -87,19 +87,27 @@ npm run test:coverage   # Run tests with coverage report
 ### Unimplemented Features
 
 See `docs/TODO.md` and `docs/UNIMPLEMENTED.md` for:
-- **ES2022 class features**: ~~`PropertyDefinition`~~ (✅ IMPLEMENTED), `PrivateIdentifier` (throws error), `StaticBlock` (silently skipped)
+- **ES2022 class features**: ~~`PropertyDefinition`~~ (✅ IMPLEMENTED), ~~`PrivateIdentifier`~~ (✅ IMPLEMENTED), `StaticBlock` (silently skipped)
 - **Dynamic imports**: `ImportExpression` 
 - **Labeled statements**: `LabeledStatement`
 - **With statements**: `WithStatement` (intentionally skipped - deprecated)
 
 Tests in `tests/unimplemented-features.test.ts` verify these throw or fail gracefully.
 
-PropertyDefinition (class fields) is fully implemented as of latest version:
+PropertyDefinition (class fields) is fully implemented:
 - Instance fields with/without initializers
 - Static fields
 - Computed field names
 - Field initialization order (before constructor)
 - Field initializers can reference `this`
+
+PrivateIdentifier (private fields & methods) is fully implemented:
+- Private instance fields with WeakMap storage for proper encapsulation
+- Private static fields with Map storage
+- Private instance methods
+- Private static methods
+- Proper access control (throws error when accessed from outside class)
+- Symbol-based keys for internal storage
 
 ## Project Conventions
 

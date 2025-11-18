@@ -109,8 +109,13 @@ export function* ClassBody(node: estree.ClassBody, scope: Scope, options: ClassO
 export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, options: ClassOptions = {}) {
   const { klass, superClass } = options
 
-  let key: string
-  if (node.computed) {
+  const isPrivate = node.key.type === 'PrivateIdentifier'
+  let key: any
+  
+  if (isPrivate) {
+    // Private method: use symbol key
+    key = Symbol.for(`private:${(node.key as any).name}`)
+  } else if (node.computed) {
     key = yield* evaluate(node.key, scope)
   } else if (node.key.type === 'Identifier') {
     key = node.key.name
@@ -118,20 +123,44 @@ export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, o
     throw new SyntaxError('Unexpected token')
   }
 
-  const obj = node.static ? klass : klass.prototype
   const value = yield* createFunc(node.value, scope, { superClass })
 
   switch (node.kind) {
     case 'constructor':
       break
     case 'method':
-      define(obj, key, {
-        value,
-        writable: true,
-        configurable: true,
-      })
+      if (isPrivate) {
+        // Private methods stored in WeakMap/Map like private fields
+        if (node.static) {
+          // Static private method
+          const privateStaticFields = klass.__privateStaticFields
+          if (privateStaticFields) {
+            privateStaticFields.set(key, value)
+          }
+        } else {
+          // Instance private method - store on prototype's private data
+          // We'll need to handle this during instance creation
+          // For now, store it as metadata on the class
+          if (!klass.__privateInstanceMethods) {
+            define(klass, '__privateInstanceMethods', { value: new Map() })
+          }
+          klass.__privateInstanceMethods.set(key, value)
+        }
+      } else {
+        // Public method
+        const obj = node.static ? klass : klass.prototype
+        define(obj, key, {
+          value,
+          writable: true,
+          configurable: true,
+        })
+      }
       break
     case 'get': {
+      if (isPrivate) {
+        throw new Error('Private getters not yet supported')
+      }
+      const obj = node.static ? klass : klass.prototype
       const oriDptor = getDptor(obj, key)
       define(obj, key, {
         get: value,
@@ -141,6 +170,10 @@ export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, o
       break
     }
     case 'set': {
+      if (isPrivate) {
+        throw new Error('Private setters not yet supported')
+      }
+      const obj = node.static ? klass : klass.prototype
       const oriDptor = getDptor(obj, key)
       define(obj, key, {
         get: oriDptor && oriDptor.get,

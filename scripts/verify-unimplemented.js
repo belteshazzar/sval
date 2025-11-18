@@ -89,8 +89,8 @@ const tests = [
       const instance = new MyClass()
       exports.result = instance.getPrivate()
     `,
-    expectedBehavior: 'throws_error',
-    expectedError: 'PrivateIdentifier'
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 42
   },
   {
     name: 'StaticBlock',
