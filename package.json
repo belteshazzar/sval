@@ -10,7 +10,7 @@
     "build": "npm test && rollup -c && npm run post",
     "start": "node scripts && rollup -c && npm run post",
     "post": "tsc --emitDeclarationOnly",
-    "test": "node scripts && umi-test --coverage",
+    "test": "vitest",
     "cov": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
