@@ -287,11 +287,7 @@ async function runTests(testFilter = null) {
     console.error('Please run: npm run test262:setup')
     process.exit(1)
   }
-  
-  // Build Sval first
-  console.log('Using npm version of Sval...')
-  // Using npm package, no need to check for local build
-  
+    
   const testDir = join(TEST262_DIR, DEFAULT_TEST_DIR)
   const allTestFiles = findTestFiles(testDir, testFilter)
   
