@@ -417,6 +417,11 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
       }
     }
 
+    // Handle optional chaining for the function itself (ES2020)
+    if ((node as any).optional && (func === null || func === undefined)) {
+      return undefined
+    }
+
     if (typeof func !== 'function') {
       throw new TypeError(`${key} is not a function`)
     } else if (func[CLSCTOR]) {

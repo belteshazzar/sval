@@ -65,6 +65,43 @@ describe('ES2020+ Modern Features', () => {
     expect(interpreter.exports.result3).toBeUndefined()
   })
 
+  it('should handle chained optional chaining', () => {
+    const interpreter = new Sval({ ecmaVer: 'latest' })
+
+    interpreter.run(`
+      const user = {
+        address: {
+          street: '123 Main St'
+        },
+        getName: () => 'John'
+      }
+      
+      // Chained optional chaining where method doesn't exist
+      const result1 = user?.getName?.()
+      const result2 = user?.getMissing?.()
+      const result3 = user?.address?.getCity?.()
+      
+      // Should work when method exists
+      const result4 = user?.getName?.()
+      
+      // Null/undefined propagation
+      const nullUser = null
+      const result5 = nullUser?.getName?.()
+      
+      exports.result1 = result1
+      exports.result2 = result2
+      exports.result3 = result3
+      exports.result4 = result4
+      exports.result5 = result5
+    `)
+
+    expect(interpreter.exports.result1).toBe('John')
+    expect(interpreter.exports.result2).toBeUndefined()
+    expect(interpreter.exports.result3).toBeUndefined()
+    expect(interpreter.exports.result4).toBe('John')
+    expect(interpreter.exports.result5).toBeUndefined()
+  })
+
   it('should handle logical OR assignment operator', () => {
     const interpreter = new Sval({ ecmaVer: 'latest' })
 

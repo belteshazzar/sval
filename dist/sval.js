@@ -828,6 +828,8 @@ function wt(e, r) {
       t = n[s].bind(l);
     } else
       t = n[s];
+    if (e.optional && t == null)
+      return;
     if (typeof t != "function")
       throw new TypeError(`${s} is not a function`);
     if (t[W])
@@ -1619,6 +1621,8 @@ function* ur(e, r) {
       t = n[s].bind(l);
     } else
       t = n[s];
+    if (e.optional && t == null)
+      return;
     if (typeof t != "function")
       throw new TypeError(`${s} is not a function`);
     if (t[W])
