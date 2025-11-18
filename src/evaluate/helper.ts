@@ -145,7 +145,9 @@ export function createFunc(
     if (node.type !== 'ArrowFunctionExpression') {
       subScope.const('this', this)
       subScope.let('arguments', arguments)
-      subScope.const(NEWTARGET, new.target)
+      // Check if new.target was overridden by class wrapper
+      const actualNewTarget = (tmpFunc as any).__currentNewTarget || new.target
+      subScope.const(NEWTARGET, actualNewTarget)
       if (superClass) {
         subScope.const(SUPER, superClass)
         if (isCtor) subScope.let(SUPERCALL, false)
@@ -291,12 +293,14 @@ export function* createClass(
   
   if (originalCtor) {
     // Wrap constructor to initialize fields first
-    klass = function (this: any, ...args: any[]) {
+    // Store reference so we can access it before it's fully initialized
+    let klassRef: any
+    klass = klassRef = function (this: any, ...args: any[]) {
       // Create private data storage immediately so constructor can access private members
       const privateData: any = {}
       
       // Add private instance methods to private data
-      const privateMethods = klass.__privateInstanceMethods
+      const privateMethods = klassRef.__privateInstanceMethods
       if (privateMethods) {
         privateMethods.forEach((method: any, key: symbol) => {
           privateData[key] = method
@@ -322,7 +326,10 @@ export function* createClass(
         const field = instanceFieldDefs[i]
         const subScope = new Scope(scope, false)
         subScope.const('this', this)
-        const value = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        // Evaluate field initializer - note this wrapper isn't a generator
+        // so we can't use yield*, but evaluate() in generator version returns a generator
+        const result = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+        const value = result && typeof result.next === 'function' ? Array.from(result).pop() : result
         
         if (field.isPrivate) {
           // Update private field in WeakMap
@@ -333,8 +340,13 @@ export function* createClass(
         }
       }
       
-      // Call original constructor
-      return originalCtor.apply(this, args)
+      // Store the class ref in a place originalCtor can find it
+      // Then call originalCtor with the current new.target (which is klassRef)
+      originalCtor.__currentNewTarget = new.target || klassRef
+      const result = originalCtor.call(this, ...args)
+      delete originalCtor.__currentNewTarget
+      // If constructor explicitly returns an object, use it
+      return typeof result === 'object' && result !== null ? result : this
     }
   } else {
     // No constructor - create default one

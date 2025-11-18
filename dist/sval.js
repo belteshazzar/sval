@@ -1,97 +1,97 @@
-import { parse as de } from "acorn";
-const Xe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+import { parse as ve } from "acorn";
+const Qe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   get ClassBody() {
-    return Te;
+    return Me;
   },
   get ClassDeclaration() {
-    return Xt;
+    return Qt;
   },
   get FunctionDeclaration() {
-    return Ht;
+    return Zt;
   },
   get MethodDefinition() {
-    return Re;
+    return Ve;
   },
   get VariableDeclaration() {
-    return q;
+    return W;
   },
   get VariableDeclarator() {
-    return Ae;
+    return Be;
   }
-}, Symbol.toStringTag, { value: "Module" })), Ye = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}, Symbol.toStringTag, { value: "Module" })), et = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   get ClassBody() {
-    return Ke;
+    return He;
   },
   get ClassDeclaration() {
-    return Ur;
+    return zr;
   },
   get FunctionDeclaration() {
-    return Vr;
+    return qr;
   },
   get MethodDefinition() {
-    return Je;
+    return Xe;
   },
   get VariableDeclaration() {
-    return z;
+    return L;
   },
   get VariableDeclarator() {
-    return Le;
+    return Ge;
   }
-}, Symbol.toStringTag, { value: "Module" })), ie = Object.freeze, v = Object.defineProperty, A = Object.getOwnPropertyDescriptor, Ze = Object.prototype.hasOwnProperty;
-function Qe(e, r) {
-  return Ze.call(e, r);
+}, Symbol.toStringTag, { value: "Module" })), le = Object.freeze, v = Object.defineProperty, R = Object.getOwnPropertyDescriptor, tt = Object.prototype.hasOwnProperty;
+function rt(e, r) {
+  return tt.call(e, r);
 }
-const ne = Object.getOwnPropertyNames, ge = Object.setPrototypeOf;
-function et(e, r) {
-  ge ? ge(e, r) : e.__proto__ = r;
+const ae = Object.getOwnPropertyNames, be = Object.setPrototypeOf;
+function nt(e, r) {
+  be ? be(e, r) : e.__proto__ = r;
 }
-const me = Object.getPrototypeOf;
-function tt(e) {
-  return me ? me(e) : e.__proto__;
+const we = Object.getPrototypeOf;
+function it(e) {
+  return we ? we(e) : e.__proto__;
 }
-const rt = Object.getOwnPropertyDescriptor;
-function we(e, r, t) {
+const st = Object.getOwnPropertyDescriptor;
+function ke(e, r, t) {
   for (; r; ) {
-    const n = rt(r, t), i = typeof n < "u" && typeof n.writable > "u" && typeof n[e] == "function" && n[e];
+    const n = st(r, t), i = typeof n < "u" && typeof n.writable > "u" && typeof n[e] == "function" && n[e];
     if (i)
       return i;
-    r = tt(r);
+    r = it(r);
   }
 }
-function Se(e, r) {
-  return we("get", e, r);
+function xe(e, r) {
+  return ke("get", e, r);
 }
-function Ee(e, r) {
-  return we("set", e, r);
+function Ie(e, r) {
+  return ke("set", e, r);
 }
-const Y = Object.create;
-function ke(e, r) {
-  et(e, r), e.prototype = Y(r.prototype, {
+const ee = Object.create;
+function _e(e, r) {
+  nt(e, r), e.prototype = ee(r.prototype, {
     constructor: {
       value: e,
       writable: !0
     }
   });
 }
-function nt(e) {
+function at(e) {
   for (let r = 1; r < arguments.length; ++r) {
     const t = arguments[r];
     for (const n in t)
-      Qe(t, n) && (e[n] = t[n]);
+      rt(t, n) && (e[n] = t[n]);
   }
   return e;
 }
-const j = Object.assign || nt;
-let H = [], p = Y(null);
+const F = Object.assign || at;
+let Z = [], p = ee(null);
 try {
   if (!window.Object) throw 0;
-  H = ne(p = window).filter((e) => e !== "webkitStorageInfo");
+  Z = ae(p = window).filter((e) => e !== "webkitStorageInfo");
 } catch {
   try {
     if (!global.Object) throw 0;
-    H = ne(p = global).filter((r) => r !== "GLOBAL" && r !== "root");
+    Z = ae(p = global).filter((r) => r !== "GLOBAL" && r !== "root");
   } catch {
     try {
       p.Object = Object;
@@ -333,26 +333,26 @@ try {
       p.crypto = crypto;
     } catch {
     }
-    H = ne(p);
+    Z = ae(p);
   }
 }
-p.Symbol && (!p.Symbol.iterator && (p.Symbol.iterator = I("iterator")), !p.Symbol.asyncIterator && (p.Symbol.asyncIterator = I("asynciterator")));
-const xe = Y({});
-for (let e = 0; e < H.length; e++) {
-  const r = H[e];
+p.Symbol && (!p.Symbol.iterator && (p.Symbol.iterator = $("iterator")), !p.Symbol.asyncIterator && (p.Symbol.asyncIterator = $("asynciterator")));
+const $e = ee({});
+for (let e = 0; e < Z.length; e++) {
+  const r = Z[e];
   try {
-    xe[r] = p[r];
+    $e[r] = p[r];
   } catch {
   }
 }
-const X = I("window");
-function it() {
-  return j(Y({ [X]: p }), xe);
+const Q = $("window");
+function lt() {
+  return F(ee({ [Q]: p }), $e);
 }
-function I(e) {
+function $(e) {
   return e + Math.random().toString(36).substring(2);
 }
-function st(e) {
+function ot(e) {
   let r;
   if (typeof Symbol == "function" && (r = e[Symbol.asyncIterator], !r && (r = e[Symbol.iterator])), r)
     return r.call(e);
@@ -367,8 +367,8 @@ function st(e) {
     };
   }
 }
-const at = "0.4.8", B = { RES: void 0 }, w = { RES: void 0 }, E = I("continue"), k = I("break"), se = I("super"), T = I("supercall"), ae = I("noctor"), W = I("clsctor"), le = I("newtarget"), x = I("noinit"), $ = I("deadzone");
-class re {
+const ct = "0.4.8", V = { RES: void 0 }, b = { RES: void 0 }, k = $("continue"), x = $("break"), oe = $("super"), B = $("supercall"), ce = $("noctor"), K = $("clsctor"), ue = $("newtarget"), _ = $("noinit"), O = $("deadzone");
+class se {
   constructor(r, t) {
     this.kind = r, this.value = t;
   }
@@ -381,7 +381,7 @@ class re {
     return this.value = r;
   }
 }
-class D {
+class A {
   constructor(r, t) {
     this.object = r, this.property = t;
   }
@@ -395,7 +395,7 @@ class D {
     return delete this.object[this.property];
   }
 }
-class Ie {
+class Oe {
   constructor(r, t) {
     this.map = r, this.key = t;
   }
@@ -416,7 +416,7 @@ class S {
    * @param isolated true for function scope or false for block scope (default: false)
    */
   constructor(r = null, t = !1) {
-    this.context = Y(null), this.parent = r, this.isolated = t;
+    this.context = ee(null), this.parent = r, this.isolated = t;
   }
   /**
    * Get global scope
@@ -449,7 +449,7 @@ class S {
       return this.parent.find(r);
     {
       const t = this.global().find("window").get();
-      return r in t ? new D(t, r) : null;
+      return r in t ? new A(t, r) : null;
     }
   }
   /**
@@ -463,14 +463,14 @@ class S {
       n = n.parent;
     const i = n.context[r];
     if (!i)
-      n.context[r] = new re("var", t === x ? void 0 : t);
+      n.context[r] = new se("var", t === _ ? void 0 : t);
     else if (i.kind === "var")
-      t !== x && i.set(t);
+      t !== _ && i.set(t);
     else
       throw new SyntaxError(`Identifier '${r}' has already been declared`);
     if (!n.parent) {
       const s = n.find("window").get();
-      t !== x && v(s, r, { value: t, writable: !0, enumerable: !0 });
+      t !== _ && v(s, r, { value: t, writable: !0, enumerable: !0 });
     }
   }
   /**
@@ -480,8 +480,8 @@ class S {
    */
   let(r, t) {
     const n = this.context[r];
-    if (!n || n.get() === $)
-      this.context[r] = new re("let", t);
+    if (!n || n.get() === O)
+      this.context[r] = new se("let", t);
     else
       throw new SyntaxError(`Identifier '${r}' has already been declared`);
   }
@@ -492,8 +492,8 @@ class S {
    */
   const(r, t) {
     const n = this.context[r];
-    if (!n || n.get() === $)
-      this.context[r] = new re("const", t);
+    if (!n || n.get() === O)
+      this.context[r] = new se("const", t);
     else
       throw new SyntaxError(`Identifier '${r}' has already been declared`);
   }
@@ -505,12 +505,12 @@ class S {
   func(r, t) {
     const n = this.context[r];
     if (!n || n.kind === "var")
-      this.context[r] = new re("var", t);
+      this.context[r] = new se("var", t);
     else
       throw new SyntaxError(`Identifier '${r}' has already been declared`);
   }
 }
-function R(e, r, t = {}) {
+function M(e, r, t = {}) {
   const { getVar: n = !1, throwErr: i = !0 } = t;
   if (e.name === "undefined")
     return;
@@ -520,7 +520,7 @@ function R(e, r, t = {}) {
       return s;
     {
       const a = s.get();
-      if (a === $)
+      if (a === O)
         throw new ReferenceError(`${e.name} is not defined`);
       return a;
     }
@@ -530,50 +530,50 @@ function R(e, r, t = {}) {
     return;
   }
 }
-function lt(e, r) {
+function ut(e, r) {
   return Symbol.for(`private:${e.name}`);
 }
-const ot = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const ft = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Identifier: R,
-  PrivateIdentifier: lt
+  Identifier: M,
+  PrivateIdentifier: ut
 }, Symbol.toStringTag, { value: "Module" }));
-function $e(e, r) {
+function Pe(e, r) {
   return e.value;
 }
-const ct = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const yt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Literal: $e
+  Literal: Pe
 }, Symbol.toStringTag, { value: "Module" }));
-function ut(e, r) {
-  const t = r.find(T);
+function pt(e, r) {
+  const t = r.find(B);
   if (t && !t.get())
     throw new ReferenceError("Must call super constructor in derived class before accessing 'this' or returning from derived constructor");
   return r.find("this").get();
 }
-function ft(e, r) {
+function ht(e, r) {
   let t = [];
   for (let n = 0; n < e.elements.length; n++) {
     const i = e.elements[n];
-    i.type === "SpreadElement" ? t = t.concat(Q(i, r)) : t.push(h(i, r));
+    i.type === "SpreadElement" ? t = t.concat(re(i, r)) : t.push(h(i, r));
   }
   return t;
 }
-function yt(e, r) {
+function dt(e, r) {
   const t = {};
   for (let n = 0; n < e.properties.length; n++) {
     const i = e.properties[n];
     if (i.type === "SpreadElement")
-      j(t, Q(i, r));
+      F(t, re(i, r));
     else if (i.type === "Property") {
       let s;
       const a = i.key;
-      i.computed ? s = h(a, r) : a.type === "Identifier" ? s = a.name : s = "" + $e(a);
+      i.computed ? s = h(a, r) : a.type === "Identifier" ? s = a.name : s = "" + Pe(a);
       const l = h(i.value, r), c = i.kind;
       if (c === "init")
         t[s] = l;
       else if (c === "get") {
-        const o = A(t, s);
+        const o = R(t, s);
         v(t, s, {
           get: l,
           set: o && o.set,
@@ -581,7 +581,7 @@ function yt(e, r) {
           configurable: !0
         });
       } else {
-        const o = A(t, s);
+        const o = R(t, s);
         v(t, s, {
           get: o && o.get,
           set: l,
@@ -593,14 +593,14 @@ function yt(e, r) {
   }
   return t;
 }
-function pt(e, r) {
+function gt(e, r) {
   if (e.id && e.id.name) {
-    const t = new S(r), n = N(e, t);
+    const t = new S(r), n = z(e, t);
     return t.const(e.id.name, n), n;
   } else
-    return N(e, r);
+    return z(e, r);
 }
-function ht(e, r) {
+function mt(e, r) {
   const t = e.argument;
   switch (e.operator) {
     case "+":
@@ -614,10 +614,10 @@ function ht(e, r) {
     case "void":
       return void h(t, r);
     case "typeof":
-      return t.type === "Identifier" ? typeof R(t, r, { throwErr: !1 }) : typeof h(t, r);
+      return t.type === "Identifier" ? typeof M(t, r, { throwErr: !1 }) : typeof h(t, r);
     case "delete":
       if (t.type === "MemberExpression")
-        return Z(t, r, { getVar: !0 }).del();
+        return te(t, r, { getVar: !0 }).del();
       if (t.type === "Identifier")
         throw new SyntaxError("Delete of an unqualified identifier in strict mode");
       return h(t, r), !0;
@@ -626,13 +626,13 @@ function ht(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function dt(e, r) {
+function vt(e, r) {
   const t = e.argument;
   let n;
   if (t.type === "Identifier")
-    n = R(t, r, { getVar: !0 });
+    n = M(t, r, { getVar: !0 });
   else if (t.type === "MemberExpression")
-    n = Z(t, r, { getVar: !0 });
+    n = te(t, r, { getVar: !0 });
   else
     throw new SyntaxError("Unexpected token");
   const i = n.get();
@@ -642,7 +642,7 @@ function dt(e, r) {
     return n.set(i - 1), e.prefix ? n.get() : i;
   throw new SyntaxError(`Unexpected token ${e.operator}`);
 }
-function gt(e, r) {
+function bt(e, r) {
   const t = h(e.left, r), n = h(e.right, r);
   switch (e.operator) {
     case "==":
@@ -694,18 +694,18 @@ function gt(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function mt(e, r) {
+function wt(e, r) {
   const t = h(e.right, r), n = e.left;
   let i;
   if (n.type === "Identifier") {
-    if (i = R(n, r, { getVar: !0, throwErr: !1 }), !i) {
+    if (i = M(n, r, { getVar: !0, throwErr: !1 }), !i) {
       const s = r.global().find("window").get();
-      i = new D(s, n.name);
+      i = new A(s, n.name);
     }
   } else if (n.type === "MemberExpression")
-    i = Z(n, r, { getVar: !0 });
+    i = te(n, r, { getVar: !0 });
   else
-    return P(n, r, { feed: t });
+    return j(n, r, { feed: t });
   switch (e.operator) {
     case "=":
       return i.set(t), i.get();
@@ -746,7 +746,7 @@ function mt(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function vt(e, r) {
+function St(e, r) {
   switch (e.operator) {
     case "||":
       return h(e.left, r) || h(e.right, r);
@@ -760,10 +760,10 @@ function vt(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function Z(e, r, t = {}) {
+function te(e, r, t = {}) {
   const { getObj: n = !1, getVar: i = !1 } = t;
   let s;
-  if (e.object.type === "Super" ? s = Pe(e.object, r, { getProto: !0 }) : s = h(e.object, r), e.optional && s == null)
+  if (e.object.type === "Super" ? s = Fe(e.object, r, { getProto: !0 }) : s = h(e.object, r), e.optional && s == null)
     return;
   if (n) return s;
   const a = e.property.type === "PrivateIdentifier";
@@ -773,26 +773,26 @@ function Z(e, r, t = {}) {
       const o = s.__privateStaticFields;
       if (!o || !o.has(l))
         throw new TypeError(`Cannot read private member #${e.property.name} from an object whose class did not declare it`);
-      return i ? new Ie(o, l) : o.get(l);
+      return i ? new Oe(o, l) : o.get(l);
     } else {
-      const o = s.constructor, y = o && o.__privateInstanceFields;
-      if (!y)
+      const o = s.constructor, f = o && o.__privateInstanceFields;
+      if (!f)
         throw new TypeError("Cannot read private member from an object whose class did not declare it");
-      const u = y.get(s);
+      const u = f.get(s);
       if (!u || !(l in u))
         throw new TypeError(`Cannot read private member #${e.property.name} from an object whose class did not declare it`);
-      return i ? new D(u, l) : u[l];
+      return i ? new A(u, l) : u[l];
     }
   else e.computed ? l = h(e.property, r) : l = e.property.name;
   if (i) {
-    const c = Ee(s, l);
+    const c = Ie(s, l);
     if (e.object.type === "Super" && c) {
-      const o = r.find("this").get(), y = I(l);
-      return v(o, y, { set: c }), new D(o, y);
+      const o = r.find("this").get(), f = $(l);
+      return v(o, f, { set: c }), new A(o, f);
     } else
-      return new D(s, l);
+      return new A(s, l);
   } else {
-    const c = Se(s, l);
+    const c = xe(s, l);
     if (e.object.type === "Super" && c) {
       const o = r.find("this").get();
       return c.call(o);
@@ -800,13 +800,13 @@ function Z(e, r, t = {}) {
       return s[l];
   }
 }
-function bt(e, r) {
+function Et(e, r) {
   return h(e.test, r) ? h(e.consequent, r) : h(e.alternate, r);
 }
-function wt(e, r) {
+function kt(e, r) {
   let t, n;
   if (e.callee.type === "MemberExpression") {
-    if (n = Z(e.callee, r, { getObj: !0 }), e.optional && n == null)
+    if (n = te(e.callee, r, { getObj: !0 }), e.optional && n == null)
       return;
     let a;
     if (e.callee.property.type === "PrivateIdentifier")
@@ -814,7 +814,7 @@ function wt(e, r) {
         const o = n.__privateStaticFields;
         t = o ? o.get(a) : void 0;
       } else {
-        const o = n.constructor, y = o && o.__privateInstanceFields, u = y ? y.get(n) : null;
+        const o = n.constructor, f = o && o.__privateInstanceFields, u = f ? f.get(n) : null;
         t = u ? u[a] : void 0;
       }
     else if (e.callee.computed)
@@ -833,7 +833,7 @@ function wt(e, r) {
     if (typeof t != "function")
       throw new TypeError(`${a} is not a function`);
     try {
-      if (t[W] === !0)
+      if (t[K] === !0)
         throw new TypeError(`Class constructor ${a} cannot be invoked without 'new'`);
     } catch (c) {
       if (c instanceof TypeError && c.message.includes("Class constructor"))
@@ -844,7 +844,7 @@ function wt(e, r) {
       return;
     let a = !1;
     try {
-      a = t[W] === !0;
+      a = t[K] === !0;
     } catch {
     }
     if (typeof t != "function" || e.callee.type !== "Super" && a) {
@@ -863,31 +863,31 @@ function wt(e, r) {
   let i = [];
   for (let a = 0; a < e.arguments.length; a++) {
     const l = e.arguments[a];
-    l.type === "SpreadElement" ? i = i.concat(Q(l, r)) : i.push(h(l, r));
+    l.type === "SpreadElement" ? i = i.concat(re(l, r)) : i.push(h(l, r));
   }
   if (e.callee.type === "Super") {
-    if (r.find(T).get())
+    if (r.find(B).get())
       throw new ReferenceError("Super constructor may only be called once");
-    r.find(T).set(!0);
+    r.find(B).set(!0);
   }
   let s = !1;
   try {
-    s = n && n[X];
+    s = n && n[Q];
   } catch {
   }
   if (s && t.toString().indexOf("[native code]") !== -1)
     try {
-      return t.apply(n[X], i);
+      return t.apply(n[Q], i);
     } catch {
       return t.apply(n, i);
     }
   return t.apply(n, i);
 }
-function St(e, r) {
+function xt(e, r) {
   const t = h(e.callee, r);
   let n = !1;
   try {
-    n = t[ae];
+    n = t[ce];
   } catch {
   }
   if (typeof t != "function") {
@@ -906,145 +906,145 @@ function St(e, r) {
   let i = [];
   for (let s = 0; s < e.arguments.length; s++) {
     const a = e.arguments[s];
-    a.type === "SpreadElement" ? i = i.concat(Q(a, r)) : i.push(h(a, r));
+    a.type === "SpreadElement" ? i = i.concat(re(a, r)) : i.push(h(a, r));
   }
   return new t(...i);
 }
-function Et(e, r) {
-  return r.find(le).get();
+function It(e, r) {
+  return r.find(ue).get();
 }
-function kt(e, r) {
+function _t(e, r) {
   let t;
   for (let n = 0; n < e.expressions.length; n++)
     t = h(e.expressions[n], r);
   return t;
 }
-function xt(e, r) {
-  return N(e, r);
+function $t(e, r) {
+  return z(e, r);
 }
-function It(e, r) {
+function Ot(e, r) {
   const t = e.quasis.slice(), n = e.expressions.slice();
   let i = "", s, a;
   for (; s = t.shift(); )
-    i += Oe(s), a = n.shift(), a && (i += h(a, r));
+    i += je(s), a = n.shift(), a && (i += h(a, r));
   return i;
 }
-function $t(e, r) {
+function Pt(e, r) {
   const t = h(e.tag, r), n = e.quasi.quasis, i = n.map((c) => c.value.cooked), s = n.map((c) => c.value.raw);
   v(i, "raw", {
-    value: ie(s)
+    value: le(s)
   });
   const a = e.quasi.expressions, l = [];
   if (a)
     for (let c = 0; c < a.length; c++)
       l.push(h(a[c], r));
-  return t(ie(i), ...l);
+  return t(le(i), ...l);
 }
-function Oe(e, r) {
+function je(e, r) {
   return e.value.raw;
 }
-function Ot(e, r) {
+function jt(e, r) {
   if (e.id && e.id.name) {
-    const t = new S(r), n = ye(e, t);
+    const t = new S(r), n = de(e, t);
     return t.const(e.id.name, n), n;
   } else
-    return ye(e, r);
+    return de(e, r);
 }
-function Pe(e, r, t = {}) {
-  const { getProto: n = !1 } = t, i = r.find(se).get();
+function Fe(e, r, t = {}) {
+  const { getProto: n = !1 } = t, i = r.find(oe).get();
   return n ? i.prototype : i;
 }
-function Q(e, r) {
+function re(e, r) {
   return h(e.argument, r);
 }
-function Pt(e, r) {
+function Ft(e, r) {
   return h(e.expression, r);
 }
-const _t = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ct = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ArrayExpression: ft,
-  ArrowFunctionExpression: xt,
-  AssignmentExpression: mt,
-  BinaryExpression: gt,
-  CallExpression: wt,
-  ChainExpression: Pt,
-  ClassExpression: Ot,
-  ConditionalExpression: bt,
-  FunctionExpression: pt,
-  LogicalExpression: vt,
-  MemberExpression: Z,
-  MetaProperty: Et,
-  NewExpression: St,
-  ObjectExpression: yt,
-  SequenceExpression: kt,
-  SpreadElement: Q,
-  Super: Pe,
-  TaggedTemplateExpression: $t,
-  TemplateElement: Oe,
-  TemplateLiteral: It,
-  ThisExpression: ut,
-  UnaryExpression: ht,
-  UpdateExpression: dt
+  ArrayExpression: ht,
+  ArrowFunctionExpression: $t,
+  AssignmentExpression: wt,
+  BinaryExpression: bt,
+  CallExpression: kt,
+  ChainExpression: Ft,
+  ClassExpression: jt,
+  ConditionalExpression: Et,
+  FunctionExpression: gt,
+  LogicalExpression: St,
+  MemberExpression: te,
+  MetaProperty: It,
+  NewExpression: xt,
+  ObjectExpression: dt,
+  SequenceExpression: _t,
+  SpreadElement: re,
+  Super: Fe,
+  TaggedTemplateExpression: Pt,
+  TemplateElement: je,
+  TemplateLiteral: Ot,
+  ThisExpression: pt,
+  UnaryExpression: mt,
+  UpdateExpression: vt
 }, Symbol.toStringTag, { value: "Module" }));
-function jt(e, r) {
+function Dt(e, r) {
   h(e.expression, r);
 }
-function M(e, r, t = {}) {
+function N(e, r, t = {}) {
   const {
     invasived: n = !1,
     hoisted: i = !1
   } = t, s = n ? r : new S(r);
-  i || pe(e, s, { onlyBlock: !0 });
+  i || ge(e, s, { onlyBlock: !0 });
   for (let a = 0; a < e.body.length; a++) {
     const l = h(e.body[a], s);
-    if (l === k || l === E || l === w)
+    if (l === x || l === k || l === b)
       return l;
   }
 }
-function Ft() {
-}
-function Ct() {
-  debugger;
-}
-function Dt(e, r) {
-  return w.RES = e.argument ? h(e.argument, r) : void 0, w;
+function Tt() {
 }
 function At() {
-  return k;
-}
-function Tt() {
-  return E;
+  debugger;
 }
 function Rt(e, r) {
+  return b.RES = e.argument ? h(e.argument, r) : void 0, b;
+}
+function Bt() {
+  return x;
+}
+function Mt() {
+  return k;
+}
+function Vt(e, r) {
   return h(e.test, r) ? h(e.consequent, r) : h(e.alternate, r);
 }
-function Bt(e, r) {
+function Nt(e, r) {
   const t = h(e.discriminant, r);
   let n = !1;
   for (let i = 0; i < e.cases.length; i++) {
     const s = e.cases[i];
     if (!n && (!s.test || h(s.test, r) === t) && (n = !0), n) {
-      const a = _e(s, r);
-      if (a === k)
+      const a = Ce(s, r);
+      if (a === x)
         break;
-      if (a === E || a === w)
+      if (a === k || a === b)
         return a;
     }
   }
 }
-function _e(e, r) {
+function Ce(e, r) {
   for (let t = 0; t < e.consequent.length; t++) {
     const n = h(e.consequent[t], r);
-    if (n === k || n === E || n === w)
+    if (n === x || n === k || n === b)
       return n;
   }
 }
-function Mt(e, r) {
+function Ut(e, r) {
   throw h(e.argument, r);
 }
-function Vt(e, r) {
+function qt(e, r) {
   try {
-    return M(e.block, r);
+    return N(e.block, r);
   } catch (t) {
     if (e.handler) {
       const n = new S(r), i = e.handler.param;
@@ -1053,217 +1053,217 @@ function Vt(e, r) {
           const s = i.name;
           n.var(s, t);
         } else
-          P(i, r, { feed: t });
-      return je(e.handler, n);
+          j(i, r, { feed: t });
+      return De(e.handler, n);
     } else
       throw t;
   } finally {
     if (e.finalizer) {
-      const t = M(e.finalizer, r);
-      if (t === k || t === E || t === w)
+      const t = N(e.finalizer, r);
+      if (t === x || t === k || t === b)
         return t;
     }
   }
 }
-function je(e, r) {
-  return M(e.body, r, { invasived: !0 });
+function De(e, r) {
+  return N(e.body, r, { invasived: !0 });
 }
-function Ut(e, r) {
+function zt(e, r) {
   for (; h(e.test, r); ) {
     const t = h(e.body, r);
-    if (t === k)
+    if (t === x)
       break;
-    if (t === E)
+    if (t === k)
       continue;
-    if (t === w)
+    if (t === b)
       return t;
   }
 }
-function Nt(e, r) {
+function Wt(e, r) {
   do {
     const t = h(e.body, r);
-    if (t === k)
+    if (t === x)
       break;
-    if (t === E)
+    if (t === k)
       continue;
-    if (t === w)
+    if (t === b)
       return t;
   } while (h(e.test, r));
 }
-function qt(e, r) {
+function Lt(e, r) {
   const t = new S(r);
   for (h(e.init, t); !e.test || h(e.test, t); h(e.update, t)) {
     const n = new S(t);
     let i;
-    if (e.body.type === "BlockStatement" ? i = M(e.body, n, { invasived: !0 }) : i = h(e.body, n), i === k)
+    if (e.body.type === "BlockStatement" ? i = N(e.body, n, { invasived: !0 }) : i = h(e.body, n), i === x)
       break;
-    if (i === E)
+    if (i === k)
       continue;
-    if (i === w)
+    if (i === b)
       return i;
   }
 }
-function zt(e, r) {
+function Kt(e, r) {
   for (const t in h(e.right, r)) {
-    const n = He(e, r, { value: t });
-    if (n === k)
+    const n = Ze(e, r, { value: t });
+    if (n === x)
       break;
-    if (n === E)
+    if (n === k)
       continue;
-    if (n === w)
+    if (n === b)
       return n;
   }
 }
-function Wt(e, r) {
+function Jt(e, r) {
   const t = h(e.right, r);
   for (const n of t) {
-    const i = He(e, r, { value: n });
-    if (i === k)
+    const i = Ze(e, r, { value: n });
+    if (i === x)
       break;
-    if (i === E)
+    if (i === k)
       continue;
-    if (i === w)
+    if (i === b)
       return i;
   }
 }
-const Lt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Gt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  BlockStatement: M,
-  BreakStatement: At,
-  CatchClause: je,
-  ContinueStatement: Tt,
-  DebuggerStatement: Ct,
-  DoWhileStatement: Nt,
-  EmptyStatement: Ft,
-  ExpressionStatement: jt,
-  ForInStatement: zt,
-  ForOfStatement: Wt,
-  ForStatement: qt,
-  IfStatement: Rt,
-  ReturnStatement: Dt,
-  SwitchCase: _e,
-  SwitchStatement: Bt,
-  ThrowStatement: Mt,
-  TryStatement: Vt,
-  WhileStatement: Ut
+  BlockStatement: N,
+  BreakStatement: Bt,
+  CatchClause: De,
+  ContinueStatement: Mt,
+  DebuggerStatement: At,
+  DoWhileStatement: Wt,
+  EmptyStatement: Tt,
+  ExpressionStatement: Dt,
+  ForInStatement: Kt,
+  ForOfStatement: Jt,
+  ForStatement: Lt,
+  IfStatement: Vt,
+  ReturnStatement: Rt,
+  SwitchCase: Ce,
+  SwitchStatement: Nt,
+  ThrowStatement: Ut,
+  TryStatement: qt,
+  WhileStatement: zt
 }, Symbol.toStringTag, { value: "Module" }));
-function Fe(e, r, t = {}) {
+function Te(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a = {} } = t, l = [];
   for (let c = 0; c < e.properties.length; c++) {
     const o = e.properties[c];
     if (i) {
       if (s || n === "var")
         if (o.type === "Property") {
-          const y = o.value;
-          y.type === "Identifier" ? r[n](y.name, s ? $ : n === "var" ? x : void 0) : P(y, r, { kind: n, hoist: i, onlyBlock: s });
+          const f = o.value;
+          f.type === "Identifier" ? r[n](f.name, s ? O : n === "var" ? _ : void 0) : j(f, r, { kind: n, hoist: i, onlyBlock: s });
         } else
-          L(o, r, { kind: n, hoist: i, onlyBlock: s });
+          J(o, r, { kind: n, hoist: i, onlyBlock: s });
     } else if (o.type === "Property") {
-      let y;
-      o.computed ? y = h(o.key, r) : y = o.key.name, l.push(y);
+      let f;
+      o.computed ? f = h(o.key, r) : f = o.key.name, l.push(f);
       const u = o.value;
-      u.type === "Identifier" ? r[n](u.name, a[y]) : P(u, r, { kind: n, feed: a[y] });
+      u.type === "Identifier" ? r[n](u.name, a[f]) : j(u, r, { kind: n, feed: a[f] });
     } else {
-      const y = j({}, a);
-      for (let u = 0; u < l.length; u++) delete y[l[u]];
-      L(o, r, { kind: n, feed: y });
+      const f = F({}, a);
+      for (let u = 0; u < l.length; u++) delete f[l[u]];
+      J(o, r, { kind: n, feed: f });
     }
   }
 }
-function Ce(e, r, t = {}) {
+function Ae(e, r, t = {}) {
   const { kind: n, hoist: i = !1, onlyBlock: s = !1, feed: a = [] } = t, l = [];
   for (let c = 0; c < e.elements.length; c++) {
     const o = e.elements[c];
     if (o)
       if (i)
-        (s || n === "var") && (o.type === "Identifier" ? r[n](o.name, s ? $ : n === "var" ? x : void 0) : P(o, r, { kind: n, hoist: i, onlyBlock: s }));
+        (s || n === "var") && (o.type === "Identifier" ? r[n](o.name, s ? O : n === "var" ? _ : void 0) : j(o, r, { kind: n, hoist: i, onlyBlock: s }));
       else if (o.type === "Identifier")
         if (n)
           r[n](o.name, a[c]);
         else {
-          const y = R(o, r, { getVar: !0 });
-          y.set(a[c]), l.push(y.get());
+          const f = M(o, r, { getVar: !0 });
+          f.set(a[c]), l.push(f.get());
         }
-      else o.type === "RestElement" ? L(o, r, { kind: n, feed: a.slice(c) }) : P(o, r, { kind: n, feed: a[c] });
+      else o.type === "RestElement" ? J(o, r, { kind: n, feed: a.slice(c) }) : j(o, r, { kind: n, feed: a[c] });
   }
   if (l.length)
     return l;
 }
-function L(e, r, t = {}) {
+function J(e, r, t = {}) {
   const { kind: n, hoist: i = !1, onlyBlock: s = !1, feed: a = [] } = t, l = e.argument;
-  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? $ : n === "var" ? x : void 0) : P(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? n ? r[n](l.name, a) : R(l, r, { getVar: !0 }).set(a) : P(l, r, { kind: n, feed: a });
+  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? O : n === "var" ? _ : void 0) : j(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? n ? r[n](l.name, a) : M(l, r, { getVar: !0 }).set(a) : j(l, r, { kind: n, feed: a });
 }
-function De(e, r, t = {}) {
+function Re(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a = h(e.right, r) } = t, l = e.left;
-  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? $ : n === "var" ? x : void 0) : P(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? r[n](l.name, a) : P(l, r, { kind: n, feed: a });
+  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? O : n === "var" ? _ : void 0) : j(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? r[n](l.name, a) : j(l, r, { kind: n, feed: a });
 }
-const Kt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ht = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ArrayPattern: Ce,
-  AssignmentPattern: De,
-  ObjectPattern: Fe,
-  RestElement: L
+  ArrayPattern: Ae,
+  AssignmentPattern: Re,
+  ObjectPattern: Te,
+  RestElement: J
 }, Symbol.toStringTag, { value: "Module" }));
-function Jt(e, r) {
+function Xt(e, r) {
   for (let t = 0; t < e.body.length; t++)
     h(e.body[t], r);
 }
-const Gt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Yt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Program: Jt
+  Program: Xt
 }, Symbol.toStringTag, { value: "Module" }));
-let oe;
+let fe;
 function h(e, r) {
   if (!e) return;
-  oe || (oe = j(
+  fe || (fe = F(
     {},
-    Xe,
-    _t,
-    ot,
-    Lt,
-    ct,
-    Kt,
-    Gt
+    Qe,
+    Ct,
+    ft,
+    Gt,
+    yt,
+    Ht,
+    Yt
   ));
-  const t = oe[e.type];
+  const t = fe[e.type];
   if (t)
     return t(e, r);
   throw new Error(`${e.type} isn't implemented`);
 }
-function Ht(e, r) {
-  r.func(e.id.name, N(e, r));
+function Zt(e, r) {
+  r.func(e.id.name, z(e, r));
 }
-function q(e, r, t = {}) {
+function W(e, r, t = {}) {
   for (let n = 0; n < e.declarations.length; n++) {
     const i = e.kind === "using" || e.kind === "await using" ? "const" : e.kind;
-    Ae(e.declarations[n], r, j({ kind: i }, t));
+    Be(e.declarations[n], r, F({ kind: i }, t));
   }
 }
-function Ae(e, r, t = {}) {
+function Be(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a } = t;
   if (i)
-    (s || n === "var") && (e.id.type === "Identifier" ? r[n](e.id.name, s ? $ : n === "var" ? x : void 0) : P(e.id, r, { kind: n, hoist: i, onlyBlock: s }));
+    (s || n === "var") && (e.id.type === "Identifier" ? r[n](e.id.name, s ? O : n === "var" ? _ : void 0) : j(e.id, r, { kind: n, hoist: i, onlyBlock: s }));
   else {
     const l = "feed" in t, c = l ? a : h(e.init, r);
     if (e.id.type === "Identifier") {
       const o = e.id.name;
-      n === "var" && !e.init && !l ? r.var(o, x) : r[n](o, c), e.init && ["ClassExpression", "FunctionExpression", "ArrowFunctionExpression"].indexOf(e.init.type) !== -1 && !c.name && v(c, "name", {
+      n === "var" && !e.init && !l ? r.var(o, _) : r[n](o, c), e.init && ["ClassExpression", "FunctionExpression", "ArrowFunctionExpression"].indexOf(e.init.type) !== -1 && !c.name && v(c, "name", {
         value: o,
         configurable: !0
       });
     } else
-      P(e.id, r, { kind: n, feed: c });
+      j(e.id, r, { kind: n, feed: c });
   }
 }
-function Xt(e, r) {
-  r.func(e.id.name, ye(e, r));
+function Qt(e, r) {
+  r.func(e.id.name, de(e, r));
 }
-function Te(e, r, t = {}) {
+function Me(e, r, t = {}) {
   const { klass: n, superClass: i } = t;
   for (let s = 0; s < e.body.length; s++) {
     const a = e.body[s];
     if (a.type === "MethodDefinition")
-      Re(a, r, { klass: n, superClass: i });
+      Ve(a, r, { klass: n, superClass: i });
     else {
       if (a.type === "PropertyDefinition")
         continue;
@@ -1272,7 +1272,7 @@ function Te(e, r, t = {}) {
     }
   }
 }
-function Re(e, r, t = {}) {
+function Ve(e, r, t = {}) {
   const { klass: n, superClass: i } = t, s = e.key.type === "PrivateIdentifier";
   let a;
   if (s)
@@ -1283,7 +1283,7 @@ function Re(e, r, t = {}) {
     a = e.key.name;
   else
     throw new SyntaxError("Unexpected token");
-  const l = N(e.value, r, { superClass: i });
+  const l = z(e.value, r, { superClass: i });
   switch (e.kind) {
     case "constructor":
       break;
@@ -1306,7 +1306,7 @@ function Re(e, r, t = {}) {
     case "get": {
       if (s)
         throw new Error("Private getters not yet supported");
-      const c = e.static ? n : n.prototype, o = A(c, a);
+      const c = e.static ? n : n.prototype, o = R(c, a);
       v(c, a, {
         get: l,
         set: o && o.set,
@@ -1317,7 +1317,7 @@ function Re(e, r, t = {}) {
     case "set": {
       if (s)
         throw new Error("Private setters not yet supported");
-      const c = e.static ? n : n.prototype, o = A(c, a);
+      const c = e.static ? n : n.prototype, o = R(c, a);
       v(c, a, {
         get: o && o.get,
         set: l,
@@ -1329,7 +1329,7 @@ function Re(e, r, t = {}) {
       throw new SyntaxError("Unexpected token");
   }
 }
-function* J(e, r, t = {}) {
+function* H(e, r, t = {}) {
   const { getVar: n = !1, throwErr: i = !0 } = t;
   if (e.name === "undefined")
     return;
@@ -1339,7 +1339,7 @@ function* J(e, r, t = {}) {
       return s;
     {
       const a = s.get();
-      if (a === $)
+      if (a === O)
         throw new ReferenceError(`${e.name} is not defined`);
       return a;
     }
@@ -1349,50 +1349,50 @@ function* J(e, r, t = {}) {
     return;
   }
 }
-function* Yt(e, r) {
+function* er(e, r) {
   return Symbol.for(`private:${e.name}`);
 }
-const Zt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const tr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Identifier: J,
-  PrivateIdentifier: Yt
+  Identifier: H,
+  PrivateIdentifier: er
 }, Symbol.toStringTag, { value: "Module" }));
-function* Be(e, r) {
+function* Ne(e, r) {
   return e.value;
 }
-const Qt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const rr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  Literal: Be
+  Literal: Ne
 }, Symbol.toStringTag, { value: "Module" }));
-function* er(e, r) {
-  const t = r.find(T);
+function* nr(e, r) {
+  const t = r.find(B);
   if (t && !t.get())
     throw new ReferenceError("Must call super constructor in derived class before accessing 'this' or returning from derived constructor");
   return r.find("this").get();
 }
-function* tr(e, r) {
+function* ir(e, r) {
   let t = [];
   for (let n = 0; n < e.elements.length; n++) {
     const i = e.elements[n];
-    i.type === "SpreadElement" ? t = t.concat(yield* te(i, r)) : t.push(yield* d(i, r));
+    i.type === "SpreadElement" ? t = t.concat(yield* ie(i, r)) : t.push(yield* d(i, r));
   }
   return t;
 }
-function* rr(e, r) {
+function* sr(e, r) {
   const t = {};
   for (let n = 0; n < e.properties.length; n++) {
     const i = e.properties[n];
     if (i.type === "SpreadElement")
-      j(t, yield* te(i, r));
+      F(t, yield* ie(i, r));
     else if (i.type === "Property") {
       let s;
       const a = i.key;
-      i.computed ? s = yield* d(a, r) : a.type === "Identifier" ? s = a.name : s = "" + (yield* Be(a));
+      i.computed ? s = yield* d(a, r) : a.type === "Identifier" ? s = a.name : s = "" + (yield* Ne(a));
       const l = yield* d(i.value, r), c = i.kind;
       if (c === "init")
         t[s] = l;
       else if (c === "get") {
-        const o = A(t, s);
+        const o = R(t, s);
         v(t, s, {
           get: l,
           set: o && o.set,
@@ -1400,7 +1400,7 @@ function* rr(e, r) {
           configurable: !0
         });
       } else {
-        const o = A(t, s);
+        const o = R(t, s);
         v(t, s, {
           get: o && o.get,
           set: l,
@@ -1412,14 +1412,14 @@ function* rr(e, r) {
   }
   return t;
 }
-function* nr(e, r) {
+function* ar(e, r) {
   if (e.id && e.id.name) {
-    const t = new S(r), n = U(e, t);
+    const t = new S(r), n = q(e, t);
     return t.const(e.id.name, n), n;
   } else
-    return U(e, r);
+    return q(e, r);
 }
-function* ir(e, r) {
+function* lr(e, r) {
   const t = e.argument;
   switch (e.operator) {
     case "+":
@@ -1433,10 +1433,10 @@ function* ir(e, r) {
     case "void":
       return void (yield* d(t, r));
     case "typeof":
-      return t.type === "Identifier" ? typeof (yield* J(t, r, { throwErr: !1 })) : typeof (yield* d(t, r));
+      return t.type === "Identifier" ? typeof (yield* H(t, r, { throwErr: !1 })) : typeof (yield* d(t, r));
     case "delete":
       if (t.type === "MemberExpression")
-        return (yield* ee(t, r, { getVar: !0 })).del();
+        return (yield* ne(t, r, { getVar: !0 })).del();
       if (t.type === "Identifier")
         throw new SyntaxError("Delete of an unqualified identifier in strict mode");
       return yield* d(t, r), !0;
@@ -1445,13 +1445,13 @@ function* ir(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function* sr(e, r) {
+function* or(e, r) {
   const t = e.argument;
   let n;
   if (t.type === "Identifier")
-    n = yield* J(t, r, { getVar: !0 });
+    n = yield* H(t, r, { getVar: !0 });
   else if (t.type === "MemberExpression")
-    n = yield* ee(t, r, { getVar: !0 });
+    n = yield* ne(t, r, { getVar: !0 });
   else
     throw new SyntaxError("Unexpected token");
   const i = n.get();
@@ -1461,7 +1461,7 @@ function* sr(e, r) {
     return n.set(i - 1), e.prefix ? n.get() : i;
   throw new SyntaxError(`Unexpected token ${e.operator}`);
 }
-function* ar(e, r) {
+function* cr(e, r) {
   const t = yield* d(e.left, r), n = yield* d(e.right, r);
   switch (e.operator) {
     case "==":
@@ -1513,18 +1513,18 @@ function* ar(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function* lr(e, r) {
+function* ur(e, r) {
   const t = yield* d(e.right, r), n = e.left;
   let i;
   if (n.type === "Identifier") {
-    if (i = yield* J(n, r, { getVar: !0, throwErr: !1 }), !i) {
+    if (i = yield* H(n, r, { getVar: !0, throwErr: !1 }), !i) {
       const s = r.global().find("window").get();
-      i = new D(s, n.name);
+      i = new A(s, n.name);
     }
   } else if (n.type === "MemberExpression")
-    i = yield* ee(n, r, { getVar: !0 });
+    i = yield* ne(n, r, { getVar: !0 });
   else
-    return yield* O(n, r, { feed: t });
+    return yield* P(n, r, { feed: t });
   switch (e.operator) {
     case "=":
       return i.set(t), i.get();
@@ -1565,7 +1565,7 @@ function* lr(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function* or(e, r) {
+function* fr(e, r) {
   switch (e.operator) {
     case "||":
       return (yield* d(e.left, r)) || (yield* d(e.right, r));
@@ -1579,10 +1579,10 @@ function* or(e, r) {
       throw new SyntaxError(`Unexpected token ${e.operator}`);
   }
 }
-function* ee(e, r, t = {}) {
+function* ne(e, r, t = {}) {
   const { getObj: n = !1, getVar: i = !1 } = t;
   let s;
-  if (e.object.type === "Super" ? s = yield* Ve(e.object, r, { getProto: !0 }) : s = yield* d(e.object, r), e.optional && s == null)
+  if (e.object.type === "Super" ? s = yield* qe(e.object, r, { getProto: !0 }) : s = yield* d(e.object, r), e.optional && s == null)
     return;
   if (n) return s;
   const a = e.property.type === "PrivateIdentifier";
@@ -1592,26 +1592,26 @@ function* ee(e, r, t = {}) {
       const o = s.__privateStaticFields;
       if (!o || !o.has(l))
         throw new TypeError(`Cannot read private member #${e.property.name} from an object whose class did not declare it`);
-      return i ? new Ie(o, l) : o.get(l);
+      return i ? new Oe(o, l) : o.get(l);
     } else {
-      const o = s.constructor, y = o && o.__privateInstanceFields;
-      if (!y)
+      const o = s.constructor, f = o && o.__privateInstanceFields;
+      if (!f)
         throw new TypeError("Cannot read private member from an object whose class did not declare it");
-      const u = y.get(s);
+      const u = f.get(s);
       if (!u || !(l in u))
         throw new TypeError(`Cannot read private member #${e.property.name} from an object whose class did not declare it`);
-      return i ? new D(u, l) : u[l];
+      return i ? new A(u, l) : u[l];
     }
   else e.computed ? l = yield* d(e.property, r) : l = e.property.name;
   if (i) {
-    const c = Ee(s, l);
+    const c = Ie(s, l);
     if (e.object.type === "Super" && c) {
-      const o = r.find("this").get(), y = I(l);
-      return v(o, y, { set: c }), new D(o, y);
+      const o = r.find("this").get(), f = $(l);
+      return v(o, f, { set: c }), new A(o, f);
     } else
-      return new D(s, l);
+      return new A(s, l);
   } else {
-    const c = Se(s, l);
+    const c = xe(s, l);
     if (e.object.type === "Super" && c) {
       const o = r.find("this").get();
       return c.call(o);
@@ -1619,13 +1619,13 @@ function* ee(e, r, t = {}) {
       return s[l];
   }
 }
-function* cr(e, r) {
+function* yr(e, r) {
   return (yield* d(e.test, r)) ? yield* d(e.consequent, r) : yield* d(e.alternate, r);
 }
-function* ur(e, r) {
+function* pr(e, r) {
   let t, n;
   if (e.callee.type === "MemberExpression") {
-    if (n = yield* ee(e.callee, r, { getObj: !0 }), e.optional && n == null)
+    if (n = yield* ne(e.callee, r, { getObj: !0 }), e.optional && n == null)
       return;
     let a;
     if (e.callee.property.type === "PrivateIdentifier")
@@ -1633,7 +1633,7 @@ function* ur(e, r) {
         const o = n.__privateStaticFields;
         t = o ? o.get(a) : void 0;
       } else {
-        const o = n.constructor, y = o && o.__privateInstanceFields, u = y ? y.get(n) : null;
+        const o = n.constructor, f = o && o.__privateInstanceFields, u = f ? f.get(n) : null;
         t = u ? u[a] : void 0;
       }
     else if (e.callee.computed)
@@ -1652,7 +1652,7 @@ function* ur(e, r) {
     if (typeof t != "function")
       throw new TypeError(`${a} is not a function`);
     try {
-      if (t[W] === !0)
+      if (t[K] === !0)
         throw new TypeError(`Class constructor ${a} cannot be invoked without 'new'`);
     } catch (c) {
       if (c instanceof TypeError && c.message.includes("Class constructor"))
@@ -1663,7 +1663,7 @@ function* ur(e, r) {
       return;
     let a = !1;
     try {
-      a = t[W] === !0;
+      a = t[K] === !0;
     } catch {
     }
     if (typeof t != "function" || e.callee.type !== "Super" && a) {
@@ -1682,31 +1682,31 @@ function* ur(e, r) {
   let i = [];
   for (let a = 0; a < e.arguments.length; a++) {
     const l = e.arguments[a];
-    l.type === "SpreadElement" ? i = i.concat(yield* te(l, r)) : i.push(yield* d(l, r));
+    l.type === "SpreadElement" ? i = i.concat(yield* ie(l, r)) : i.push(yield* d(l, r));
   }
   if (e.callee.type === "Super") {
-    if (r.find(T).get())
+    if (r.find(B).get())
       throw new ReferenceError("Super constructor may only be called once");
-    r.find(T).set(!0);
+    r.find(B).set(!0);
   }
   let s = !1;
   try {
-    s = n && n[X];
+    s = n && n[Q];
   } catch {
   }
   if (s && t.toString().indexOf("[native code]") !== -1)
     try {
-      return t.apply(n[X], i);
+      return t.apply(n[Q], i);
     } catch {
       return t.apply(n, i);
     }
   return t.apply(n, i);
 }
-function* fr(e, r) {
+function* hr(e, r) {
   const t = yield* d(e.callee, r);
   let n = !1;
   try {
-    n = t[ae];
+    n = t[ce];
   } catch {
   }
   if (typeof t != "function") {
@@ -1725,154 +1725,154 @@ function* fr(e, r) {
   let i = [];
   for (let s = 0; s < e.arguments.length; s++) {
     const a = e.arguments[s];
-    a.type === "SpreadElement" ? i = i.concat(yield* te(a, r)) : i.push(yield* d(a, r));
+    a.type === "SpreadElement" ? i = i.concat(yield* ie(a, r)) : i.push(yield* d(a, r));
   }
   return new t(...i);
 }
-function* yr(e, r) {
-  return r.find(le).get();
+function* dr(e, r) {
+  return r.find(ue).get();
 }
-function* pr(e, r) {
+function* gr(e, r) {
   let t;
   for (let n = 0; n < e.expressions.length; n++)
     t = yield* d(e.expressions[n], r);
   return t;
 }
-function* hr(e, r) {
-  return U(e, r);
+function* mr(e, r) {
+  return q(e, r);
 }
-function* dr(e, r) {
+function* vr(e, r) {
   const t = e.quasis.slice(), n = e.expressions.slice();
   let i = "", s, a;
   for (; s = t.shift(); )
-    i += yield* Me(s), a = n.shift(), a && (i += yield* d(a, r));
+    i += yield* Ue(s), a = n.shift(), a && (i += yield* d(a, r));
   return i;
 }
-function* gr(e, r) {
+function* br(e, r) {
   const t = yield* d(e.tag, r), n = e.quasi.quasis, i = n.map((c) => c.value.cooked), s = n.map((c) => c.value.raw);
   v(i, "raw", {
-    value: ie(s)
+    value: le(s)
   });
   const a = e.quasi.expressions, l = [];
   if (a)
     for (let c = 0; c < a.length; c++)
       l.push(yield* d(a[c], r));
-  return t(ie(i), ...l);
+  return t(le(i), ...l);
 }
-function* Me(e, r) {
+function* Ue(e, r) {
   return e.value.raw;
 }
-function* mr(e, r) {
+function* wr(e, r) {
   if (e.id && e.id.name) {
-    const t = new S(r), n = yield* ue(e, t);
+    const t = new S(r), n = yield* pe(e, t);
     return t.const(e.id.name, n), n;
   } else
-    return yield* ue(e, r);
+    return yield* pe(e, r);
 }
-function* Ve(e, r, t = {}) {
-  const { getProto: n = !1 } = t, i = r.find(se).get();
+function* qe(e, r, t = {}) {
+  const { getProto: n = !1 } = t, i = r.find(oe).get();
   return n ? i.prototype : i;
 }
-function* te(e, r) {
+function* ie(e, r) {
   return yield* d(e.argument, r);
 }
-function* vr(e, r) {
+function* Sr(e, r) {
   return yield* d(e.expression, r);
 }
-function* br(e, r) {
+function* Er(e, r) {
   const t = yield* d(e.argument, r);
   return e.delegate ? yield* t : yield t;
 }
-function* wr(e, r) {
-  return B.RES = yield* d(e.argument, r), yield B;
+function* kr(e, r) {
+  return V.RES = yield* d(e.argument, r), yield V;
 }
-const Sr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const xr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ArrayExpression: tr,
-  ArrowFunctionExpression: hr,
-  AssignmentExpression: lr,
-  AwaitExpression: wr,
-  BinaryExpression: ar,
-  CallExpression: ur,
-  ChainExpression: vr,
-  ClassExpression: mr,
-  ConditionalExpression: cr,
-  FunctionExpression: nr,
-  LogicalExpression: or,
-  MemberExpression: ee,
-  MetaProperty: yr,
-  NewExpression: fr,
-  ObjectExpression: rr,
-  SequenceExpression: pr,
-  SpreadElement: te,
-  Super: Ve,
-  TaggedTemplateExpression: gr,
-  TemplateElement: Me,
-  TemplateLiteral: dr,
-  ThisExpression: er,
-  UnaryExpression: ir,
-  UpdateExpression: sr,
-  YieldExpression: br
+  ArrayExpression: ir,
+  ArrowFunctionExpression: mr,
+  AssignmentExpression: ur,
+  AwaitExpression: kr,
+  BinaryExpression: cr,
+  CallExpression: pr,
+  ChainExpression: Sr,
+  ClassExpression: wr,
+  ConditionalExpression: yr,
+  FunctionExpression: ar,
+  LogicalExpression: fr,
+  MemberExpression: ne,
+  MetaProperty: dr,
+  NewExpression: hr,
+  ObjectExpression: sr,
+  SequenceExpression: gr,
+  SpreadElement: ie,
+  Super: qe,
+  TaggedTemplateExpression: br,
+  TemplateElement: Ue,
+  TemplateLiteral: vr,
+  ThisExpression: nr,
+  UnaryExpression: lr,
+  UpdateExpression: or,
+  YieldExpression: Er
 }, Symbol.toStringTag, { value: "Module" }));
-function* Er(e, r) {
+function* Ir(e, r) {
   yield* d(e.expression, r);
 }
-function* V(e, r, t = {}) {
+function* U(e, r, t = {}) {
   const {
     invasived: n = !1,
     hoisted: i = !1
   } = t, s = n ? r : new S(r);
-  i || (yield* Ge(e, s, { onlyBlock: !0 }));
+  i || (yield* Ye(e, s, { onlyBlock: !0 }));
   for (let a = 0; a < e.body.length; a++) {
     const l = yield* d(e.body[a], s);
-    if (l === k || l === E || l === w)
+    if (l === x || l === k || l === b)
       return l;
   }
 }
-function* kr() {
-}
-function* xr() {
-  debugger;
-}
-function* Ir(e, r) {
-  return w.RES = e.argument ? yield* d(e.argument, r) : void 0, w;
+function* _r() {
 }
 function* $r() {
+  debugger;
+}
+function* Or(e, r) {
+  return b.RES = e.argument ? yield* d(e.argument, r) : void 0, b;
+}
+function* Pr() {
+  return x;
+}
+function* jr() {
   return k;
 }
-function* Or() {
-  return E;
-}
-function* Pr(e, r) {
+function* Fr(e, r) {
   return (yield* d(e.test, r)) ? yield* d(e.consequent, r) : yield* d(e.alternate, r);
 }
-function* _r(e, r) {
+function* Cr(e, r) {
   const t = yield* d(e.discriminant, r);
   let n = !1;
   for (let i = 0; i < e.cases.length; i++) {
     const s = e.cases[i];
     if (!n && (!s.test || (yield* d(s.test, r)) === t) && (n = !0), n) {
-      const a = yield* Ue(s, r);
-      if (a === k)
+      const a = yield* ze(s, r);
+      if (a === x)
         break;
-      if (a === E || a === w)
+      if (a === k || a === b)
         return a;
     }
   }
 }
-function* Ue(e, r) {
+function* ze(e, r) {
   for (let t = 0; t < e.consequent.length; t++) {
     const n = yield* d(e.consequent[t], r);
-    if (n === k || n === E || n === w)
+    if (n === x || n === k || n === b)
       return n;
   }
 }
-function* jr(e, r) {
+function* Dr(e, r) {
   throw yield* d(e.argument, r);
 }
-function* Fr(e, r) {
+function* Tr(e, r) {
   try {
-    return yield* V(e.block, r);
+    return yield* U(e.block, r);
   } catch (t) {
     if (e.handler) {
       const n = new S(r), i = e.handler.param;
@@ -1881,224 +1881,224 @@ function* Fr(e, r) {
           const s = i.name;
           n.var(s, t);
         } else
-          yield* O(i, r, { feed: t });
-      return yield* Ne(e.handler, n);
+          yield* P(i, r, { feed: t });
+      return yield* We(e.handler, n);
     } else
       throw t;
   } finally {
     if (e.finalizer) {
-      const t = yield* V(e.finalizer, r);
-      if (t === k || t === E || t === w)
+      const t = yield* U(e.finalizer, r);
+      if (t === x || t === k || t === b)
         return t;
     }
   }
 }
-function* Ne(e, r) {
-  return yield* V(e.body, r, { invasived: !0 });
+function* We(e, r) {
+  return yield* U(e.body, r, { invasived: !0 });
 }
-function* Cr(e, r) {
+function* Ar(e, r) {
   for (; yield* d(e.test, r); ) {
     const t = yield* d(e.body, r);
-    if (t === k)
+    if (t === x)
       break;
-    if (t === E)
+    if (t === k)
       continue;
-    if (t === w)
+    if (t === b)
       return t;
   }
 }
-function* Dr(e, r) {
+function* Rr(e, r) {
   do {
     const t = yield* d(e.body, r);
-    if (t === k)
+    if (t === x)
       break;
-    if (t === E)
+    if (t === k)
       continue;
-    if (t === w)
+    if (t === b)
       return t;
   } while (yield* d(e.test, r));
 }
-function* Ar(e, r) {
+function* Br(e, r) {
   const t = new S(r);
   for (yield* d(e.init, t); !e.test || (yield* d(e.test, t)); yield* d(e.update, t)) {
     const n = new S(t);
     let i;
-    if (e.body.type === "BlockStatement" ? i = yield* V(e.body, n, { invasived: !0 }) : i = yield* d(e.body, n), i === k)
+    if (e.body.type === "BlockStatement" ? i = yield* U(e.body, n, { invasived: !0 }) : i = yield* d(e.body, n), i === x)
       break;
-    if (i === E)
+    if (i === k)
       continue;
-    if (i === w)
+    if (i === b)
       return i;
   }
 }
-function* Tr(e, r) {
+function* Mr(e, r) {
   for (const t in yield* d(e.right, r)) {
-    const n = yield* fe(e, r, { value: t });
-    if (n === k)
+    const n = yield* he(e, r, { value: t });
+    if (n === x)
       break;
-    if (n === E)
+    if (n === k)
       continue;
-    if (n === w)
+    if (n === b)
       return n;
   }
 }
-function* Rr(e, r) {
+function* Vr(e, r) {
   const t = yield* d(e.right, r);
   if (e.await) {
-    const n = st(t);
+    const n = ot(t);
     let i;
-    for (B.RES = n.next(), i = yield B; !i.done; B.RES = n.next(), i = yield B) {
-      const s = yield* fe(e, r, { value: i.value });
-      if (s === k)
+    for (V.RES = n.next(), i = yield V; !i.done; V.RES = n.next(), i = yield V) {
+      const s = yield* he(e, r, { value: i.value });
+      if (s === x)
         break;
-      if (s === E)
+      if (s === k)
         continue;
-      if (s === w)
+      if (s === b)
         return s;
     }
   } else
     for (const n of t) {
-      const i = yield* fe(e, r, { value: n });
-      if (i === k)
+      const i = yield* he(e, r, { value: n });
+      if (i === x)
         break;
-      if (i === E)
+      if (i === k)
         continue;
-      if (i === w)
+      if (i === b)
         return i;
     }
 }
-const Br = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Nr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  BlockStatement: V,
-  BreakStatement: $r,
-  CatchClause: Ne,
-  ContinueStatement: Or,
-  DebuggerStatement: xr,
-  DoWhileStatement: Dr,
-  EmptyStatement: kr,
-  ExpressionStatement: Er,
-  ForInStatement: Tr,
-  ForOfStatement: Rr,
-  ForStatement: Ar,
-  IfStatement: Pr,
-  ReturnStatement: Ir,
-  SwitchCase: Ue,
-  SwitchStatement: _r,
-  ThrowStatement: jr,
-  TryStatement: Fr,
-  WhileStatement: Cr
+  BlockStatement: U,
+  BreakStatement: Pr,
+  CatchClause: We,
+  ContinueStatement: jr,
+  DebuggerStatement: $r,
+  DoWhileStatement: Rr,
+  EmptyStatement: _r,
+  ExpressionStatement: Ir,
+  ForInStatement: Mr,
+  ForOfStatement: Vr,
+  ForStatement: Br,
+  IfStatement: Fr,
+  ReturnStatement: Or,
+  SwitchCase: ze,
+  SwitchStatement: Cr,
+  ThrowStatement: Dr,
+  TryStatement: Tr,
+  WhileStatement: Ar
 }, Symbol.toStringTag, { value: "Module" }));
-function* qe(e, r, t = {}) {
+function* Le(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a = {} } = t, l = [];
   for (let c = 0; c < e.properties.length; c++) {
     const o = e.properties[c];
     if (i) {
       if (s || n === "var")
         if (o.type === "Property") {
-          const y = o.value;
-          y.type === "Identifier" ? r[n](y.name, s ? $ : n === "var" ? x : void 0) : yield* O(y, r, { kind: n, hoist: i, onlyBlock: s });
+          const f = o.value;
+          f.type === "Identifier" ? r[n](f.name, s ? O : n === "var" ? _ : void 0) : yield* P(f, r, { kind: n, hoist: i, onlyBlock: s });
         } else
-          yield* K(o, r, { kind: n, hoist: i, onlyBlock: s });
+          yield* G(o, r, { kind: n, hoist: i, onlyBlock: s });
     } else if (o.type === "Property") {
-      let y;
-      o.computed ? y = yield* d(o.key, r) : y = o.key.name, l.push(y);
+      let f;
+      o.computed ? f = yield* d(o.key, r) : f = o.key.name, l.push(f);
       const u = o.value;
-      u.type === "Identifier" ? r[n](u.name, a[y]) : yield* O(u, r, { kind: n, feed: a[y] });
+      u.type === "Identifier" ? r[n](u.name, a[f]) : yield* P(u, r, { kind: n, feed: a[f] });
     } else {
-      const y = j({}, a);
-      for (let u = 0; u < l.length; u++) delete y[l[u]];
-      yield* K(o, r, { kind: n, feed: y });
+      const f = F({}, a);
+      for (let u = 0; u < l.length; u++) delete f[l[u]];
+      yield* G(o, r, { kind: n, feed: f });
     }
   }
 }
-function* ze(e, r, t = {}) {
+function* Ke(e, r, t = {}) {
   const { kind: n, hoist: i = !1, onlyBlock: s = !1, feed: a = [] } = t, l = [];
   for (let c = 0; c < e.elements.length; c++) {
     const o = e.elements[c];
     if (o)
       if (i)
-        (s || n === "var") && (o.type === "Identifier" ? r[n](o.name, s ? $ : n === "var" ? x : void 0) : yield* O(o, r, { kind: n, hoist: i, onlyBlock: s }));
+        (s || n === "var") && (o.type === "Identifier" ? r[n](o.name, s ? O : n === "var" ? _ : void 0) : yield* P(o, r, { kind: n, hoist: i, onlyBlock: s }));
       else if (o.type === "Identifier")
         if (n)
           r[n](o.name, a[c]);
         else {
-          const y = yield* J(o, r, { getVar: !0 });
-          y.set(a[c]), l.push(y.get());
+          const f = yield* H(o, r, { getVar: !0 });
+          f.set(a[c]), l.push(f.get());
         }
-      else o.type === "RestElement" ? yield* K(o, r, { kind: n, feed: a.slice(c) }) : yield* O(o, r, { kind: n, feed: a[c] });
+      else o.type === "RestElement" ? yield* G(o, r, { kind: n, feed: a.slice(c) }) : yield* P(o, r, { kind: n, feed: a[c] });
   }
   if (l.length)
     return l;
 }
-function* K(e, r, t = {}) {
+function* G(e, r, t = {}) {
   const { kind: n, hoist: i = !1, onlyBlock: s = !1, feed: a = [] } = t, l = e.argument;
-  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? $ : n === "var" ? x : void 0) : yield* O(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? n ? r[n](l.name, a) : (yield* J(l, r, { getVar: !0 })).set(a) : yield* O(l, r, { kind: n, feed: a });
+  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? O : n === "var" ? _ : void 0) : yield* P(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? n ? r[n](l.name, a) : (yield* H(l, r, { getVar: !0 })).set(a) : yield* P(l, r, { kind: n, feed: a });
 }
-function* We(e, r, t = {}) {
+function* Je(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a = yield* d(e.right, r) } = t, l = e.left;
-  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? $ : n === "var" ? x : void 0) : yield* O(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? r[n](l.name, a) : yield* O(l, r, { kind: n, feed: a });
+  i ? (s || n === "var") && (l.type === "Identifier" ? r[n](l.name, s ? O : n === "var" ? _ : void 0) : yield* P(l, r, { kind: n, hoist: i, onlyBlock: s })) : l.type === "Identifier" ? r[n](l.name, a) : yield* P(l, r, { kind: n, feed: a });
 }
-const Mr = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ur = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  ArrayPattern: ze,
-  AssignmentPattern: We,
-  ObjectPattern: qe,
-  RestElement: K
+  ArrayPattern: Ke,
+  AssignmentPattern: Je,
+  ObjectPattern: Le,
+  RestElement: G
 }, Symbol.toStringTag, { value: "Module" }));
-let ce;
+let ye;
 function* d(e, r) {
   if (!e) return;
-  ce || (ce = j(
+  ye || (ye = F(
     {},
-    Ye,
-    Sr,
-    Zt,
-    Br,
-    Qt,
-    Mr
+    et,
+    xr,
+    tr,
+    Nr,
+    rr,
+    Ur
     /*<add>*/
     /*program*/
     /*</add>*/
   ));
-  const t = ce[e.type];
+  const t = ye[e.type];
   if (t)
     return yield* t(e, r);
   throw new Error(`${e.type} isn't implemented`);
 }
-function* Vr(e, r) {
-  r.func(e.id.name, U(e, r));
+function* qr(e, r) {
+  r.func(e.id.name, q(e, r));
 }
-function* z(e, r, t = {}) {
+function* L(e, r, t = {}) {
   for (let n = 0; n < e.declarations.length; n++) {
     const i = e.kind === "using" || e.kind === "await using" ? "const" : e.kind;
-    yield* Le(e.declarations[n], r, j({ kind: i }, t));
+    yield* Ge(e.declarations[n], r, F({ kind: i }, t));
   }
 }
-function* Le(e, r, t = {}) {
+function* Ge(e, r, t = {}) {
   const { kind: n = "var", hoist: i = !1, onlyBlock: s = !1, feed: a } = t;
   if (i)
-    (s || n === "var") && (e.id.type === "Identifier" ? r[n](e.id.name, s ? $ : n === "var" ? x : void 0) : yield* O(e.id, r, { kind: n, hoist: i, onlyBlock: s }));
+    (s || n === "var") && (e.id.type === "Identifier" ? r[n](e.id.name, s ? O : n === "var" ? _ : void 0) : yield* P(e.id, r, { kind: n, hoist: i, onlyBlock: s }));
   else {
     const l = "feed" in t, c = l ? a : yield* d(e.init, r);
     if (e.id.type === "Identifier") {
       const o = e.id.name;
-      n === "var" && !e.init && !l ? r.var(o, x) : r[n](o, c), e.init && ["ClassExpression", "FunctionExpression", "ArrowFunctionExpression"].indexOf(e.init.type) !== -1 && !c.name && v(c, "name", {
+      n === "var" && !e.init && !l ? r.var(o, _) : r[n](o, c), e.init && ["ClassExpression", "FunctionExpression", "ArrowFunctionExpression"].indexOf(e.init.type) !== -1 && !c.name && v(c, "name", {
         value: o,
         configurable: !0
       });
     } else
-      yield* O(e.id, r, { kind: n, feed: c });
+      yield* P(e.id, r, { kind: n, feed: c });
   }
 }
-function* Ur(e, r) {
-  r.func(e.id.name, yield* ue(e, r));
+function* zr(e, r) {
+  r.func(e.id.name, yield* pe(e, r));
 }
-function* Ke(e, r, t = {}) {
+function* He(e, r, t = {}) {
   const { klass: n, superClass: i } = t;
   for (let s = 0; s < e.body.length; s++) {
     const a = e.body[s];
     if (a.type === "MethodDefinition")
-      yield* Je(a, r, { klass: n, superClass: i });
+      yield* Xe(a, r, { klass: n, superClass: i });
     else {
       if (a.type === "PropertyDefinition")
         continue;
@@ -2107,7 +2107,7 @@ function* Ke(e, r, t = {}) {
     }
   }
 }
-function* Je(e, r, t = {}) {
+function* Xe(e, r, t = {}) {
   const { klass: n, superClass: i } = t, s = e.key.type === "PrivateIdentifier";
   let a;
   if (s)
@@ -2118,7 +2118,7 @@ function* Je(e, r, t = {}) {
     a = e.key.name;
   else
     throw new SyntaxError("Unexpected token");
-  const l = yield* U(e.value, r, { superClass: i });
+  const l = yield* q(e.value, r, { superClass: i });
   switch (e.kind) {
     case "constructor":
       break;
@@ -2141,7 +2141,7 @@ function* Je(e, r, t = {}) {
     case "get": {
       if (s)
         throw new Error("Private getters not yet supported");
-      const c = e.static ? n : n.prototype, o = A(c, a);
+      const c = e.static ? n : n.prototype, o = R(c, a);
       v(c, a, {
         get: l,
         set: o && o.set,
@@ -2152,7 +2152,7 @@ function* Je(e, r, t = {}) {
     case "set": {
       if (s)
         throw new Error("Private setters not yet supported");
-      const c = e.static ? n : n.prototype, o = A(c, a);
+      const c = e.static ? n : n.prototype, o = R(c, a);
       v(c, a, {
         get: o && o.get,
         set: l,
@@ -2164,43 +2164,43 @@ function* Je(e, r, t = {}) {
       throw new SyntaxError("Unexpected token");
   }
 }
-function ve(e, r = {}) {
+function Se(e, r = {}) {
   const { res: t, err: n, ret: i, fullRet: s } = r;
   return new Promise((a, l) => {
     if ("ret" in r)
       return a(e.return(i));
     "err" in r ? o(n) : c(t);
     function c(u) {
-      let f;
+      let y;
       try {
-        f = e.next(u);
-      } catch (m) {
-        return l(m);
+        y = e.next(u);
+      } catch (g) {
+        return l(g);
       }
-      return y(f), null;
+      return f(y), null;
     }
     function o(u) {
-      let f;
+      let y;
       try {
-        f = e.throw(u);
-      } catch (m) {
-        return l(m);
+        y = e.throw(u);
+      } catch (g) {
+        return l(g);
       }
-      y(f);
+      f(y);
     }
-    function y(u) {
+    function f(u) {
       if (u.done) return a(s ? u : u.value);
-      if (u.value !== B) return a(u);
-      const f = u.value.RES;
-      return (f && f.then === "function" ? f : Promise.resolve(f)).then(c, o);
+      if (u.value !== V) return a(u);
+      const y = u.value.RES;
+      return (y && y.then === "function" ? y : Promise.resolve(y)).then(c, o);
     }
   });
 }
-function* Ge(e, r, t = {}) {
+function* Ye(e, r, t = {}) {
   const { onlyBlock: n = !1 } = t, i = [], s = [];
   for (let a = 0; a < e.body.length; a++) {
     const l = e.body[a];
-    l.type === "FunctionDeclaration" ? (i.push(l), s.push(a)) : l.type === "VariableDeclaration" && ["const", "let"].indexOf(l.kind) !== -1 ? yield* z(l, r, { hoist: !0, onlyBlock: !0 }) : n || (yield* F(l, r));
+    l.type === "FunctionDeclaration" ? (i.push(l), s.push(a)) : l.type === "VariableDeclaration" && ["const", "let"].indexOf(l.kind) !== -1 ? yield* L(l, r, { hoist: !0, onlyBlock: !0 }) : n || (yield* D(l, r));
   }
   if (s.length) {
     for (let a = s.length - 1; a > -1; a--)
@@ -2208,100 +2208,104 @@ function* Ge(e, r, t = {}) {
     e.body = i.concat(e.body);
   }
 }
-function* F(e, r) {
+function* D(e, r) {
   switch (e.type) {
     case "VariableDeclaration":
-      yield* z(e, r, { hoist: !0 });
+      yield* L(e, r, { hoist: !0 });
       break;
     case "ForInStatement":
     case "ForOfStatement":
-      e.left.type === "VariableDeclaration" && (yield* z(e.left, r, { hoist: !0 }));
+      e.left.type === "VariableDeclaration" && (yield* L(e.left, r, { hoist: !0 }));
     case "ForStatement":
-      e.type === "ForStatement" && e.init.type === "VariableDeclaration" && (yield* z(e.init, r, { hoist: !0 }));
+      e.type === "ForStatement" && e.init.type === "VariableDeclaration" && (yield* L(e.init, r, { hoist: !0 }));
     case "WhileStatement":
     case "DoWhileStatement":
-      yield* F(e.body, r);
+      yield* D(e.body, r);
       break;
     case "IfStatement":
-      yield* F(e.consequent, r), e.alternate && (yield* F(e.alternate, r));
+      yield* D(e.consequent, r), e.alternate && (yield* D(e.alternate, r));
       break;
     case "BlockStatement":
       for (let t = 0; t < e.body.length; t++)
-        yield* F(e.body[t], r);
+        yield* D(e.body[t], r);
       break;
     case "SwitchStatement":
       for (let t = 0; t < e.cases.length; t++)
         for (let n = 0; n < e.cases[t].consequent.length; n++)
-          yield* F(e.cases[t].consequent[n], r);
+          yield* D(e.cases[t].consequent[n], r);
       break;
     case "TryStatement": {
       const t = e.block.body;
       for (let s = 0; s < t.length; s++)
-        yield* F(t[s], r);
+        yield* D(t[s], r);
       const n = e.handler && e.handler.body.body;
       if (n)
         for (let s = 0; s < n.length; s++)
-          yield* F(n[s], r);
+          yield* D(n[s], r);
       const i = e.finalizer && e.finalizer.body;
       if (i)
         for (let s = 0; s < i.length; s++)
-          yield* F(i[s], r);
+          yield* D(i[s], r);
       break;
     }
   }
 }
-function* O(e, r, t = {}) {
+function* P(e, r, t = {}) {
   switch (e.type) {
     case "ObjectPattern":
-      return yield* qe(e, r, t);
+      return yield* Le(e, r, t);
     case "ArrayPattern":
-      return yield* ze(e, r, t);
+      return yield* Ke(e, r, t);
     case "RestElement":
-      return yield* K(e, r, t);
+      return yield* G(e, r, t);
     case "AssignmentPattern":
-      return yield* We(e, r, t);
+      return yield* Je(e, r, t);
     default:
       throw new SyntaxError("Unexpected token");
   }
 }
-function U(e, r, t = {}) {
+function q(e, r, t = {}) {
   if (
     /*<replace by:=node.generator\s||\snode.async>*/
     !e.generator && !e.async
   )
-    return N(e, r, t);
+    return z(e, r, t);
   const { superClass: n, isCtor: i } = t, s = e.params, a = function* (...c) {
     const o = new S(r, !0);
-    e.type !== "ArrowFunctionExpression" && (o.const("this", this), o.let("arguments", arguments), o.const(le, new.target), n && (o.const(se, n), i && o.let(T, !1)));
-    for (let u = 0; u < s.length; u++) {
-      const f = s[u];
-      f.type === "Identifier" ? o.var(f.name, c[u]) : f.type === "RestElement" ? yield* K(f, o, { kind: "var", feed: c.slice(u) }) : yield* O(f, o, { feed: c[u] });
+    if (e.type !== "ArrowFunctionExpression") {
+      o.const("this", this), o.let("arguments", arguments);
+      const u = a.__currentNewTarget || new.target;
+      o.const(ue, u), n && (o.const(oe, n), i && o.let(B, !1));
     }
-    let y;
-    if (e.body.type === "BlockStatement" ? (yield* Ge(e.body, o), y = yield* V(e.body, o, {
+    for (let u = 0; u < s.length; u++) {
+      const y = s[u];
+      y.type === "Identifier" ? o.var(y.name, c[u]) : y.type === "RestElement" ? yield* G(y, o, { kind: "var", feed: c.slice(u) }) : yield* P(y, o, { feed: c[u] });
+    }
+    let f;
+    if (e.body.type === "BlockStatement" ? (yield* Ye(e.body, o), f = yield* U(e.body, o, {
       invasived: !0,
       hoisted: !0
-    })) : (y = yield* d(e.body, o), e.type === "ArrowFunctionExpression" && (w.RES = y, y = w)), y === w)
-      return y.RES;
+    })) : (f = yield* d(e.body, o), e.type === "ArrowFunctionExpression" && (b.RES = f, f = b)), f === b)
+      return f.RES;
   };
   let l;
   return e.async && e.generator ? l = function() {
     const c = a.apply(this, arguments);
-    let o = Promise.resolve(), y = !1;
-    const u = (m) => o = o.then(() => ve(c, j({ fullRet: !0 }, m))).catch((g) => {
-      if (!y)
-        return y = !0, Promise.reject(g);
-    }), f = {
-      next: (m) => u({ res: m }),
-      throw: (m) => u({ err: m }),
-      return: (m) => u({ ret: m })
+    let o = Promise.resolve(), f = !1;
+    const u = (g) => o = o.then(() => Se(c, F({ fullRet: !0 }, g))).catch((m) => {
+      if (!f)
+        return f = !0, Promise.reject(m);
+    }), y = {
+      next: (g) => u({ res: g }),
+      throw: (g) => u({ err: g }),
+      return: (g) => u({ ret: g })
     };
-    return typeof Symbol == "function" && (f[Symbol.iterator] = function() {
+    return typeof Symbol == "function" && (y[Symbol.iterator] = function() {
       return this;
-    }), f;
+    }), y;
   } : e.async ? l = function() {
-    return ve(a.apply(this, arguments));
-  } : l = a, v(l, ae, { value: !0 }), v(l, "name", {
+    return Se(a.apply(this, arguments));
+  } : l = a, v(l, ce, { value: !0 }), v(l, "name", {
     value: e.id && e.id.name || "",
     configurable: !0
   }), v(l, "length", {
@@ -2309,86 +2313,93 @@ function U(e, r, t = {}) {
     configurable: !0
   }), l;
 }
-function* ue(e, r) {
+function* pe(e, r) {
   const t = yield* d(e.superClass, r), n = /* @__PURE__ */ new WeakMap(), i = /* @__PURE__ */ new Map(), s = e.body.body, a = [];
   let l = null;
   const c = [], o = [];
   for (let u = 0; u < s.length; u++) {
-    const f = s[u];
-    if (f.type === "MethodDefinition" && f.kind === "constructor")
-      l = yield* U(f.value, r, { superClass: t, isCtor: !0 });
-    else if (f.type === "PropertyDefinition") {
-      const m = f.key.type === "PrivateIdentifier";
-      let g;
-      if (m ? g = Symbol.for(`private:${f.key.name}`) : f.computed ? g = yield* d(f.key, r) : g = f.key.type === "Identifier" ? f.key.name : yield* d(f.key, r), f.static) {
-        const b = f.value ? yield* d(f.value, r) : void 0;
-        o.push({ key: g, value: b, isPrivate: m });
+    const y = s[u];
+    if (y.type === "MethodDefinition" && y.kind === "constructor")
+      l = yield* q(y.value, r, { superClass: t, isCtor: !0 });
+    else if (y.type === "PropertyDefinition") {
+      const g = y.key.type === "PrivateIdentifier";
+      let m;
+      if (g ? m = Symbol.for(`private:${y.key.name}`) : y.computed ? m = yield* d(y.key, r) : m = y.key.type === "Identifier" ? y.key.name : yield* d(y.key, r), y.static) {
+        const I = y.value ? yield* d(y.value, r) : void 0;
+        o.push({ key: m, value: I, isPrivate: g });
       } else
-        c.push({ key: g, valueNode: f.value, isPrivate: m });
-    } else f.type === "StaticBlock" && a.push(f);
+        c.push({ key: m, valueNode: y.value, isPrivate: g });
+    } else y.type === "StaticBlock" && a.push(y);
   }
-  let y;
-  l ? y = function(...u) {
-    const f = {}, m = y.__privateInstanceMethods;
-    m && m.forEach((g, b) => {
-      f[b] = g;
-    });
-    for (let g = 0; g < c.length; g++) {
-      const b = c[g];
-      b.isPrivate && (f[b.key] = void 0);
-    }
-    (Object.keys(f).length > 0 || Object.getOwnPropertySymbols(f).length > 0) && n.set(this, f);
-    for (let g = 0; g < c.length; g++) {
-      const b = c[g], _ = new S(r, !1);
-      _.const("this", this);
-      const G = b.valueNode ? d(b.valueNode, _) : void 0;
-      b.isPrivate ? f[b.key] = G : this[b.key] = G;
-    }
-    return l.apply(this, u);
-  } : y = function() {
-    const u = {}, f = y.__privateInstanceMethods;
-    f && f.forEach((m, g) => {
-      u[g] = m;
-    });
-    for (let m = 0; m < c.length; m++) {
-      const g = c[m];
-      g.isPrivate && (u[g.key] = void 0);
-    }
-    (Object.keys(u).length > 0 || Object.getOwnPropertySymbols(u).length > 0) && n.set(this, u);
-    for (let m = 0; m < c.length; m++) {
-      const g = c[m], b = new S(r, !1);
-      b.const("this", this);
-      const _ = g.valueNode ? d(g.valueNode, b) : void 0;
-      g.isPrivate ? u[g.key] = _ : this[g.key] = _;
-    }
-    t && t.apply(this);
-  }, t && ke(y, t), v(y, "__privateInstanceFields", { value: n }), v(y, "__privateStaticFields", { value: i }), yield* Ke(e.body, r, { klass: y, superClass: t });
+  let f;
+  if (l) {
+    let u;
+    f = u = function(...y) {
+      const g = {}, m = u.__privateInstanceMethods;
+      m && m.forEach((w, E) => {
+        g[E] = w;
+      });
+      for (let w = 0; w < c.length; w++) {
+        const E = c[w];
+        E.isPrivate && (g[E.key] = void 0);
+      }
+      (Object.keys(g).length > 0 || Object.getOwnPropertySymbols(g).length > 0) && n.set(this, g);
+      for (let w = 0; w < c.length; w++) {
+        const E = c[w], X = new S(r, !1);
+        X.const("this", this);
+        const C = E.valueNode ? d(E.valueNode, X) : void 0, Y = C && typeof C.next == "function" ? Array.from(C).pop() : C;
+        E.isPrivate ? g[E.key] = Y : this[E.key] = Y;
+      }
+      l.__currentNewTarget = new.target || u;
+      const I = l.call(this, ...y);
+      return delete l.__currentNewTarget, typeof I == "object" && I !== null ? I : this;
+    };
+  } else
+    f = function() {
+      const u = {}, y = f.__privateInstanceMethods;
+      y && y.forEach((g, m) => {
+        u[m] = g;
+      });
+      for (let g = 0; g < c.length; g++) {
+        const m = c[g];
+        m.isPrivate && (u[m.key] = void 0);
+      }
+      (Object.keys(u).length > 0 || Object.getOwnPropertySymbols(u).length > 0) && n.set(this, u);
+      for (let g = 0; g < c.length; g++) {
+        const m = c[g], I = new S(r, !1);
+        I.const("this", this);
+        const w = m.valueNode ? d(m.valueNode, I) : void 0;
+        m.isPrivate ? u[m.key] = w : this[m.key] = w;
+      }
+      t && t.apply(this);
+    };
+  t && _e(f, t), v(f, "__privateInstanceFields", { value: n }), v(f, "__privateStaticFields", { value: i }), yield* He(e.body, r, { klass: f, superClass: t });
   for (let u = 0; u < o.length; u++) {
-    const f = o[u];
-    f.isPrivate ? i.set(f.key, f.value) : y[f.key] = f.value;
+    const y = o[u];
+    y.isPrivate ? i.set(y.key, y.value) : f[y.key] = y.value;
   }
   for (let u = 0; u < a.length; u++) {
-    const f = a[u], m = new S(r, !0);
-    m.const("this", y);
-    for (let g = 0; g < f.body.length; g++)
-      yield* d(f.body[g], m);
+    const y = a[u], g = new S(r, !0);
+    g.const("this", f);
+    for (let m = 0; m < y.body.length; m++)
+      yield* d(y.body[m], g);
   }
-  return v(y, W, { value: !0 }), v(y, "name", {
+  return v(f, K, { value: !0 }), v(f, "name", {
     value: e.id && e.id.name || "",
     configurable: !0
-  }), y;
+  }), f;
 }
-function* fe(e, r, t) {
+function* he(e, r, t) {
   const { value: n } = t, i = e.left, s = new S(r);
-  i.type === "VariableDeclaration" ? yield* z(i, s, { feed: n }) : i.type === "Identifier" ? (yield* R(i, r, { getVar: !0 })).set(n) : yield* O(i, r, { feed: n });
+  i.type === "VariableDeclaration" ? yield* L(i, s, { feed: n }) : i.type === "Identifier" ? (yield* M(i, r, { getVar: !0 })).set(n) : yield* P(i, r, { feed: n });
   let a;
-  return e.body.type === "BlockStatement" ? a = yield* V(e.body, s, { invasived: !0 }) : a = yield* d(e.body, s), a;
+  return e.body.type === "BlockStatement" ? a = yield* U(e.body, s, { invasived: !0 }) : a = yield* d(e.body, s), a;
 }
-function pe(e, r, t = {}) {
+function ge(e, r, t = {}) {
   const { onlyBlock: n = !1 } = t, i = [], s = [];
   for (let a = 0; a < e.body.length; a++) {
     const l = e.body[a];
-    l.type === "FunctionDeclaration" ? (i.push(l), s.push(a)) : l.type === "VariableDeclaration" && ["const", "let"].indexOf(l.kind) !== -1 ? q(l, r, { hoist: !0, onlyBlock: !0 }) : n || C(l, r);
+    l.type === "FunctionDeclaration" ? (i.push(l), s.push(a)) : l.type === "VariableDeclaration" && ["const", "let"].indexOf(l.kind) !== -1 ? W(l, r, { hoist: !0, onlyBlock: !0 }) : n || T(l, r);
   }
   if (s.length) {
     for (let a = s.length - 1; a > -1; a--)
@@ -2396,81 +2407,85 @@ function pe(e, r, t = {}) {
     e.body = i.concat(e.body);
   }
 }
-function C(e, r) {
+function T(e, r) {
   switch (e.type) {
     case "VariableDeclaration":
-      q(e, r, { hoist: !0 });
+      W(e, r, { hoist: !0 });
       break;
     case "ForInStatement":
     case "ForOfStatement":
-      e.left.type === "VariableDeclaration" && q(e.left, r, { hoist: !0 });
+      e.left.type === "VariableDeclaration" && W(e.left, r, { hoist: !0 });
     case "ForStatement":
-      e.type === "ForStatement" && e.init.type === "VariableDeclaration" && q(e.init, r, { hoist: !0 });
+      e.type === "ForStatement" && e.init.type === "VariableDeclaration" && W(e.init, r, { hoist: !0 });
     case "WhileStatement":
     case "DoWhileStatement":
-      C(e.body, r);
+      T(e.body, r);
       break;
     case "IfStatement":
-      C(e.consequent, r), e.alternate && C(e.alternate, r);
+      T(e.consequent, r), e.alternate && T(e.alternate, r);
       break;
     case "BlockStatement":
       for (let t = 0; t < e.body.length; t++)
-        C(e.body[t], r);
+        T(e.body[t], r);
       break;
     case "SwitchStatement":
       for (let t = 0; t < e.cases.length; t++)
         for (let n = 0; n < e.cases[t].consequent.length; n++)
-          C(e.cases[t].consequent[n], r);
+          T(e.cases[t].consequent[n], r);
       break;
     case "TryStatement": {
       const t = e.block.body;
       for (let s = 0; s < t.length; s++)
-        C(t[s], r);
+        T(t[s], r);
       const n = e.handler && e.handler.body.body;
       if (n)
         for (let s = 0; s < n.length; s++)
-          C(n[s], r);
+          T(n[s], r);
       const i = e.finalizer && e.finalizer.body;
       if (i)
         for (let s = 0; s < i.length; s++)
-          C(i[s], r);
+          T(i[s], r);
       break;
     }
   }
 }
-function P(e, r, t = {}) {
+function j(e, r, t = {}) {
   switch (e.type) {
     case "ObjectPattern":
-      return Fe(e, r, t);
+      return Te(e, r, t);
     case "ArrayPattern":
-      return Ce(e, r, t);
+      return Ae(e, r, t);
     case "RestElement":
-      return L(e, r, t);
+      return J(e, r, t);
     case "AssignmentPattern":
-      return De(e, r, t);
+      return Re(e, r, t);
     default:
       throw new SyntaxError("Unexpected token");
   }
 }
-function N(e, r, t = {}) {
+function z(e, r, t = {}) {
   if (e.generator || e.async)
-    return U(e, r, t);
-  const { superClass: n, isCtor: i } = t, s = e.params;
-  let l = function(...c) {
+    return q(e, r, t);
+  const { superClass: n, isCtor: i } = t, s = e.params, a = function(...c) {
     const o = new S(r, !0);
-    e.type !== "ArrowFunctionExpression" && (o.const("this", this), o.let("arguments", arguments), o.const(le, new.target), n && (o.const(se, n), i && o.let(T, !1)));
-    for (let u = 0; u < s.length; u++) {
-      const f = s[u];
-      f.type === "Identifier" ? o.var(f.name, c[u]) : f.type === "RestElement" ? L(f, o, { kind: "var", feed: c.slice(u) }) : P(f, o, { feed: c[u] });
+    if (e.type !== "ArrowFunctionExpression") {
+      o.const("this", this), o.let("arguments", arguments);
+      const u = a.__currentNewTarget || new.target;
+      o.const(ue, u), n && (o.const(oe, n), i && o.let(B, !1));
     }
-    let y;
-    if (e.body.type === "BlockStatement" ? (pe(e.body, o), y = M(e.body, o, {
+    for (let u = 0; u < s.length; u++) {
+      const y = s[u];
+      y.type === "Identifier" ? o.var(y.name, c[u]) : y.type === "RestElement" ? J(y, o, { kind: "var", feed: c.slice(u) }) : j(y, o, { feed: c[u] });
+    }
+    let f;
+    if (e.body.type === "BlockStatement" ? (ge(e.body, o), f = N(e.body, o, {
       invasived: !0,
       hoisted: !0
-    })) : (y = h(e.body, o), e.type === "ArrowFunctionExpression" && (w.RES = y, y = w)), y === w)
-      return y.RES;
+    })) : (f = h(e.body, o), e.type === "ArrowFunctionExpression" && (b.RES = f, f = b)), f === b)
+      return f.RES;
   };
-  return e.type === "ArrowFunctionExpression" && v(l, ae, { value: !0 }), v(l, "name", {
+  let l = a;
+  return e.type === "ArrowFunctionExpression" && v(l, ce, { value: !0 }), v(l, "name", {
     value: e.id && e.id.name || "",
     configurable: !0
   }), v(l, "length", {
@@ -2478,89 +2493,96 @@ function N(e, r, t = {}) {
     configurable: !0
   }), l;
 }
-function ye(e, r) {
+function de(e, r) {
   const t = h(e.superClass, r), n = /* @__PURE__ */ new WeakMap(), i = /* @__PURE__ */ new Map(), s = e.body.body, a = [];
   let l = null;
   const c = [], o = [];
   for (let u = 0; u < s.length; u++) {
-    const f = s[u];
-    if (f.type === "MethodDefinition" && f.kind === "constructor")
-      l = N(f.value, r, { superClass: t, isCtor: !0 });
-    else if (f.type === "PropertyDefinition") {
-      const m = f.key.type === "PrivateIdentifier";
-      let g;
-      if (m ? g = Symbol.for(`private:${f.key.name}`) : f.computed ? g = h(f.key, r) : g = f.key.type === "Identifier" ? f.key.name : h(f.key, r), f.static) {
-        const b = f.value ? h(f.value, r) : void 0;
-        o.push({ key: g, value: b, isPrivate: m });
+    const y = s[u];
+    if (y.type === "MethodDefinition" && y.kind === "constructor")
+      l = z(y.value, r, { superClass: t, isCtor: !0 });
+    else if (y.type === "PropertyDefinition") {
+      const g = y.key.type === "PrivateIdentifier";
+      let m;
+      if (g ? m = Symbol.for(`private:${y.key.name}`) : y.computed ? m = h(y.key, r) : m = y.key.type === "Identifier" ? y.key.name : h(y.key, r), y.static) {
+        const I = y.value ? h(y.value, r) : void 0;
+        o.push({ key: m, value: I, isPrivate: g });
       } else
-        c.push({ key: g, valueNode: f.value, isPrivate: m });
-    } else f.type === "StaticBlock" && a.push(f);
+        c.push({ key: m, valueNode: y.value, isPrivate: g });
+    } else y.type === "StaticBlock" && a.push(y);
   }
-  let y;
-  l ? y = function(...u) {
-    const f = {}, m = y.__privateInstanceMethods;
-    m && m.forEach((g, b) => {
-      f[b] = g;
-    });
-    for (let g = 0; g < c.length; g++) {
-      const b = c[g];
-      b.isPrivate && (f[b.key] = void 0);
-    }
-    (Object.keys(f).length > 0 || Object.getOwnPropertySymbols(f).length > 0) && n.set(this, f);
-    for (let g = 0; g < c.length; g++) {
-      const b = c[g], _ = new S(r, !1);
-      _.const("this", this);
-      const G = b.valueNode ? h(b.valueNode, _) : void 0;
-      b.isPrivate ? f[b.key] = G : this[b.key] = G;
-    }
-    return l.apply(this, u);
-  } : y = function() {
-    const u = {}, f = y.__privateInstanceMethods;
-    f && f.forEach((m, g) => {
-      u[g] = m;
-    });
-    for (let m = 0; m < c.length; m++) {
-      const g = c[m];
-      g.isPrivate && (u[g.key] = void 0);
-    }
-    (Object.keys(u).length > 0 || Object.getOwnPropertySymbols(u).length > 0) && n.set(this, u);
-    for (let m = 0; m < c.length; m++) {
-      const g = c[m], b = new S(r, !1);
-      b.const("this", this);
-      const _ = g.valueNode ? h(g.valueNode, b) : void 0;
-      g.isPrivate ? u[g.key] = _ : this[g.key] = _;
-    }
-    t && t.apply(this);
-  }, t && ke(y, t), v(y, "__privateInstanceFields", { value: n }), v(y, "__privateStaticFields", { value: i }), Te(e.body, r, { klass: y, superClass: t });
+  let f;
+  if (l) {
+    let u;
+    f = u = function(...y) {
+      const g = {}, m = u.__privateInstanceMethods;
+      m && m.forEach((w, E) => {
+        g[E] = w;
+      });
+      for (let w = 0; w < c.length; w++) {
+        const E = c[w];
+        E.isPrivate && (g[E.key] = void 0);
+      }
+      (Object.keys(g).length > 0 || Object.getOwnPropertySymbols(g).length > 0) && n.set(this, g);
+      for (let w = 0; w < c.length; w++) {
+        const E = c[w], X = new S(r, !1);
+        X.const("this", this);
+        const C = E.valueNode ? h(E.valueNode, X) : void 0, Y = C && typeof C.next == "function" ? Array.from(C).pop() : C;
+        E.isPrivate ? g[E.key] = Y : this[E.key] = Y;
+      }
+      l.__currentNewTarget = new.target || u;
+      const I = l.call(this, ...y);
+      return delete l.__currentNewTarget, typeof I == "object" && I !== null ? I : this;
+    };
+  } else
+    f = function() {
+      const u = {}, y = f.__privateInstanceMethods;
+      y && y.forEach((g, m) => {
+        u[m] = g;
+      });
+      for (let g = 0; g < c.length; g++) {
+        const m = c[g];
+        m.isPrivate && (u[m.key] = void 0);
+      }
+      (Object.keys(u).length > 0 || Object.getOwnPropertySymbols(u).length > 0) && n.set(this, u);
+      for (let g = 0; g < c.length; g++) {
+        const m = c[g], I = new S(r, !1);
+        I.const("this", this);
+        const w = m.valueNode ? h(m.valueNode, I) : void 0;
+        m.isPrivate ? u[m.key] = w : this[m.key] = w;
+      }
+      t && t.apply(this);
+    };
+  t && _e(f, t), v(f, "__privateInstanceFields", { value: n }), v(f, "__privateStaticFields", { value: i }), Me(e.body, r, { klass: f, superClass: t });
   for (let u = 0; u < o.length; u++) {
-    const f = o[u];
-    f.isPrivate ? i.set(f.key, f.value) : y[f.key] = f.value;
+    const y = o[u];
+    y.isPrivate ? i.set(y.key, y.value) : f[y.key] = y.value;
   }
   for (let u = 0; u < a.length; u++) {
-    const f = a[u], m = new S(r, !0);
-    m.const("this", y);
-    for (let g = 0; g < f.body.length; g++)
-      h(f.body[g], m);
+    const y = a[u], g = new S(r, !0);
+    g.const("this", f);
+    for (let m = 0; m < y.body.length; m++)
+      h(y.body[m], g);
   }
-  return v(y, W, { value: !0 }), v(y, "name", {
+  return v(f, K, { value: !0 }), v(f, "name", {
     value: e.id && e.id.name || "",
     configurable: !0
-  }), y;
+  }), f;
 }
-function He(e, r, t) {
+function Ze(e, r, t) {
   const { value: n } = t, i = e.left, s = new S(r);
-  i.type === "VariableDeclaration" ? q(i, s, { feed: n }) : i.type === "Identifier" ? R(i, r, { getVar: !0 }).set(n) : P(i, r, { feed: n });
+  i.type === "VariableDeclaration" ? W(i, s, { feed: n }) : i.type === "Identifier" ? M(i, r, { getVar: !0 }).set(n) : j(i, r, { feed: n });
   let a;
-  return e.body.type === "BlockStatement" ? a = M(e.body, s, { invasived: !0 }) : a = h(e.body, s), a;
+  return e.body.type === "BlockStatement" ? a = N(e.body, s, { invasived: !0 }) : a = h(e.body, s), a;
 }
-const he = class he {
+const me = class me {
   constructor(r = {}) {
     this.options = {}, this.scope = new S(null, !0), this.exports = {};
     let { ecmaVer: t = "latest", sandBox: n = !0 } = r;
     if (t !== "latest" && (t = t - (t < 2015 ? 0 : 2009), [3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].indexOf(t) === -1))
       throw new Error("unsupported ecmaVer");
     if (this.options.ecmaVersion = t, n) {
-      const i = it();
+      const i = lt();
       this.scope.let("window", i), this.scope.let("this", i);
     } else
       this.scope.let("window", p), this.scope.let("this", p);
@@ -2568,23 +2590,23 @@ const he = class he {
   }
   import(r, t) {
     if (typeof r == "string" && (r = { [r]: t }), typeof r != "object") return;
-    const n = ne(r);
+    const n = ae(r);
     for (let i = 0; i < n.length; i++) {
       const s = n[i];
       this.scope.var(s, r[s]);
     }
   }
   parse(r, t) {
-    return typeof t == "function" ? t(r, j({}, this.options)) : de(r, this.options);
+    return typeof t == "function" ? t(r, F({}, this.options)) : ve(r, this.options);
   }
   run(r) {
-    const t = typeof r == "string" ? de(r, this.options) : r;
-    pe(t, this.scope), h(t, this.scope);
+    const t = typeof r == "string" ? ve(r, this.options) : r;
+    ge(t, this.scope), h(t, this.scope);
   }
 };
-he.version = at;
-let be = he;
+me.version = ct;
+let Ee = me;
 export {
-  be as default
+  Ee as default
 };
 //# sourceMappingURL=sval.js.map
