@@ -1,6 +1,9 @@
 # Useless directories
 /src/evaluate_n
 
+# Test262 suite (cloned locally, not committed)
+test262/
+
 # Logs
 logs
 *.log

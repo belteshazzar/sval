@@ -18,6 +18,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test262:setup": "bash scripts/setup-test262.sh",
+    "test262": "node scripts/test262-runner.js",
     "cov": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -39,6 +41,7 @@
   "homepage": "https://github.com/Siubaak/sval#readme",
   "dependencies": {
     "acorn": "^8.15.0",
+    "sval": "^0.6.7",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
