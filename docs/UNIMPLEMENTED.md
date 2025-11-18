@@ -8,8 +8,8 @@ This document provides a quick overview of unimplemented JavaScript language fea
 |---------|--------|----------|----------|------------|
 | WithStatement | ❌ Not Implemented | Throws error | LOW | ES3 |
 | LabeledStatement | ❌ Not Implemented | Throws error | MEDIUM | ES3 |
-| PropertyDefinition | ⚠️ Silently Skipped | Fields undefined | HIGH | ES2022 |
-| PrivateIdentifier | ⚠️ Silently Skipped | Members undefined | HIGH | ES2022 |
+| PropertyDefinition | ✅ Implemented | Fields initialized | - | ES2022 |
+| PrivateIdentifier | ❌ Not Implemented | Throws error | HIGH | ES2022 |
 | StaticBlock | ⚠️ Silently Skipped | Not executed | MEDIUM | ES2022 |
 | ImportExpression | ⚠️ Silently Skipped | Returns undefined | MEDIUM | ES2020 |
 | ES6 Modules (import/export) | ❌ Parse Error | Requires sourceType | LOW | ES2015 |
@@ -20,32 +20,35 @@ This document provides a quick overview of unimplemented JavaScript language fea
 These features throw an explicit error when encountered:
 - `WithStatement isn't implemented`
 - `LabeledStatement isn't implemented`
+- `PrivateIdentifier isn't implemented`
 
 **Example:**
 ```javascript
 // Throws: "WithStatement isn't implemented"
 with (obj) { x = 1; }
+
+// Throws: "PrivateIdentifier isn't implemented"
+class MyClass {
+  #private = 42  // Not supported yet
+}
 ```
 
-### ⚠️ Silently Skipped
-These features parse successfully but are not executed, leading to unexpected behavior:
+### ✅ Implemented
+These features are fully implemented and working:
 
 **PropertyDefinition (Class Fields)**
 ```javascript
 class MyClass {
-  x = 10  // Silently skipped
+  x = 10  // Instance field
+  static y = 20  // Static field
 }
 const obj = new MyClass()
-console.log(obj.x)  // undefined (should be 10)
+console.log(obj.x)  // 10
+console.log(MyClass.y)  // 20
 ```
 
-**PrivateIdentifier**
-```javascript
-class MyClass {
-  #private = 42  // Silently skipped
-  get() { return this.#private }  // undefined (should be 42)
-}
-```
+### ⚠️ Silently Skipped
+These features parse successfully but are not executed, leading to unexpected behavior:
 
 **StaticBlock**
 ```javascript
@@ -91,7 +94,7 @@ Expected output:
 ## Recommended Implementation Order
 
 1. **Phase 1: ES2022 Class Features** (HIGH priority)
-   - PropertyDefinition
+   - ✅ ~~PropertyDefinition~~ (COMPLETED)
    - StaticBlock
    - PrivateIdentifier
 

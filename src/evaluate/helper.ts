@@ -242,17 +242,65 @@ export function* createClass(
 ) {
   const superClass = yield* evaluate(node.superClass, scope)
 
-  let klass = function () {
-    if (superClass) {
-      superClass.apply(this)
-    }
-  }
+  // First, find constructor and collect field definitions
   const methodBody = node.body.body
+  let originalCtor: any = null
+  const instanceFieldDefs: Array<{key: any, valueNode: any}> = []
+  const staticFields: Array<{key: any, value: any}> = []
+  
   for (let i = 0; i < methodBody.length; i++) {
     const method = methodBody[i]
     if (method.type === 'MethodDefinition' && method.kind === 'constructor') {
-      klass = createFunc(method.value, scope, { superClass, isCtor: true })
-      break
+      originalCtor = yield* createFunc(method.value, scope, { superClass, isCtor: true })
+    } else if (method.type === 'PropertyDefinition') {
+      const key = method.computed 
+        ? yield* evaluate(method.key, scope)
+        : method.key.type === 'Identifier' ? method.key.name : yield* evaluate(method.key, scope)
+      
+      if (method.static) {
+        // Static fields are evaluated once during class creation
+        const value = method.value ? yield* evaluate(method.value, scope) : undefined
+        staticFields.push({ key, value })
+      } else {
+        // Instance fields: store the expression node to evaluate per-instance
+        instanceFieldDefs.push({ key, valueNode: method.value })
+      }
+    }
+  }
+
+  // Create class constructor
+  let klass: any
+  
+  if (originalCtor) {
+    // Wrap constructor to initialize fields first
+    klass = function (this: any, ...args: any[]) {
+      // Initialize instance fields before constructor body
+      // Field initializers are evaluated in the context of each new instance
+      for (let i = 0; i < instanceFieldDefs.length; i++) {
+        const field = instanceFieldDefs[i]
+        const subScope = new Scope(scope, false)
+        subScope.const('this', this)
+        this[field.key] = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+      }
+      
+      // Call original constructor
+      return originalCtor.apply(this, args)
+    }
+  } else {
+    // No constructor - create default one
+    klass = function (this: any) {
+      // Initialize instance fields
+      for (let i = 0; i < instanceFieldDefs.length; i++) {
+        const field = instanceFieldDefs[i]
+        const subScope = new Scope(scope, false)
+        subScope.const('this', this)
+        this[field.key] = field.valueNode ? evaluate(field.valueNode, subScope) : undefined
+      }
+      
+      // Call super if exists
+      if (superClass) {
+        superClass.apply(this)
+      }
     }
   }
 
@@ -260,7 +308,14 @@ export function* createClass(
     inherits(klass, superClass)
   }
 
+  // Add methods to prototype (ClassBody will skip PropertyDefinition nodes when klass is present)
   yield* ClassBody(node.body, scope, { klass, superClass })
+
+  // Initialize static fields on the class
+  for (let i = 0; i < staticFields.length; i++) {
+    const field = staticFields[i]
+    klass[field.key] = field.value
+  }
 
   define(klass, CLSCTOR, { value: true })
   define(klass, 'name', {

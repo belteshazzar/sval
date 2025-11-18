@@ -88,19 +88,20 @@ export interface ClassOptions {
   superClass?: (...args: any[]) => void
 }
 
-export function* ClassBody(node: estree.ClassBody, scope: Scope, options: ClassOptions = {}) {
+export function* ClassBody(node: estree.ClassBody, scope: Scope, options: ClassOptions = {}): IterableIterator<any> {
   const { klass, superClass } = options
 
   for (let i = 0; i < node.body.length; i++) {
     const member = node.body[i]
-    // Handle MethodDefinition, PropertyDefinition, and StaticBlock
+    
     if (member.type === 'MethodDefinition') {
       yield* MethodDefinition(member, scope, { klass, superClass })
     } else if (member.type === 'PropertyDefinition') {
-      // ES2022 Class fields - skip for now as they need special handling
-      // They should be handled in the class constructor
+      // ES2022 Class fields - handled in createClass, skip here
+      continue
     } else if (member.type === 'StaticBlock') {
-      // ES2022 Static initialization blocks - skip for now
+      // ES2022 Static initialization blocks - not yet implemented
+      continue
     }
   }
 }
@@ -118,7 +119,7 @@ export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, o
   }
 
   const obj = node.static ? klass : klass.prototype
-  const value = createFunc(node.value, scope, { superClass })
+  const value = yield* createFunc(node.value, scope, { superClass })
 
   switch (node.kind) {
     case 'constructor':

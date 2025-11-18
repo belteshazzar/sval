@@ -20,11 +20,12 @@ try {
   // Ignore build errors for now
 }
 
-// Load the built Sval
-const Sval = require('../dist/sval.js');
+// Load the built Sval - use dynamic import for ES module
+(async () => {
+  const { default: Sval } = await import('../dist/sval.js');
 
-console.log('Testing Unimplemented Features\n');
-console.log('=' .repeat(60) + '\n');
+  console.log('Testing Unimplemented Features\n');
+  console.log('=' .repeat(60) + '\n');
 
 const tests = [
   {
@@ -71,8 +72,8 @@ const tests = [
       exports.x = instance.x
       exports.y = instance.y
     `,
-    expectedBehavior: 'silently_skipped',
-    verify: (exports) => exports.x === undefined && exports.y === undefined
+    expectedBehavior: 'works',
+    verify: (exports) => exports.x === 10 && exports.y === 20 && exports.result === 30
   },
   {
     name: 'PrivateIdentifier',
@@ -88,8 +89,8 @@ const tests = [
       const instance = new MyClass()
       exports.result = instance.getPrivate()
     `,
-    expectedBehavior: 'silently_skipped',
-    verify: (exports) => exports.result === undefined
+    expectedBehavior: 'throws_error',
+    expectedError: 'PrivateIdentifier'
   },
   {
     name: 'StaticBlock',
@@ -159,7 +160,21 @@ tests.forEach((test, index) => {
     interpreter.run(test.code);
     
     // If we get here, code executed successfully
-    if (test.expectedBehavior === 'silently_skipped') {
+    if (test.expectedBehavior === 'works') {
+      // Verify the feature is working correctly
+      if (test.verify(interpreter.exports)) {
+        console.log(`✅ PASS: ${test.name}`);
+        console.log(`   Feature is working correctly`);
+        console.log('');
+        passed++;
+      } else {
+        console.log(`❌ FAIL: ${test.name}`);
+        console.log(`   Feature executed but verification failed`);
+        console.log(`   exports:`, interpreter.exports);
+        console.log('');
+        failed++;
+      }
+    } else if (test.expectedBehavior === 'silently_skipped') {
       // Verify the feature is indeed not working correctly
       if (test.verify(interpreter.exports)) {
         console.log(`✅ PASS: ${test.name}`);
@@ -213,3 +228,4 @@ if (passed === tests.length) {
   console.log('⚠️  Some tests did not behave as expected.');
   process.exit(1);
 }
+})();
