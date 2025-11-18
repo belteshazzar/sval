@@ -424,8 +424,18 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
 
     if (typeof func !== 'function') {
       throw new TypeError(`${key} is not a function`)
-    } else if (func[CLSCTOR]) {
-      throw new TypeError(`Class constructor ${key} cannot be invoked without 'new'`)
+    }
+    
+    // Check if it's a class constructor (safely handle Proxy objects)
+    try {
+      if (func[CLSCTOR] === true) {
+        throw new TypeError(`Class constructor ${key} cannot be invoked without 'new'`)
+      }
+    } catch (e) {
+      // Ignore errors from Proxy objects that don't handle symbol properties
+      if (e instanceof TypeError && e.message.includes('Class constructor')) {
+        throw e
+      }
     }
   } else {
     object = scope.find('this').get()
@@ -436,7 +446,14 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
       return undefined
     }
     
-    if (typeof func !== 'function' || node.callee.type !== 'Super' && func[CLSCTOR]) {
+    let isClassConstructor = false
+    try {
+      isClassConstructor = func[CLSCTOR] === true
+    } catch (e) {
+      // Ignore errors from Proxy objects that don't handle symbol properties
+    }
+    
+    if (typeof func !== 'function' || node.callee.type !== 'Super' && isClassConstructor) {
       let name: string
       if (node.callee.type === 'Identifier') {
         name = node.callee.name
@@ -474,9 +491,22 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
     }
   }
 
-  if (object && object[WINDOW] && func.toString().indexOf('[native code]') !== -1) {
+  // Safely check for WINDOW symbol (avoid Proxy errors)
+  let hasWindow = false
+  try {
+    hasWindow = object && object[WINDOW]
+  } catch (e) {
+    // Ignore errors from Proxy objects
+  }
+  
+  if (hasWindow && func.toString().indexOf('[native code]') !== -1) {
     // you will get "TypeError: Illegal invocation" if not binding native function with window
-    return func.apply(object[WINDOW], args)
+    try {
+      return func.apply(object[WINDOW], args)
+    } catch (e) {
+      // Fallback if WINDOW access fails
+      return func.apply(object, args)
+    }
   }
 
   return func.apply(object, args)
@@ -484,6 +514,14 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
 
 export function* NewExpression(node: estree.NewExpression, scope: Scope) {
   const constructor = yield* evaluate(node.callee, scope)
+
+  // Safely check for NOCTOR symbol (avoid Proxy errors)
+  let isNoCtor = false
+  try {
+    isNoCtor = constructor[NOCTOR]
+  } catch (e) {
+    // Ignore errors from Proxy objects
+  }
 
   if (typeof constructor !== 'function') {
     let name: string
@@ -497,7 +535,7 @@ export function* NewExpression(node: estree.NewExpression, scope: Scope) {
       }
     }
     throw new TypeError(`${name} is not a constructor`)
-  } else if (constructor[NOCTOR]) {
+  } else if (isNoCtor) {
     throw new TypeError(`${constructor.name || '(intermediate value)'} is not a constructor`)
   }
 
