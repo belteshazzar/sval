@@ -109,7 +109,7 @@ describe('ES6 Modules', () => {
     }, 10000)
 
     it('should support custom fetch function', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'custom://test') {
           return 'export const value = 123'
         }
@@ -133,7 +133,7 @@ describe('ES6 Modules', () => {
 
   describe('Re-exports', () => {
     it('should handle export { x } from "module"', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://a') {
           return 'export const x = 100'
         }
@@ -158,7 +158,7 @@ describe('ES6 Modules', () => {
     })
 
     it('should handle export * from "module"', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://a') {
           return 'export const x = 1; export const y = 2'
         }
@@ -185,7 +185,7 @@ describe('ES6 Modules', () => {
     })
 
     it('should handle export * as ns from "module"', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://a') {
           return 'export const x = 1; export const y = 2'
         }
@@ -214,7 +214,7 @@ describe('ES6 Modules', () => {
 
   describe('Dynamic import', () => {
     it('should handle import() expression', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://dynamic') {
           return 'export const value = 42'
         }
@@ -238,7 +238,7 @@ describe('ES6 Modules', () => {
 
   describe('Import variations', () => {
     it('should handle default import', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://default') {
           return 'export default 42'
         }
@@ -260,7 +260,7 @@ describe('ES6 Modules', () => {
     })
 
     it('should handle namespace import', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://ns') {
           return 'export const x = 1; export const y = 2; export default 3'
         }
@@ -286,7 +286,7 @@ describe('ES6 Modules', () => {
     })
 
     it('should handle mixed imports', async () => {
-      const customFetch = async (url: string) => {
+      const customFetch = async (url) => {
         if (url === 'module://mixed') {
           return 'export const x = 1; export default 42'
         }

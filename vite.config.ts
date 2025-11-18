@@ -27,7 +27,17 @@ export default defineConfig(({ command }) => {
       rollupOptions: {
         external: ['acorn']
       },
-      sourcemap: true
+      sourcemap: true,
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: false,
+          passes: 2
+        },
+        format: {
+          comments: false
+        }
+      }
     },
     resolve: {
       alias: {

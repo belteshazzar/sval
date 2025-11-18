@@ -63,145 +63,157 @@ describe('testing src/index.ts', () => {
     expect(interpreter.exports.res).toEqual([1, 2, 3])
   })
 
-  it('should excute async function normally', done => {  
+  it('should excute async function normally', async () => {  
     const interpreter = new Sval()
-    interpreter.import({ expect, done })
-    interpreter.run(`
-      a()
-      async function a() {
-        const res = []
-        for (const i of [1, 2, 3]) {
-          res.push(await i)
+    await new Promise((resolve) => {
+      interpreter.import({ expect, done: resolve })
+      interpreter.run(`
+        a()
+        async function a() {
+          const res = []
+          for (const i of [1, 2, 3]) {
+            res.push(await i)
+          }
+          expect(res).toEqual([1, 2, 3])
+          done()
         }
-        expect(res).toEqual([1, 2, 3])
-        done()
-      }
-    `)
+      `)
+    })
   })
-  it('should excute async function normally 2', done => {  
+  it('should excute async function normally 2', async () => {  
     const interpreter = new Sval()
-    interpreter.import({ getItem, expect, done })
-    interpreter.run(`
-      a()
-      async function a() {
-        const res = []
-        for (const i of [1, 2, 3]) {
-          res.push(await getItem(i))
-        }
-        expect(res).toEqual([1, 2, 3])
-        done()
-      }
-    `)
-    function getItem(n: any) {
-      return new Promise(resolve => setTimeout(resolve, 5, n))
-    }
-  })
-
-  it('should excute async function with params', done => {  
-    const interpreter = new Sval()
-    interpreter.import({ getItem, expect, done })
-    interpreter.run(`
-      a([1, 2, 3], [1, 2, 3])
-      async function a(input, expected) {
-        const res = []
-        for (const i of input) {
-          res.push(await getItem(i))
-        }
-        expect(res).toEqual(expected)
-        done()
-      }
-    `)
     function getItem(n) {
       return new Promise(resolve => setTimeout(resolve, 5, n))
     }
+    await new Promise((resolve) => {
+      interpreter.import({ getItem, expect, done: resolve })
+      interpreter.run(`
+        a()
+        async function a() {
+          const res = []
+          for (const i of [1, 2, 3]) {
+            res.push(await getItem(i))
+          }
+          expect(res).toEqual([1, 2, 3])
+          done()
+        }
+      `)
+    })
   })
 
-  it('should excute async generator normally', done => {  
+  it('should excute async function with params', async () => {  
     const interpreter = new Sval()
-    interpreter.import({ getItem, expect, done })
-    interpreter.run(`
-      const res = []
-      async function* a() {
-        for (const i of [1, 2, 3]) {
-          res.push(yield await getItem(i))
-        }
-      }
-      const g = a()
-      g.next()
-      g.next(2)
-      g.next(4)
-      g.next(6).then(() => {
-        expect(res).toEqual([2, 4, 6])
-        done()
-      })
-    `)
-    function getItem(n: any) {
+    function getItem(n) {
       return new Promise(resolve => setTimeout(resolve, 5, n))
     }
+    await new Promise((resolve) => {
+      interpreter.import({ getItem, expect, done: resolve })
+      interpreter.run(`
+        a([1, 2, 3], [1, 2, 3])
+        async function a(input, expected) {
+          const res = []
+          for (const i of input) {
+            res.push(await getItem(i))
+          }
+          expect(res).toEqual(expected)
+          done()
+        }
+      `)
+    })
   })
 
-  it('should support async generator with throwing error', (done) => {  
+  it('should excute async generator normally', async () => {  
     const interpreter = new Sval()
-    interpreter.import({ getItem, expect, done })
-    interpreter.run(`
-      const res = []
-      async function* a() {
-        for (const i of [1, 2, 3, 4]) {
-          res.push(yield await getItem(i))
-        }
-      }
-      const g = a()
-      g.next()
-      g.next(2)
-      g.return(4)
-      g.next(6)
-      g.throw(8).catch((e) => {
-        expect(res).toEqual([2])
-        expect(e).toEqual(8)
-        done()
-      })
-    `)
-    function getItem(n: any) {
+    function getItem(n) {
       return new Promise(resolve => setTimeout(resolve, 5, n))
     }
+    await new Promise((resolve) => {
+      interpreter.import({ getItem, expect, done: resolve })
+      interpreter.run(`
+        const res = []
+        async function* a() {
+          for (const i of [1, 2, 3]) {
+            res.push(yield await getItem(i))
+          }
+        }
+        const g = a()
+        g.next()
+        g.next(2)
+        g.next(4)
+        g.next(6).then(() => {
+          expect(res).toEqual([2, 4, 6])
+          done()
+        })
+      `)
+    })
   })
 
-  it('should support async generator with throwing error in generator', (done) => {  
+  it('should support async generator with throwing error', async () => {  
     const interpreter = new Sval()
-    interpreter.import({ getItem, expect, done })
-    interpreter.run(`
-      const res = []
-      let visited = false
-      async function* a() {
-        for (const i of [1, 2, 3, 4]) {
-          res.push(yield await getItem(i))
+    function getItem(n) {
+      return new Promise(resolve => setTimeout(resolve, 5, n))
+    }
+    await new Promise((resolve) => {
+      interpreter.import({ getItem, expect, done: resolve })
+      interpreter.run(`
+        const res = []
+        async function* a() {
+          for (const i of [1, 2, 3, 4]) {
+            res.push(yield await getItem(i))
+          }
         }
-      }
-      const g = a()
-      g.next()
-      g.next(2)
-      g.next(4)
-      g.next(6).catch((e) => {
-        visited = true
+        const g = a()
+        g.next()
+        g.next(2)
+        g.return(4)
+        g.next(6)
+        g.throw(8).catch((e) => {
+          expect(res).toEqual([2])
+          expect(e).toEqual(8)
+          done()
+        })
+      `)
+    })
+  })
 
-        expect(res).toEqual([2, 4, 6])
-        expect(e).toEqual(4) // here the return value is 4, from generator it self
-      })
-      g.next(8).catch((e) => {
-        // should never come here
-        expect(false).toBeTruthy()
-      })
-
-      // simulate done action
-      setTimeout(() => {
-        expect(visited).toBeTruthy()
-        done()
-      }, 60)
-    `)
-    function getItem(n: any) {
+  it('should support async generator with throwing error in generator', async () => {  
+    const interpreter = new Sval()
+    function getItem(n) {
       if (n === 4) throw 4 // throw error when doing next
       return new Promise(resolve => setTimeout(resolve, 5, n))
     }
+    await new Promise((resolve) => {
+      interpreter.import({ getItem, expect, done: resolve })
+      interpreter.run(`
+        const res = []
+        let visited = false
+        async function* a() {
+          for (const i of [1, 2, 3, 4]) {
+            res.push(yield await getItem(i))
+          }
+        }
+        const g = a()
+        g.next()
+        g.next(2)
+        g.next(4)
+        g.next(6).catch((e) => {
+          visited = true
+
+          expect(res).toEqual([2, 4, 6])
+          expect(e).toEqual(4) // here the return value is 4, from generator it self
+        })
+        g.next(8).catch((e) => {
+          // should never come here
+          expect(false).toBeTruthy()
+        })
+
+        // simulate done action
+        setTimeout(() => {
+          expect(visited).toBeTruthy()
+          done()
+        }, 60)
+      `)
+    })
   })
 
   it('should throw Error when using arrow function as constructor', () => {

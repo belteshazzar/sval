@@ -216,7 +216,7 @@ describe('Static Blocks', () => {
         }
       }
     `)
-    return interpreter.exports.promise.then((value: number) => {
+    return interpreter.exports.promise.then((value) => {
       expect(value).toBe(42)
     })
   })

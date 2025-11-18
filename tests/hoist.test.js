@@ -123,12 +123,12 @@ describe('testing src/index.ts', () => {
           var c = 1
       }
     `)
-    expect((globalThis as any).a).toBe(1)
-    expect((globalThis as any).b).toBeUndefined()
-    expect((globalThis as any).c).toBeUndefined()
+    expect((globalThis).a).toBe(1)
+    expect((globalThis).b).toBeUndefined()
+    expect((globalThis).c).toBeUndefined()
     // Cleanup
-    ;(globalThis as any).i = undefined
-    ;(globalThis as any).a = undefined
+    ;(globalThis).i = undefined
+    ;(globalThis).a = undefined
   })
   it('should hoist var normally in try-catch', () => {  
     const interpreter = new Sval({ sandBox: false })
@@ -144,12 +144,12 @@ describe('testing src/index.ts', () => {
         var c = 1
       }
     `)
-    expect((globalThis as any).a).toBe(1)
-    expect((globalThis as any).b).toBeUndefined()
-    expect((globalThis as any).c).toBe(1)
+    expect((globalThis).a).toBe(1)
+    expect((globalThis).b).toBeUndefined()
+    expect((globalThis).c).toBe(1)
     // Cleanup
-    ;(globalThis as any).a = undefined
-    ;(globalThis as any).c = undefined
+    ;(globalThis).a = undefined
+    ;(globalThis).c = undefined
   })
   it('should hoist var normally in patterns', () => {  
     const interpreter = new Sval()
