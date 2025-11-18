@@ -4,6 +4,7 @@ import { pattern, createFunc, createClass } from './helper'
 import { Variable, Prop, MapEntry } from '../scope/variable'
 import { Identifier } from './identifier'
 import { Literal } from './literal'
+import { parse, Options } from 'acorn'
 import * as estree from 'estree'
 import Scope from '../scope'
 import evaluate from '.'
@@ -439,6 +440,43 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
     }
   } else {
     object = scope.find('this').get()
+    
+    // Special handling for direct eval calls
+    // Check if this is a direct call to eval (not a method call or indirect call)
+    if (node.callee.type === 'Identifier' && node.callee.name === 'eval') {
+      // This is a direct eval call - it should inherit strict mode from current scope
+      if (node.arguments.length === 0) {
+        return undefined
+      }
+      
+      // Evaluate the first argument (the code string)
+      const code = yield* evaluate(node.arguments[0], scope)
+      
+      // If it's not a string, just return it as-is (per spec)
+      if (typeof code !== 'string') {
+        return code
+      }
+      
+      // If current scope is strict, prepend 'use strict' to force strict mode parsing
+      // This ensures strict mode violations in eval'd code throw SyntaxError during parsing
+      const codeToEval = scope.strict ? `'use strict'; ${code}` : code
+      
+      // Parse the code
+      try {
+        const ast = parse(codeToEval, {
+          ecmaVersion: 'latest' as Options['ecmaVersion'],
+          sourceType: 'script'
+        } as Options)
+        
+        // Evaluate the parsed code in current scope
+        // Note: If we prepended 'use strict', the Program evaluator will set scope.strict=true
+        return yield* evaluate(ast as estree.Node, scope)
+      } catch (e) {
+        // Re-throw parse errors (including strict mode violations)
+        throw e
+      }
+    }
+    
     func = yield* evaluate(node.callee, scope)
     
     // Handle optional chaining (ES2020)

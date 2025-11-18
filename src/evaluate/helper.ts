@@ -16,6 +16,20 @@ import {
   AssignmentPattern
 } from './pattern'
 
+/**
+ * Check if a function body starts with 'use strict' directive
+ */
+function hasStrictDirective(body: estree.BlockStatement | estree.Expression): boolean {
+  if (body.type === 'BlockStatement' && body.body.length > 0) {
+    const firstStatement = body.body[0]
+    if (firstStatement.type === 'ExpressionStatement' &&
+        (firstStatement as any).directive === 'use strict') {
+      return true
+    }
+  }
+  return false
+}
+
 export interface hoistOptions {
   onlyBlock?: boolean
 }
@@ -140,8 +154,12 @@ export function createFunc(
 
   const { superClass, isCtor } = options
   const params = node.params
+  
+  // Check if function body has 'use strict' directive
+  const functionIsStrict = hasStrictDirective(node.body)
+  
   const tmpFunc = function* (...args: any[]) {
-    const subScope: Scope = new Scope(scope, true)
+    const subScope: Scope = new Scope(scope, true, functionIsStrict || scope.strict)
     if (node.type !== 'ArrowFunctionExpression') {
       subScope.const('this', this)
       subScope.let('arguments', arguments)

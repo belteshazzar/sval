@@ -454,11 +454,14 @@ class Scope {
    * Create a simulated scope
    * @param parent the parent scope along the scope chain (default: null)
    * @param isolated true for function scope or false for block scope (default: false)
+   * @param strict whether this scope is in strict mode (default: inherits from parent or false)
    */
-  constructor(parent = null, isolated = false) {
+  constructor(parent = null, isolated = false, strict) {
     this.context = create(null);
+    this.strict = false;
     this.parent = parent;
     this.isolated = isolated;
+    this.strict = strict !== void 0 ? strict : parent ? parent.strict : false;
   }
   /**
    * Get global scope
@@ -1055,6 +1058,25 @@ function CallExpression$1(node, scope) {
     }
   } else {
     object = scope.find("this").get();
+    if (node.callee.type === "Identifier" && node.callee.name === "eval") {
+      if (node.arguments.length === 0) {
+        return void 0;
+      }
+      const code = evaluate$1(node.arguments[0], scope);
+      if (typeof code !== "string") {
+        return code;
+      }
+      const codeToEval = scope.strict ? `'use strict'; ${code}` : code;
+      try {
+        const ast = parse(codeToEval, {
+          ecmaVersion: "latest",
+          sourceType: "script"
+        });
+        return evaluate$1(ast, scope);
+      } catch (e) {
+        throw e;
+      }
+    }
     func = evaluate$1(node.callee, scope);
     if (node.optional && (func === null || func === void 0)) {
       return void 0;
@@ -2388,6 +2410,25 @@ function* CallExpression(node, scope) {
     }
   } else {
     object = scope.find("this").get();
+    if (node.callee.type === "Identifier" && node.callee.name === "eval") {
+      if (node.arguments.length === 0) {
+        return void 0;
+      }
+      const code = yield* evaluate(node.arguments[0], scope);
+      if (typeof code !== "string") {
+        return code;
+      }
+      const codeToEval = scope.strict ? `'use strict'; ${code}` : code;
+      try {
+        const ast = parse(codeToEval, {
+          ecmaVersion: "latest",
+          sourceType: "script"
+        });
+        return yield* evaluate(ast, scope);
+      } catch (e) {
+        throw e;
+      }
+    }
     func = yield* evaluate(node.callee, scope);
     if (node.optional && (func === null || func === void 0)) {
       return void 0;
@@ -3319,6 +3360,15 @@ function* MethodDefinition(node, scope, options = {}) {
       throw new SyntaxError("Unexpected token");
   }
 }
+function hasStrictDirective$1(body) {
+  if (body.type === "BlockStatement" && body.body.length > 0) {
+    const firstStatement = body.body[0];
+    if (firstStatement.type === "ExpressionStatement" && firstStatement.directive === "use strict") {
+      return true;
+    }
+  }
+  return false;
+}
 function* hoist$1(block, scope, options = {}) {
   const { onlyBlock = false } = options;
   const funcDclrList = [];
@@ -3421,8 +3471,9 @@ function createFunc$1(node, scope, options = {}) {
   }
   const { superClass, isCtor } = options;
   const params = node.params;
+  const functionIsStrict = hasStrictDirective$1(node.body);
   const tmpFunc = function* (...args) {
-    const subScope = new Scope(scope, true);
+    const subScope = new Scope(scope, true, functionIsStrict || scope.strict);
     if (node.type !== "ArrowFunctionExpression") {
       subScope.const("this", this);
       subScope.let("arguments", arguments);
@@ -3656,6 +3707,15 @@ function* ForXHandler$1(node, scope, options) {
   }
   return result;
 }
+function hasStrictDirective(body) {
+  if (body.type === "BlockStatement" && body.body.length > 0) {
+    const firstStatement = body.body[0];
+    if (firstStatement.type === "ExpressionStatement" && firstStatement.directive === "use strict") {
+      return true;
+    }
+  }
+  return false;
+}
 function hoist(block, scope, options = {}) {
   const { onlyBlock = false } = options;
   const funcDclrList = [];
@@ -3755,8 +3815,9 @@ function createFunc(node, scope, options = {}) {
   }
   const { superClass, isCtor } = options;
   const params = node.params;
+  const functionIsStrict = hasStrictDirective(node.body);
   const tmpFunc = function(...args) {
-    const subScope = new Scope(scope, true);
+    const subScope = new Scope(scope, true, functionIsStrict || scope.strict);
     if (node.type !== "ArrowFunctionExpression") {
       subScope.const("this", this);
       subScope.let("arguments", arguments);
@@ -4014,11 +4075,35 @@ const _Sval = class _Sval {
   }
   run(code) {
     const ast = typeof code === "string" ? parse(code, this.options) : code;
+    if (ast.type === "Program") {
+      for (let i = 0; i < ast.body.length; i++) {
+        const statement2 = ast.body[i];
+        if (statement2.type === "ExpressionStatement" && statement2.directive === "use strict") {
+          this.scope.strict = true;
+          break;
+        }
+        if (statement2.type !== "ExpressionStatement" || !statement2.directive) {
+          break;
+        }
+      }
+    }
     hoist(ast, this.scope);
     evaluate$1(ast, this.scope);
   }
   async runAsync(code) {
     const ast = typeof code === "string" ? parse(code, this.options) : code;
+    if (ast.type === "Program") {
+      for (let i = 0; i < ast.body.length; i++) {
+        const statement2 = ast.body[i];
+        if (statement2.type === "ExpressionStatement" && statement2.directive === "use strict") {
+          this.scope.strict = true;
+          break;
+        }
+        if (statement2.type !== "ExpressionStatement" || !statement2.directive) {
+          break;
+        }
+      }
+    }
     hoist(ast, this.scope);
     await runAsync(evaluate(ast, this.scope));
   }

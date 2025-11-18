@@ -87,12 +87,46 @@ class Sval {
 
   run(code: string | Node) {
     const ast = typeof code === 'string' ? parse(code, this.options as Options) as Node : code
+    
+    // Check for 'use strict' directive BEFORE hoisting (which reorders statements)
+    if (ast.type === 'Program') {
+      for (let i = 0; i < ast.body.length; i++) {
+        const statement = ast.body[i]
+        if (statement.type === 'ExpressionStatement' && 
+            (statement as any).directive === 'use strict') {
+          this.scope.strict = true
+          break
+        }
+        // Only continue if this is an ExpressionStatement with a directive
+        if (statement.type !== 'ExpressionStatement' || !(statement as any).directive) {
+          break
+        }
+      }
+    }
+    
     hoist(ast as Program, this.scope)
     evaluateSync(ast, this.scope)
   }
 
   async runAsync(code: string | Node) {
     const ast = typeof code === 'string' ? parse(code, this.options as Options) as Node : code
+    
+    // Check for 'use strict' directive BEFORE hoisting (which reorders statements)
+    if (ast.type === 'Program') {
+      for (let i = 0; i < ast.body.length; i++) {
+        const statement = ast.body[i]
+        if (statement.type === 'ExpressionStatement' && 
+            (statement as any).directive === 'use strict') {
+          this.scope.strict = true
+          break
+        }
+        // Only continue if this is an ExpressionStatement with a directive
+        if (statement.type !== 'ExpressionStatement' || !(statement as any).directive) {
+          break
+        }
+      }
+    }
+    
     hoist(ast as Program, this.scope)
     await runAsync(evaluateAsync(ast, this.scope))
   }

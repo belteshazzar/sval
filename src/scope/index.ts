@@ -28,16 +28,26 @@ export default class Scope {
   private readonly context: { [key: string]: Var } = create(null)
 
   /**
+   * Track if this scope is in strict mode
+   * @public
+   */
+  public strict: boolean = false
+
+  /**
    * Create a simulated scope
    * @param parent the parent scope along the scope chain (default: null)
    * @param isolated true for function scope or false for block scope (default: false)
+   * @param strict whether this scope is in strict mode (default: inherits from parent or false)
    */
   constructor(
     parent: Scope = null,
     isolated: boolean = false,
+    strict?: boolean,
   ) {
     this.parent = parent
     this.isolated = isolated
+    // If strict is explicitly provided, use it; otherwise inherit from parent or default to false
+    this.strict = strict !== undefined ? strict : (parent ? parent.strict : false)
   }
 
   /**

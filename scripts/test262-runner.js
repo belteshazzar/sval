@@ -83,6 +83,8 @@ async function runTest(testPath, content) {
   const testCode = content.replace(/\/\*---[\s\S]*?---\*\/\n?/, '')
   
   const isAsync = metadata.flags && metadata.flags.includes('async')
+  const isOnlyStrict = metadata.flags && metadata.flags.includes('onlyStrict')
+  const isNoStrict = metadata.flags && metadata.flags.includes('noStrict')
   const isNegative = metadata.negative
   
   try {
@@ -186,8 +188,12 @@ async function runTest(testPath, content) {
       })
     }
     
-    // Load assert.js harness first, then run the test code
-    const fullTestCode = harnessJsContent + '\n' + testCode
+    // For onlyStrict tests, prepend 'use strict' to the ENTIRE code (harness + test)
+    // This ensures the whole program runs in strict mode
+    const fullTestCode = isOnlyStrict 
+      ? `'use strict';\n` + harnessJsContent + '\n' + testCode
+      : harnessJsContent + '\n' + testCode
+    
     interpreter.run(fullTestCode)
     
     // If async test, wait for $DONE to be called
