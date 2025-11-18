@@ -9,10 +9,27 @@ const { readFileSync, readdirSync, statSync, existsSync } = require('fs')
 const { join, relative } = require('path')
 //const Sval = require(join(__dirname, '../node_modules/sval/dist/sval.umd.cjs'))
 const Sval = require('../dist/sval.js').default
-const assert = require('../test262/harness/assert.js')
 // Configuration
 const TEST262_DIR = join(__dirname, '../test262')
 const DEFAULT_TEST_DIR = 'test/language'
+const HARNESS_DIR = join(TEST262_DIR, 'harness')
+
+// Load Test262 harness files
+let harnessJsContent = ''
+try {
+  const harnessFiles = readdirSync(HARNESS_DIR).filter(f => f.endsWith('.js'))
+  for (const harnessFile of harnessFiles) {
+    try {
+      const tempContent = readFileSync(join(HARNESS_DIR, harnessFile), 'utf-8')
+      // Remove the frontmatter from harness files
+      harnessJsContent += tempContent.replace(/\/\*---[\s\S]*?---\*\/\n?/, '') + '\n'
+    } catch (e) {
+      console.warn(`Warning: Could not load ${harnessFile} from Test262 harness: ${e.message}`)
+    }
+  }
+} catch (e) {
+  console.warn(`Warning: Could not read Test262 harness directory: ${e.message}`)
+}
 
 // Test statistics
 const stats = {
@@ -74,47 +91,6 @@ async function runTest(testPath, content) {
       sandBox: true
     })
     
-    // Add Test262 harness helpers
-    const assert = (condition, message) => {
-      if (!condition) {
-        throw new Error(message || 'Assertion failed')
-      }
-    }
-    assert.sameValue = (actual, expected, message) => {
-      if (actual !== expected) {
-        throw new Error(message || `Expected ${expected} but got ${actual}`)
-      }
-    }
-    assert.notSameValue = (actual, unexpected, message) => {
-      if (actual === unexpected) {
-        throw new Error(message || `Expected different value but got ${actual}`)
-      }
-    }
-    assert.throws = (ErrorType, fn, message) => {
-      let thrown = false
-      try {
-        fn()
-      } catch (e) {
-        thrown = true
-        if (ErrorType && !(e instanceof ErrorType)) {
-          throw new Error(message || `Expected ${ErrorType.name} but got ${e.constructor.name}`)
-        }
-      }
-      if (!thrown) {
-        throw new Error(message || 'Expected function to throw')
-      }
-    }
-    assert.compareArray = (a, b, message) => {
-      if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) {
-        throw new Error(message || 'Arrays are not equal')
-      }
-      for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) {
-          throw new Error(message || `Arrays differ at index ${i}: ${a[i]} !== ${b[i]}`)
-        }
-      }
-    }
-    
     // For async tests, we need to handle $DONE callback
     let asyncTestComplete = null
     let asyncTestError = null
@@ -135,8 +111,18 @@ async function runTest(testPath, content) {
             asyncTestError = err
             reject(err)
           },
-          assert,
-          compareArray: assert.compareArray,
+          $262: {
+            createRealm() {},
+            detachArrayBuffer() {},
+            evalScript() {},
+            global: globalThis,
+            agent: {
+              start() {},
+              broadcast() {},
+              getReport() { return null },
+              sleep() {}
+            }
+          },
           Test262Error: class Test262Error extends Error {
             constructor(message) {
               super(message)
@@ -166,8 +152,18 @@ async function runTest(testPath, content) {
         $ERROR: (message) => {
           throw new Error(message)
         },
-        assert,
-        compareArray: assert.compareArray,
+        $262: {
+          createRealm() {},
+          detachArrayBuffer() {},
+          evalScript() {},
+          global: globalThis,
+          agent: {
+            start() {},
+            broadcast() {},
+            getReport() { return null },
+            sleep() {}
+          }
+        },
         Test262Error: class Test262Error extends Error {
           constructor(message) {
             super(message)
@@ -190,8 +186,9 @@ async function runTest(testPath, content) {
       })
     }
     
-    // Run the test
-    interpreter.run(testCode)
+    // Load assert.js harness first, then run the test code
+    const fullTestCode = harnessJsContent + '\n' + testCode
+    interpreter.run(fullTestCode)
     
     // If async test, wait for $DONE to be called
     if (isAsync) {
