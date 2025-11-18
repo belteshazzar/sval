@@ -11,10 +11,11 @@ This document tracks unimplemented ECMAScript features that the Acorn parser can
 
 ### Class Features (ES2022)
 
-#### PropertyDefinition - Public/Private Class Fields ❌
+#### PropertyDefinition - Public/Private Class Fields ✅
 **Priority:** HIGH  
 **ECMAScript Version:** ES2022 (ES13)  
 **Complexity:** Medium  
+**Status:** ✅ IMPLEMENTED
 
 **Description:**
 Class fields allow defining properties directly in the class body without using the constructor.
@@ -32,23 +33,24 @@ class Counter {
 ```
 
 **Implementation Notes:**
-- Currently commented as "skip for now" in `declaration.ts` line 99-102
-- Needs to handle both instance and static fields
-- Must execute field initializers in the correct order (during construction)
-- Fields should be initialized before constructor body runs
+- ✅ Implemented in `declaration.ts` 
+- ✅ Handles both instance and static fields
+- ✅ Executes field initializers in the correct order (during construction)
+- ✅ Fields are initialized before constructor body runs
 
 **Related Tests:**
-- `tests/unimplemented-features.test.ts` - "PropertyDefinition (ES2022 Class Fields)"
+- `tests/unimplemented-features.test.ts` - "PropertyDefinition (ES2022 Class Fields)" ✅ PASSING
 
 **Blocked By:** None  
-**Blocks:** PrivateIdentifier support
+**Blocks:** None (PrivateIdentifier also implemented)
 
 ---
 
-#### PrivateIdentifier - Private Class Members ❌
+#### PrivateIdentifier - Private Class Members ✅
 **Priority:** HIGH  
 **ECMAScript Version:** ES2022 (ES13)  
 **Complexity:** High  
+**Status:** ✅ IMPLEMENTED
 
 **Description:**
 Private class fields and methods using the `#` prefix that are only accessible within the class.
@@ -69,24 +71,25 @@ class BankAccount {
 ```
 
 **Implementation Notes:**
-- Requires new internal mechanism for private field storage
-- Must enforce access restrictions (no access from outside class)
-- Needs to support both fields and methods
-- Static private members also need support
-- Private fields are NOT enumerable and NOT inherited
+- ✅ Uses WeakMap for private field storage per instance
+- ✅ Enforces access restrictions (no access from outside class)
+- ✅ Supports both fields and methods
+- ✅ Static private members are supported
+- ✅ Private fields are NOT enumerable and NOT inherited
 
 **Related Tests:**
-- `tests/unimplemented-features.test.ts` - "PrivateIdentifier (ES2022 Private Fields)"
+- `tests/unimplemented-features.test.ts` - "PrivateIdentifier (ES2022 Private Fields)" ✅ PASSING
 
-**Blocked By:** PropertyDefinition  
+**Blocked By:** None  
 **Blocks:** None
 
 ---
 
-#### StaticBlock - Static Initialization Blocks ❌
+#### StaticBlock - Static Initialization Blocks ✅
 **Priority:** MEDIUM  
 **ECMAScript Version:** ES2022 (ES13)  
 **Complexity:** Medium  
+**Status:** ✅ IMPLEMENTED
 
 **Description:**
 Static blocks allow complex initialization logic for static class properties.
@@ -104,14 +107,14 @@ class MyClass {
 ```
 
 **Implementation Notes:**
-- Currently commented as "skip for now" in `declaration.ts` line 102-104
-- Executed when class is defined (not when instantiated)
-- Can access private static fields
-- Multiple static blocks execute in order
-- `this` refers to the class constructor
+- ✅ Implemented in `declaration.ts`
+- ✅ Executed when class is defined (not when instantiated)
+- ✅ Can access private static fields
+- ✅ Multiple static blocks execute in order
+- ✅ `this` refers to the class constructor
 
 **Related Tests:**
-- `tests/unimplemented-features.test.ts` - "StaticBlock (ES2022)"
+- `tests/unimplemented-features.test.ts` - "StaticBlock (ES2022)" ✅ PASSING
 
 **Blocked By:** None  
 **Blocks:** None
@@ -120,10 +123,11 @@ class MyClass {
 
 ## Medium Priority Features
 
-### LabeledStatement ❌
+### LabeledStatement ✅
 **Priority:** MEDIUM  
 **ECMAScript Version:** ES3  
 **Complexity:** Medium  
+**Status:** ✅ IMPLEMENTED
 
 **Description:**
 Labels provide a way to identify loops or blocks, allowing `break` and `continue` to target specific outer loops.
@@ -140,14 +144,15 @@ outer: for (let i = 0; i < 3; i++) {
 ```
 
 **Implementation Notes:**
-- Mentioned in README.md as "not recommended"
-- Would require tracking label stack in scope
-- Break/continue statements need to reference labels
-- Can label any statement, not just loops
-- Relatively rare in modern code
+- ✅ Implemented in `statement.ts`
+- ✅ Tracks labels using special `__LABEL__` scope variable
+- ✅ Break/continue statements can reference labels
+- ✅ Can label any statement, not just loops
+- ✅ Uses `scope.hasOwn()` to prevent nested loops from incorrectly matching outer labels
 
 **Related Tests:**
-- `tests/unimplemented-features.test.ts` - "LabeledStatement"
+- `tests/unimplemented-features.test.ts` - "LabeledStatement" ✅ PASSING
+- Comprehensive tests in `scripts/verify-unimplemented.js`
 
 **Blocked By:** None  
 **Blocks:** None
@@ -187,10 +192,11 @@ async function loadModule(name) {
 
 ## Low Priority Features
 
-### WithStatement ❌
+### WithStatement ✅
 **Priority:** LOW  
 **ECMAScript Version:** ES3  
 **Complexity:** Medium  
+**Status:** ✅ IMPLEMENTED
 
 **Description:**
 With statement extends the scope chain for a statement (deprecated and not allowed in strict mode).
@@ -204,14 +210,13 @@ with (obj) {
 ```
 
 **Implementation Notes:**
-- Explicitly mentioned in README.md as "not recommended"
-- Forbidden in strict mode
-- Generally considered bad practice
-- Causes performance issues in JavaScript engines
-- **RECOMMENDATION:** Leave unimplemented as it's deprecated
+- ✅ Implemented in `statement.ts`
+- ✅ Creates a new scope with object properties as variables
+- ⚠️ Only works in non-strict mode (as per JavaScript spec)
+- ⚠️ Generally considered bad practice but implemented for compatibility
 
 **Related Tests:**
-- `tests/unimplemented-features.test.ts` - "WithStatement"
+- `tests/unimplemented-features.test.ts` - "WithStatement" ✅ PASSING
 
 **Blocked By:** None  
 **Blocks:** None
@@ -287,42 +292,46 @@ These were identified as potentially missing but are actually implemented:
 
 ## Implementation Roadmap
 
-### Phase 1: ES2022 Class Features (Recommended First)
-1. **PropertyDefinition** - Public class fields
-2. **StaticBlock** - Static initialization blocks
-3. **PrivateIdentifier** - Private fields and methods
+### Phase 1: ES2022 Class Features ✅ COMPLETED
+1. ✅ **PropertyDefinition** - Public class fields (COMPLETED)
+2. ✅ **StaticBlock** - Static initialization blocks (COMPLETED)
+3. ✅ **PrivateIdentifier** - Private fields and methods (COMPLETED)
 
 **Rationale:** These are standard ES2022 features, commonly used in modern JavaScript, and have moderate complexity.
 
-### Phase 2: Control Flow Enhancement
-1. **LabeledStatement** - For completeness
+### Phase 2: Control Flow Enhancement ✅ COMPLETED
+1. ✅ **LabeledStatement** - For completeness (COMPLETED)
+2. ✅ **WithStatement** - For compatibility (COMPLETED)
 
 **Rationale:** Less commonly used but straightforward to implement.
 
-### Phase 3: Module System (Optional)
+### Phase 3: Module System (Optional - Remaining Work)
 1. **Design module resolution strategy**
 2. **ImportExpression** - Dynamic imports
 3. **Static imports/exports** (if needed)
 
 **Rationale:** These require significant architectural decisions and may not be necessary for Sval's interpreter use case.
 
-### Phase 4: Deprecated Features (Not Recommended)
-1. **WithStatement** - Only if absolutely necessary for compatibility
-
-**Rationale:** Deprecated and considered harmful; leave unimplemented.
-
 ---
 
 ## Testing Strategy
 
-All unimplemented features have corresponding tests in `tests/unimplemented-features.test.ts` that are currently expected to throw errors with messages like:
-- `"PropertyDefinition isn't implemented"`
-- `"LabeledStatement isn't implemented"`
-- etc.
+All previously unimplemented features now have comprehensive tests in:
+- `tests/unimplemented-features.test.ts` - Basic feature tests
+- `scripts/verify-unimplemented.js` - Detailed verification script
+
+**Current Status:**
+- ✅ PropertyDefinition - PASSING
+- ✅ PrivateIdentifier - PASSING  
+- ✅ StaticBlock - PASSING
+- ✅ LabeledStatement - PASSING
+- ✅ WithStatement - PASSING
+- ⚠️ ImportExpression - Silently skipped (not implemented)
+- ❌ ES6 Modules - Parse error (sourceType: module required)
 
 As features are implemented:
 1. Update the corresponding evaluator function
-2. Remove the `expect().toThrow()` wrapper from tests
+2. Update test expectations from throwing errors to checking correct behavior
 3. Update the status in this document
 4. Add more comprehensive test cases
 

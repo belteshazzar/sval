@@ -36,11 +36,27 @@ const tests = [
         exports.result = x + y
       }
     `,
-    expectedBehavior: 'throws_error',
-    expectedError: 'WithStatement'
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 30
   },
   {
-    name: 'LabeledStatement',
+    name: 'WithStatement - nested scope',
+    code: `
+      const outer = { a: 1, b: 2 }
+      const inner = { b: 3, c: 4 }
+      with (outer) {
+        exports.a = a
+        with (inner) {
+          exports.b = b  // Should be 3 from inner
+          exports.c = c
+        }
+      }
+    `,
+    expectedBehavior: 'works',
+    verify: (exports) => exports.a === 1 && exports.b === 3 && exports.c === 4
+  },
+  {
+    name: 'LabeledStatement - break to label',
     code: `
       exports.result = 0
       outer: for (let i = 0; i < 3; i++) {
@@ -52,8 +68,51 @@ const tests = [
         }
       }
     `,
-    expectedBehavior: 'throws_error',
-    expectedError: 'LabeledStatement'
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 4  // 3 iterations in first row + 1 in second row
+  },
+  {
+    name: 'LabeledStatement - continue to label',
+    code: `
+      exports.result = 0
+      outer: for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (j === 1) {
+            continue outer
+          }
+          exports.result++
+        }
+      }
+    `,
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 3  // Only j=0 executes for each i
+  },
+  {
+    name: 'LabeledStatement - while loop',
+    code: `
+      exports.count = 0
+      outer: while (exports.count < 10) {
+        exports.count++
+        if (exports.count === 5) {
+          break outer
+        }
+      }
+    `,
+    expectedBehavior: 'works',
+    verify: (exports) => exports.count === 5
+  },
+  {
+    name: 'LabeledStatement - labeled block',
+    code: `
+      exports.result = 0
+      myLabel: {
+        exports.result = 1
+        break myLabel
+        exports.result = 2  // Should not execute
+      }
+    `,
+    expectedBehavior: 'works',
+    verify: (exports) => exports.result === 1
   },
   {
     name: 'PropertyDefinition (class fields)',

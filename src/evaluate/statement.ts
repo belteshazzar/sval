@@ -51,12 +51,65 @@ export function* ReturnStatement(node: estree.ReturnStatement, scope: Scope) {
   return RETURN
 }
 
-export function* BreakStatement() {
+export function* BreakStatement(node: estree.BreakStatement) {
+  if (node.label) {
+    BREAK.LABEL = node.label.name
+  } else {
+    delete BREAK.LABEL
+  }
   return BREAK
 }
 
-export function* ContinueStatement() {
+export function* ContinueStatement(node: estree.ContinueStatement) {
+  if (node.label) {
+    CONTINUE.LABEL = node.label.name
+  } else {
+    delete CONTINUE.LABEL
+  }
   return CONTINUE
+}
+
+export function* WithStatement(node: estree.WithStatement, scope: Scope) {
+  // WithStatement extends the scope chain with the object
+  // Note: This is deprecated and not allowed in strict mode
+  const obj = yield* evaluate(node.object, scope)
+  
+  // Create a new scope with the object's properties
+  const withScope = new Scope(scope)
+  
+  // Add all enumerable properties from the object to the scope
+  if (obj && typeof obj === 'object') {
+    for (const key in obj) {
+      withScope.var(key, obj[key])
+    }
+  }
+  
+  return yield* evaluate(node.body, withScope)
+}
+
+export function* LabeledStatement(node: estree.LabeledStatement, scope: Scope) {
+  const label = node.label.name
+  
+  // Store the current label in a special scope variable
+  // Use a NON-isolated scope so the direct child can access it
+  const labelScope = new Scope(scope, false)
+  labelScope.let('__LABEL__', label)
+  
+  const result = yield* evaluate(node.body, labelScope)
+  
+  // Check if this is a break targeting this label
+  if (result === BREAK && BREAK.LABEL === label) {
+    delete BREAK.LABEL
+    return
+  }
+  
+  // Continue with a label shouldn't escape the labeled loop
+  if (result === CONTINUE && CONTINUE.LABEL === label) {
+    delete CONTINUE.LABEL
+    // This shouldn't happen if loops handle it correctly
+  }
+  
+  return result
 }
 
 export function* IfStatement(node: estree.IfStatement, scope: Scope) {
@@ -140,11 +193,28 @@ export function* CatchClause(node: estree.CatchClause, scope: Scope) {
 }
 
 export function* WhileStatement(node: estree.WhileStatement, scope: Scope) {
+  // Only check for label in immediate parent scope, not up the chain
+  const myLabel = scope.hasOwn('__LABEL__') ? scope.find('__LABEL__').get() : undefined
+  
   while (yield* evaluate(node.test, scope)) {
     const result = yield* evaluate(node.body, scope)
     if (result === BREAK) {
+      if (BREAK.LABEL) {
+        if (BREAK.LABEL === myLabel) {
+          delete BREAK.LABEL
+          break
+        }
+        return result
+      }
       break
     } else if (result === CONTINUE) {
+      if (CONTINUE.LABEL) {
+        if (CONTINUE.LABEL === myLabel) {
+          delete CONTINUE.LABEL
+          continue
+        }
+        return result
+      }
       continue
     } else if (result === RETURN) {
       return result
@@ -153,11 +223,28 @@ export function* WhileStatement(node: estree.WhileStatement, scope: Scope) {
 }
 
 export function* DoWhileStatement(node: estree.DoWhileStatement, scope: Scope) {
+  // Only check for label in immediate parent scope, not up the chain
+  const myLabel = scope.hasOwn('__LABEL__') ? scope.find('__LABEL__').get() : undefined
+  
   do {
     const result = yield* evaluate(node.body, scope)
     if (result === BREAK) {
+      if (BREAK.LABEL) {
+        if (BREAK.LABEL === myLabel) {
+          delete BREAK.LABEL
+          break
+        }
+        return result
+      }
       break
     } else if (result === CONTINUE) {
+      if (CONTINUE.LABEL) {
+        if (CONTINUE.LABEL === myLabel) {
+          delete CONTINUE.LABEL
+          continue
+        }
+        return result
+      }
       continue
     } else if (result === RETURN) {
       return result
@@ -167,6 +254,9 @@ export function* DoWhileStatement(node: estree.DoWhileStatement, scope: Scope) {
 
 export function* ForStatement(node: estree.ForStatement, scope: Scope) {
   const forScope = new Scope(scope)
+  
+  // Only check for label in immediate parent scope, not up the chain
+  const myLabel = scope.hasOwn('__LABEL__') ? scope.find('__LABEL__').get() : undefined
   
   for (
     yield* evaluate(node.init, forScope);
@@ -182,8 +272,26 @@ export function* ForStatement(node: estree.ForStatement, scope: Scope) {
     }
 
     if (result === BREAK) {
+      if (BREAK.LABEL) {
+        // Check if the break is targeting this loop's label
+        if (BREAK.LABEL === myLabel) {
+          delete BREAK.LABEL
+          break
+        }
+        // Otherwise pass it up
+        return result
+      }
       break
     } else if (result === CONTINUE) {
+      if (CONTINUE.LABEL) {
+        // Check if the continue is targeting this loop's label
+        if (CONTINUE.LABEL === myLabel) {
+          delete CONTINUE.LABEL
+          continue
+        }
+        // Otherwise pass it up
+        return result
+      }
       continue
     } else if (result === RETURN) {
       return result
@@ -192,11 +300,28 @@ export function* ForStatement(node: estree.ForStatement, scope: Scope) {
 }
 
 export function* ForInStatement(node: estree.ForInStatement, scope: Scope) {
+  // Only check for label in immediate parent scope, not up the chain
+  const myLabel = scope.hasOwn('__LABEL__') ? scope.find('__LABEL__').get() : undefined
+  
   for (const value in yield* evaluate(node.right, scope)) {
     const result = yield* ForXHandler(node, scope, { value })
     if (result === BREAK) {
+      if (BREAK.LABEL) {
+        if (BREAK.LABEL === myLabel) {
+          delete BREAK.LABEL
+          break
+        }
+        return result
+      }
       break
     } else if (result === CONTINUE) {
+      if (CONTINUE.LABEL) {
+        if (CONTINUE.LABEL === myLabel) {
+          delete CONTINUE.LABEL
+          continue
+        }
+        return result
+      }
       continue
     } else if (result === RETURN) {
       return result
@@ -205,6 +330,8 @@ export function* ForInStatement(node: estree.ForInStatement, scope: Scope) {
 }
 
 export function* ForOfStatement(node: estree.ForOfStatement, scope: Scope) {
+  // Only check for label in immediate parent scope, not up the chain
+  const myLabel = scope.hasOwn('__LABEL__') ? scope.find('__LABEL__').get() : undefined
   const right = yield* evaluate(node.right, scope)
   /*<remove>*/
   if ((node as any).await) {
@@ -217,8 +344,22 @@ export function* ForOfStatement(node: estree.ForOfStatement, scope: Scope) {
     ) {
       const result = yield* ForXHandler(node, scope, { value: ret.value })
       if (result === BREAK) {
+        if (BREAK.LABEL) {
+          if (BREAK.LABEL === myLabel) {
+            delete BREAK.LABEL
+            break
+          }
+          return result
+        }
         break
       } else if (result === CONTINUE) {
+        if (CONTINUE.LABEL) {
+          if (CONTINUE.LABEL === myLabel) {
+            delete CONTINUE.LABEL
+            continue
+          }
+          return result
+        }
         continue
       } else if (result === RETURN) {
         return result
@@ -229,8 +370,22 @@ export function* ForOfStatement(node: estree.ForOfStatement, scope: Scope) {
     for (const value of right) {
       const result = yield* ForXHandler(node, scope, { value })
       if (result === BREAK) {
+        if (BREAK.LABEL) {
+          if (BREAK.LABEL === myLabel) {
+            delete BREAK.LABEL
+            break
+          }
+          return result
+        }
         break
       } else if (result === CONTINUE) {
+        if (CONTINUE.LABEL) {
+          if (CONTINUE.LABEL === myLabel) {
+            delete CONTINUE.LABEL
+            continue
+          }
+          return result
+        }
         continue
       } else if (result === RETURN) {
         return result

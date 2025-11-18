@@ -6,8 +6,8 @@ This document provides a quick overview of unimplemented JavaScript language fea
 
 | Feature | Status | Behavior | Priority | ES Version |
 |---------|--------|----------|----------|------------|
-| WithStatement | ❌ Not Implemented | Throws error | LOW | ES3 |
-| LabeledStatement | ❌ Not Implemented | Throws error | MEDIUM | ES3 |
+| WithStatement | ✅ Implemented | Works in non-strict mode | - | ES3 |
+| LabeledStatement | ✅ Implemented | Labels work with break/continue | - | ES3 |
 | PropertyDefinition | ✅ Implemented | Fields initialized | - | ES2022 |
 | PrivateIdentifier | ✅ Implemented | Private fields/methods work | - | ES2022 |
 | StaticBlock | ✅ Implemented | Static blocks executed | - | ES2022 |
@@ -16,19 +16,34 @@ This document provides a quick overview of unimplemented JavaScript language fea
 
 ## Behavior Categories
 
-### ❌ Throws Error
-These features throw an explicit error when encountered:
-- `WithStatement isn't implemented`
-- `LabeledStatement isn't implemented`
-
-**Example:**
-```javascript
-// Throws: "WithStatement isn't implemented"
-with (obj) { x = 1; }
-```
-
 ### ✅ Implemented
 These features are fully implemented and working:
+
+**WithStatement (ES3)**
+```javascript
+const obj = { x: 1, y: 2 }
+with (obj) {
+  console.log(x + y)  // 3
+}
+```
+Note: `with` statement is deprecated and not allowed in strict mode, but works in non-strict mode.
+
+**LabeledStatement (ES3)**
+```javascript
+// Break to outer loop from nested loop
+outer: for (let i = 0; i < 5; i++) {
+  for (let j = 0; j < 5; j++) {
+    if (i === 2 && j === 2) break outer
+  }
+}
+
+// Continue with label
+outer: for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (j === 1) continue outer
+  }
+}
+```
 
 **PropertyDefinition (Class Fields)**
 ```javascript
@@ -100,9 +115,9 @@ node scripts/verify-unimplemented.js
 
 Expected output:
 ```
-✅ PASS: WithStatement - Correctly threw error
-✅ PASS: LabeledStatement - Correctly threw error
-(Other tests verify silent failures produce undefined values)
+✅ PASS: WithStatement - Feature is working correctly
+✅ PASS: LabeledStatement - Feature is working correctly
+(Other tests verify implemented features work correctly)
 ```
 
 ## Recommended Implementation Order
@@ -113,14 +128,12 @@ Expected output:
    - ✅ ~~StaticBlock~~ (COMPLETED)
 
 2. **Phase 2: Control Flow** (MEDIUM priority)
-   - LabeledStatement
+   - ✅ ~~LabeledStatement~~ (COMPLETED)
+   - ✅ ~~WithStatement~~ (COMPLETED)
 
 3. **Phase 3: Module System** (LOW priority - requires architecture decisions)
    - ImportExpression
    - ES6 static imports/exports
-
-4. **Phase 4: Deprecated** (NOT recommended)
-   - WithStatement
 
 ## For Developers
 

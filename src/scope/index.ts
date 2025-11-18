@@ -89,6 +89,14 @@ export default class Scope {
   }
 
   /**
+   * Check if a variable exists in this scope only (not searching parent chain)
+   * @param name variable identifier name
+   */
+  hasOwn(name: string): boolean {
+    return name in this.context
+  }
+
+  /**
    * Declare a var variable
    * @param name variable identifier name
    * @param value variable value
