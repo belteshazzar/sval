@@ -133,7 +133,7 @@ export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, o
         // Private methods stored in WeakMap/Map like private fields
         if (node.static) {
           // Static private method
-          const privateStaticFields = klass.__privateStaticFields
+          const privateStaticFields = (klass as any).__privateStaticFields
           if (privateStaticFields) {
             privateStaticFields.set(key, value)
           }
@@ -141,10 +141,10 @@ export function* MethodDefinition(node: estree.MethodDefinition, scope: Scope, o
           // Instance private method - store on prototype's private data
           // We'll need to handle this during instance creation
           // For now, store it as metadata on the class
-          if (!klass.__privateInstanceMethods) {
+          if (!(klass as any).__privateInstanceMethods) {
             define(klass, '__privateInstanceMethods', { value: new Map() })
           }
-          klass.__privateInstanceMethods.set(key, value)
+          (klass as any).__privateInstanceMethods.set(key, value)
         }
       } else {
         // Public method

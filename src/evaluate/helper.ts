@@ -267,7 +267,7 @@ export function* createClass(
       
       if (isPrivate) {
         // Private field: use symbol as key
-        key = Symbol.for(`private:${method.key.name}`)
+        key = Symbol.for(`private:${(method.key as estree.PrivateIdentifier).name}`)
       } else if (method.computed) {
         key = yield* evaluate(method.key, scope)
       } else {
