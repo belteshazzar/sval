@@ -21,9 +21,8 @@ Test262 Results
 Total:   23728
 Passed:  4627
 Failed:  19101
-Skipped: 0
 Pass Rate: 19.50%
-Duration: 8.41s
+Duration: 9.43s
 ============================================================
 
 First 10 Failures:

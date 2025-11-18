@@ -9,7 +9,7 @@ const { readFileSync, readdirSync, statSync, existsSync } = require('fs')
 const { join, relative } = require('path')
 //const Sval = require(join(__dirname, '../node_modules/sval/dist/sval.umd.cjs'))
 const Sval = require('../dist/sval.js').default
-
+const assert = require('../test262/harness/assert.js')
 // Configuration
 const TEST262_DIR = join(__dirname, '../test262')
 const DEFAULT_TEST_DIR = 'test/language'
@@ -327,7 +327,7 @@ async function runTests(testFilter = null) {
   console.log(`Total:   ${stats.total}`)
   console.log(`Passed:  ${stats.passed}`)
   console.log(`Failed:  ${stats.failed}`)
-  console.log(`Pass Rate: ${((stats.passed / (stats.total - stats.skipped)) * 100).toFixed(2)}%`)
+  console.log(`Pass Rate: ${((stats.passed / stats.total) * 100).toFixed(2)}%`)
   console.log(`Duration: ${duration}s`)
   console.log('='.repeat(60))
   
@@ -353,7 +353,7 @@ const filter = args[0]
 
 let testFilter = null
 if (filter) {
-  console.log(`🔍 Filtering tests: ${filter}`)
+  console.log(`Filtering tests: ${filter}`)
   testFilter = (path) => path.includes(filter)
 }
 
