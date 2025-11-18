@@ -33,11 +33,11 @@ describe('testing src/index.ts', () => {
       this.y1 = 6
     `)
 
-    expect((window as any).x1).toBe(5)
-    expect((window as any).y1).toBe(6)
+    expect((globalThis as any).x1).toBe(5)
+    expect((globalThis as any).y1).toBe(6)
 
-    delete (window as any).x1
-    delete (window as any).y1
+    delete (globalThis as any).x1
+    delete (globalThis as any).y1
   })
 
   it('should support sandbox mode', () => {
@@ -50,8 +50,8 @@ describe('testing src/index.ts', () => {
       this.y2 = 6
     `)
 
-    expect((window as any).x2).toBeUndefined()
-    expect((window as any).y2).toBeUndefined()
+    expect((globalThis as any).x2).toBeUndefined()
+    expect((globalThis as any).y2).toBeUndefined()
   })
 
   it('should support ecma version 3, 5, 6, 7, 8, 9, 10', () => {
