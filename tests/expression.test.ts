@@ -206,6 +206,25 @@ describe('testing src/expression.ts', () => {
     expect(interpreter.exports.a).toBe('hello world')
   })
 
+  it('should create new RegExp instance for regex literals in closures', () => {
+    // Test for issue #118: regex literals should not be cached in closures
+    // When a regex has the global flag, reusing the same RegExp object causes
+    // lastIndex to persist between calls, leading to incorrect results
+    const interpreter = new Sval({ sourceType: 'module' })
+    interpreter.run(`
+      export default () => {
+        return (str) => {
+          return /^[1-9]\\d*$/g.test(str)
+        }
+      }
+    `)
+    const testFn = interpreter.exports.default()
+    expect(testFn('1')).toBe(true)
+    expect(testFn('1')).toBe(true) // Should still be true, not false
+    expect(testFn('2')).toBe(true)
+    expect(testFn('2')).toBe(true) // Should still be true, not false
+  })
+
   it('should support object expression', () => {
     const interpreter = new Sval()
     interpreter.import({ expect })
