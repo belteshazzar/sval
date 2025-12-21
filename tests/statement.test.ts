@@ -807,28 +807,28 @@ describe('testing statement', () => {
     })
   })
 
-  // it('should continue statement run normally in async function', () => {
-  //   return new Promise((done) => {
-  //     const interpreter = new Sval()
-  //     interpreter.import({ expect, done })
-  //     interpreter.run(`
-  //       async function run() {
-  //         let x = 0
-  //         let sum = 0
-  //         while (x < 5) {
-  //           x++
-  //           if (x === 3) {
-  //             continue
-  //           }
-  //           sum += x
-  //         }
-  //         expect(sum).toBe(11) // 1 + 2 + 4 + 5
-  //         done()
-  //       }
-  //       run()
-  //     `)
-  //   })
-  // })
+  it('should continue statement run normally in async function', () => {
+    return new Promise((done) => {
+      const interpreter = new Sval()
+      interpreter.import({ expect, done })
+      interpreter.run(`
+        async function run() {
+          let x = 0
+          let sum = 0
+          while (x < 5) {
+            x++
+            if (x === 3) {
+              continue
+            }
+            sum += x
+          }
+          expect(sum).toBe(12) // 1 + 2 + 4 + 5
+          done()
+        }
+        run()
+      `)
+    })
+  })
 
   it('should labeled statement with while run normally in async function', () => {
     return new Promise((done) => {
