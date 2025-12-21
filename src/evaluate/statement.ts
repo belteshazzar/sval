@@ -271,9 +271,9 @@ export function* ForStatement(node: acorn.ForStatement, scope: Scope, options: L
   const forScope = new Scope(scope)
   
   for (
-    yield* evaluate(node.init, forScope);
+    node.init ? yield* evaluate(node.init, forScope) : undefined;
     node.test ? (yield* evaluate(node.test, forScope)) : true;
-    yield* evaluate(node.update, forScope)
+    node.update ? yield* evaluate(node.update, forScope) : undefined
   ) {
     const subScope = new Scope(forScope)
     let result: any

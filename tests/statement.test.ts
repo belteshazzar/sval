@@ -11,6 +11,18 @@ describe('testing statement', () => {
     `)
   })
 
+  it('should for statement without initializer run normally', () => {
+    const interpreter = new Sval()
+    interpreter.run(`
+      let i = 0
+      for (; i < 5; i++) {
+        let r = i
+      }
+      exports.result = i
+    `)
+    expect(interpreter.exports.result).toBe(5)
+  })
+
   it('should break statement in switch run normally', () => {
     const interpreter = new Sval()
     interpreter.run(`
