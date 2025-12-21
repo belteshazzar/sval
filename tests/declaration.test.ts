@@ -338,4 +338,57 @@ describe('testing declaration', () => {
     expect(interpreter.exports.f).toBe(4)
     expect(interpreter.exports.y()).toBe(5)
   })
+
+  it('should throw SyntaxError when declaring function after const', () => {
+    const interpreter = new Sval()
+
+    let err
+    try {
+      interpreter.run(`
+        const a = 1
+        function a() {}
+      `)
+    } catch (ex) {
+      err = ex
+    }
+
+    expect(err).toBeInstanceOf(SyntaxError)
+    expect(err.message).toContain("already been declared")
+  })
+
+  it('should throw SyntaxError when declaring function after let', () => {
+    const interpreter = new Sval()
+
+    let err
+    try {
+      interpreter.run(`
+        let a = 1
+        function a() {}
+      `)
+    } catch (ex) {
+      err = ex
+    }
+
+    expect(err).toBeInstanceOf(SyntaxError)
+    expect(err.message).toContain("already been declared")
+  })
+
+  it('should throw SyntaxError when redeclaring const in same scope', () => {
+    const interpreter = new Sval()
+
+    let err
+    try {
+      interpreter.run(`
+        {
+          const a = 1
+          const a = 2
+        }
+      `)
+    } catch (ex) {
+      err = ex
+    }
+
+    expect(err).toBeInstanceOf(SyntaxError)
+    expect(err.message).toContain("already been declared")
+  })
 })

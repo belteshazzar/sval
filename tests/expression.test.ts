@@ -225,6 +225,22 @@ describe('testing src/expression.ts', () => {
     expect(testFn('2')).toBe(true) // Should still be true, not false
   })
 
+  it('should handle regex literals with flags correctly', () => {
+    const interpreter = new Sval()
+    interpreter.run(`
+      const re1 = /abc/gi
+      const re2 = /abc/gi
+      exports.test1 = re1.test('ABC')
+      exports.test2 = re2.test('ABC')
+      exports.flags1 = re1.flags
+      exports.flags2 = re2.flags
+    `)
+    expect(interpreter.exports.test1).toBe(true)
+    expect(interpreter.exports.test2).toBe(true)
+    expect(interpreter.exports.flags1).toBe('gi')
+    expect(interpreter.exports.flags2).toBe('gi')
+  })
+
   it('should support object expression', () => {
     const interpreter = new Sval()
     interpreter.import({ expect })
