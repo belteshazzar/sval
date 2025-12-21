@@ -73,9 +73,9 @@ class Sval {
     }
   }
 
-  parse(code: string, parser?: (code: string, options: SvalOptions) => Node) {
+  parse(code: string, parser?: (code: string, options: Options) => Node) {
     if (typeof parser === 'function') {
-      return parser(code, assign({} as SvalOptions, this.options))
+      return parser(code, this.options)
     }
     return parse(code, this.options)
   }
