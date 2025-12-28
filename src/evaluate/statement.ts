@@ -6,7 +6,7 @@ import evaluate from './index.ts'
 import * as acorn from 'acorn'
 
 export function* ExpressionStatement(node: acorn.ExpressionStatement, scope: Scope) {
-  yield* evaluate(node.expression, scope)
+  return yield* evaluate(node.expression, scope)
 }
 
 export interface LabelOptions {
