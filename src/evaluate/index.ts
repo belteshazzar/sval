@@ -31,12 +31,7 @@ export default function* evaluate(node: Node, scope: Scope) {
 
   const handler = evaluateOps[node.type]
   if (handler) {
-    const result = yield* handler(node, scope)
-    try {
-    console.log('Evaluated:', node.type, result === undefined)
-    } catch (e) {
-    }
-    return result
+    return yield* handler(node, scope)
   } else {
     throw new Error(`${node.type} isn't implemented`)
   }

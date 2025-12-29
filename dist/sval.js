@@ -3761,7 +3761,7 @@ class P {
     Object.keys(t) && (this.withContext = t);
   }
 }
-const fa = "0.6.8", pa = {
+const fa = "0.6.8-result", pa = {
   version: fa
 };
 function mt(e, t = {}) {
@@ -4329,15 +4329,9 @@ function* d(e, t) {
     Ua
   ));
   const r = ct[e.type];
-  if (r) {
-    const i = yield* r(e, t);
-    try {
-      console.log("Evaluated:", e.type, i === void 0);
-    } catch {
-    }
-    return i;
-  } else
-    throw new Error(`${e.type} isn't implemented`);
+  if (r)
+    return yield* r(e, t);
+  throw new Error(`${e.type} isn't implemented`);
 }
 function* $a(e, t) {
   return yield* d(e.expression, t);
@@ -5272,15 +5266,9 @@ function y(e, t) {
     Is
   ));
   const r = ht[e.type];
-  if (r) {
-    const i = r(e, t);
-    try {
-      console.log("Evaluated:", e.type, i === void 0);
-    } catch {
-    }
-    return i;
-  } else
-    throw new Error(`${e.type} isn't implemented`);
+  if (r)
+    return r(e, t);
+  throw new Error(`${e.type} isn't implemented`);
 }
 function As(e, t) {
   return y(e.expression, t);
