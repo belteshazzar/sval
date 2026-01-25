@@ -3,6 +3,7 @@ export interface SvalOptions {
     ecmaVer?: Options['ecmaVersion'];
     sourceType?: Options['sourceType'];
     sandBox?: boolean;
+    globals?: Object;
 }
 declare class Sval {
     static version: string;

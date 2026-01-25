@@ -13,7 +13,8 @@ import evaluate from './evaluate_n/index.ts'
 export interface SvalOptions {
   ecmaVer?: Options['ecmaVersion']
   sourceType?: Options['sourceType']
-  sandBox?: boolean
+  sandBox?: boolean,
+  globals?: Object,
 }
 
 const latestVer = 15
@@ -27,7 +28,7 @@ class Sval {
   exports: Record<string, any> = {}
 
   constructor(options: SvalOptions = {}) {
-    let { ecmaVer = 'latest', sandBox = true, sourceType = 'script' } = options
+    let { ecmaVer = 'latest', sandBox = true, sourceType = 'script', globals = {} } = options
 
     if (typeof ecmaVer === 'number') {
       ecmaVer -= ecmaVer < 2015 ? 0 : 2009 // format ecma edition
@@ -43,11 +44,13 @@ class Sval {
     if (sandBox) {
       // Shallow clone to create a sandbox
       const win = createSandBox()
+      assign(win, globals)
       this.scope.let('globalThis', win)
       this.scope.let('window', win)
       this.scope.let('self', win)
       this.scope.let('this', win)
     } else {
+      assign(globalObj, globals)
       this.scope.let('globalThis', globalObj)
       this.scope.let('window', globalObj)
       this.scope.let('self', globalObj)
