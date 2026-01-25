@@ -83,7 +83,7 @@ class Sval {
     return parse(code, this.options)
   }
 
-  run(code: string | Node) {
+  run(code: string | Node) : any {
     const ast = typeof code === 'string' ? this.parse(code) : code
     const scope = this.scope
     // check if top-level await supports
@@ -91,13 +91,13 @@ class Sval {
       this.options.ecmaVersion === 'latest'
       || this.options.ecmaVersion >= 13
     )) {
-      runAsync((function* () {
+      return runAsync((function* () {
         yield* hoistAsync(ast as Program, scope)
-        yield* evaluateAsync(ast, scope)
+        return yield* evaluateAsync(ast, scope)
       })())
     } else {
       hoist(ast as Program, scope)
-      evaluate(ast, scope)
+      return evaluate(ast, scope)
     }
   }
 }

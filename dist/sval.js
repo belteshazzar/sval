@@ -4306,8 +4306,10 @@ const Ma = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   RestElement: Ee
 }, Symbol.toStringTag, { value: "Module" }));
 function* ja(e, t) {
-  for (let r = 0; r < e.body.length; r++)
-    yield* d(e.body[r], t);
+  let r;
+  for (let i = 0; i < e.body.length; i++)
+    r = yield* d(e.body[i], t);
+  return r;
 }
 const Ua = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -4332,7 +4334,7 @@ function* d(e, t) {
   throw new Error(`${e.type} isn't implemented`);
 }
 function* $a(e, t) {
-  yield* d(e.expression, t);
+  return yield* d(e.expression, t);
 }
 function* se(e, t, r = {}) {
   const {
@@ -5241,8 +5243,10 @@ const Cs = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   RestElement: Ce
 }, Symbol.toStringTag, { value: "Module" }));
 function _s(e, t) {
-  for (let r = 0; r < e.body.length; r++)
-    y(e.body[r], t);
+  let r;
+  for (let i = 0; i < e.body.length; i++)
+    r = y(e.body[i], t);
+  return r;
 }
 const Is = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -5267,7 +5271,7 @@ function y(e, t) {
   throw new Error(`${e.type} isn't implemented`);
 }
 function As(e, t) {
-  y(e.expression, t);
+  return y(e.expression, t);
 }
 function ne(e, t, r = {}) {
   const {
@@ -5965,8 +5969,8 @@ const $s = 15, Vt = class Vt {
   }
   run(t) {
     const r = typeof t == "string" ? this.parse(t) : t, i = this.scope;
-    this.options.sourceType === "module" && (this.options.ecmaVersion === "latest" || this.options.ecmaVersion >= 13) ? mt(function* () {
-      yield* Lt(r, i), yield* d(r, i);
+    return this.options.sourceType === "module" && (this.options.ecmaVersion === "latest" || this.options.ecmaVersion >= 13) ? mt(function* () {
+      return yield* Lt(r, i), yield* d(r, i);
     }()) : (Pt(r, i), y(r, i));
   }
 };

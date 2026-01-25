@@ -1,6 +1,6 @@
 import { default as Scope } from '../scope/index.ts';
 import * as acorn from 'acorn';
-export declare function ExpressionStatement(node: acorn.ExpressionStatement, scope: Scope): Generator<any, void, any>;
+export declare function ExpressionStatement(node: acorn.ExpressionStatement, scope: Scope): Generator<any, any, any>;
 export interface LabelOptions {
     label?: string;
 }
